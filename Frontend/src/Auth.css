@@ -1,0 +1,61 @@
+form {
+    position: absolute;
+    
+    width: 450px;
+    height: fit-content;
+    
+    background-color: rgb(49, 13, 73);
+
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 15px;
+}
+
+form :where(input, button, a) {
+    margin: 10px;
+    padding: 10px;
+
+    width: 90%;
+
+    color: white;
+
+    border-radius: 15px;
+
+    transition: all .2s ease-in-out;
+}
+
+form :where(input, button) {    
+    border: none;
+    outline: none;
+}
+
+form :where(button, a):hover {
+    background-color: rgb(148, 41, 219);
+    cursor: pointer;
+}
+
+form button {
+    width: 320px;
+    background-color: rgb(104, 29, 153);
+}
+
+form input {
+    background-color: rgb(68, 19, 100);
+}
+
+form input, form a {
+    width: 300px;
+
+    margin: 10px 0;
+} 
+
+form h1 {
+    color: white;
+    margin: 15px;
+}
