@@ -10,7 +10,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/hello!!!mamutraxal", helloHandler)
+	http.HandleFunc("/hello", helloHandler)
 	fmt.Println("Go service is running on http://localhost:3002")
 	http.ListenAndServe(":3002", nil)
 }
