@@ -4,13 +4,13 @@ import { useState } from 'react';
 import './Auth.css';
 
 function Auth() {
-  const [regWin, setRegWin] = useState(false);
+  // const [regWin, setRegWin] = useState(false);
   const [logWin, setLogWin] = useState(true);
 
-  function changeLogReg() {
-    setRegWin(!regWin);
-    setLogWin(!logWin);
-  }
+  // function changeLogReg() {
+  //   setRegWin(!regWin);
+  //   setLogWin(!logWin);
+  // }
 
   return (
     <>
@@ -23,7 +23,7 @@ function Auth() {
             <a onClick={() => {changeLogReg()}}>Нет аккаунта</a>
         </form>}
 
-        {regWin &&
+        {/* {regWin &&
         <form action="" id="RegForm">
             <h1>Зарегистрироваться</h1>
             <input type="text" placeholder='Логин'/>
@@ -32,7 +32,7 @@ function Auth() {
             <input type="text" placeholder='Повтор пароля'/>
             <button id="RegSubmit" type="button">Зарегистрироваться</button>
             <a onClick={() => {changeLogReg()}}>Есть аккаунт</a>
-        </form>}
+        </form>} */}
     </>
   )
 }
