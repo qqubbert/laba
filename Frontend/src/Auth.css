@@ -59,3 +59,16 @@ form h1 {
     color: white;
     margin: 15px;
 }
+
+#LoginErrorMsg {
+    visibility: hidden;
+
+    width: 300px;
+
+    padding: 10px;
+
+    border-radius: 15px;
+
+    color: rgb(209, 39, 104);
+    background-color: rgb(82, 27, 54);
+}
