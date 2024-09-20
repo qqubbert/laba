@@ -75,25 +75,28 @@ app.post('/login', (req, res) => {
     SELECT * FROM Users WHERE Login = ?
     `;
 
+    console.log('login: ' + login);
+    console.log('password: ' + password);
+
     db.query(query, [login], async (err, result) => {
         if (err) {
             console.error('Ошибка при логине:', err);
             return res.status(500).json({ message: "Ошибка сервера" });
         }
         if (result.length === 0) {
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({ message: "Пользователь не найден" });
         }
 
         const user = result[0];
         const isPasswordValid = await bcrypt.compare(password, user.Pass);
 
         if (!isPasswordValid) {
-            return res.status(400).json({ message: "Invalid password" });
+            return res.status(400).json({ message: "Неправильный пароль" });
         }
         
         // Создание JWT токена
         const token = jwt.sign({ id: user.ID, permission: user.Permission }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ token, message: 'Пользователь авторизован' });
     });
 });
 

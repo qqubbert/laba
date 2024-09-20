@@ -17,3 +17,7 @@ body #root {
 
   background-color: rgb(32, 9, 48);
 }
+
+.noUsrSelect {
+  user-select: none;
+}
