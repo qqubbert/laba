@@ -47,14 +47,16 @@ function Header({ userInfo, logout }) {
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
                 <li onClick={(e)=>selectScience(e)} id="physics" className='science'><img src={rocketIcon} alt="" />Физика</li>
                 <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li>
-                {/* <li  onClick={(e)=>selectScience(e)} id="admin" className='science'><img src={adminIcon} alt="" />Администрирование</li> */}
+                <li  onClick={(e)=>selectScience(e)} id="admin" className='science'><img src={terminalIcon} alt="" />Администрирование</li>
             </ul>
             <div id="userHeadInfo">
                 <h1>Отдел физики и астрономии</h1>
                 <div id="usrProfile">
                     <h2 id="Name">Санёк Наумов</h2>
                     <h2 id="JobTitle">Уборщик</h2>
-                    <img onClick={showProfWin} id="Photo" src="https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album" alt="" />
+                    <div id="photoBorder">
+                        <img onClick={showProfWin} id="Photo" src="https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album" alt="" />
+                    </div>
                 </div>
             </div>
         </header>
