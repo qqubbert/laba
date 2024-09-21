@@ -21,12 +21,8 @@ const db = mysql.createConnection({
     database: "lab",
 });
 
-app.get('/hello', (req, res) => {
-    res.send("Hello, Gay!");
-});
-
 app.get('/', (req, res) => {
-    res.send("Hello, Gay!");
+    res.send("Hello, world!");
 });
 
 app.post('/register', async (req, res) => {
@@ -113,18 +109,6 @@ app.post('/protected', (req, res) => {
         }
         res.json({ message: `Привет пользователь с ID: ${user.id}` });
     });
-});
-
-app.post('/penis', (req, res) => {
-    const { size } = req.body; // Удалил ненужную переменную coolness
-
-    console.log('Received size:', size);
-
-    res.send(`${size}`);
-});
-
-app.get('/penis', (req, res) => {
-    res.send("Hello, penios!");
 });
 
 const start = async () => {
