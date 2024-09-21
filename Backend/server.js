@@ -1,6 +1,12 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Укажите фронтенд адрес (React-приложение)
+    credentials: true,               // Разрешить передачу куки
+}));
 
 // URL для микросервисов
 const JS_SERVICE_URL = 'http://localhost:3001';  // Микросервис на JS

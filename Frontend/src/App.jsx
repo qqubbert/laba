@@ -8,13 +8,21 @@ import Header from './Header.jsx';
 function App() {
   const [logged, setLogged] = useState(false);
 
+  const cookieClear = async () => {
+    const response = await fetch("http://localhost:3000/js-service/cookieclear", {
+      method: 'POST',
+      credentials: 'include',
+      withCredentials: true,
+    });
+  }
+
   return (
     <>
       {!logged && 
-      <Auth logged={()=>{{setLogged(true); console.log('logged')}}}/>}
+      <Auth logged={()=>{{setLogged(true); }}}/>}
 
       {logged &&
-      <Header />}
+      <Header logout={ async () => { await cookieClear(); setLogged(false);}}/>}
     </>
   )
 }
