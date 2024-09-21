@@ -1,0 +1,115 @@
+header {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+
+    /* background-color: aqua; */
+
+    display: grid;
+
+    grid-template-columns: 200px 800px auto;
+}
+
+header ul {
+    list-style: none;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    margin: 15px;
+    /* padding: 10px; */
+
+    user-select: none;
+}
+
+header #userHeadInfo {
+    /* margin: 15px; */
+
+    background-color: rgb(63, 22, 92);
+
+    border-radius: 0px 0px 0px 90px;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    text-align: right;
+}
+
+header #userHeadInfo h1 {
+    margin: 0px 55px;
+}
+
+header #userHeadInfo #usrProfile {
+    display: grid;
+    
+    grid-template-areas: "Name Photo" "JobTitle Photo" ;
+
+    margin: 0px 5px;
+}
+
+header #userHeadInfo img#Photo {
+    width: 60px;
+    height: 60px;
+
+    grid-area: Photo;
+
+    border-radius: 30px;
+
+    margin: 0px 15px;
+}
+
+#Name {
+    grid-area: Name;
+
+    font-size: 16pt;
+}
+
+#JobTitle {
+    grid-area: JobTitle;
+    font-weight: normal;
+    font-size: 14pt;
+}
+
+header button {
+    margin: 15px;
+
+    border-radius: 15px;
+
+    border: none;
+    outline: none;
+
+    background-color: rgb(63, 22, 92);
+
+    transition: all .15s ease-in-out;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+}
+
+header button:hover {
+    cursor: pointer;
+    
+    background-color: rgb(51, 17, 75);
+}
+
+header ul li {
+    transition: all ease-in-out .15s;
+
+    padding: 10px;
+}
+
+header ul li:hover {
+    cursor: pointer;
+
+    transform: scale(1.2);
+}

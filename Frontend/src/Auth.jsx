@@ -3,7 +3,7 @@ import { useState } from 'react';
 // import viteLogo from '/vite.svg';
 import './Auth.css';
 
-function Auth() {
+function Auth({ logged }) {
   // const [regWin, setRegWin] = useState(false);
   const [logWin, setLogWin] = useState(true);
   const [showErr, setShowErr] = useState(true);
@@ -35,6 +35,7 @@ function Auth() {
     if (response.ok) {{
       loginErr.style.visibility = "visible";
       setErrText(responseData.message);
+      logged();
     }} else {
       loginErr.style.visibility = "visible";
       setErrText(responseData.message);
