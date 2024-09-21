@@ -21,6 +21,7 @@ header ul {
     justify-content: space-evenly;
 
     margin: 15px;
+    padding: 0;
     /* padding: 10px; */
 
     user-select: none;
@@ -43,7 +44,20 @@ header #userHeadInfo {
 }
 
 header #userHeadInfo h1 {
+    position: relative;
+    
+    top: -4px;
+
     margin: 0px 55px;
+
+    font-size: 24px;
+    font-weight: 500;
+}
+
+header #userHeadInfo h1:hover {
+    user-select: none;
+
+    cursor: pointer;
 }
 
 header #userHeadInfo #usrProfile {
@@ -55,30 +69,57 @@ header #userHeadInfo #usrProfile {
 }
 
 header #userHeadInfo img#Photo {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
 
     grid-area: Photo;
 
     border-radius: 30px;
+    border: solid 2px rgb(211, 159, 248);
 
     margin: 0px 15px;
+
+    transition: all .1s ease-in-out;
+}
+
+header #userHeadInfo img#Photo:hover {
+    cursor: pointer;
+
+    filter: brightness(1.2);
 }
 
 #Name {
     grid-area: Name;
 
-    font-size: 16pt;
+    font-size: 14pt;
+    
+    height: 20px;
+
+    margin-top: 5px;
+
+    user-select: none;
 }
 
 #JobTitle {
     grid-area: JobTitle;
+    
     font-weight: normal;
-    font-size: 14pt;
+    font-size: 12pt;
+    
+    height: 20px;
+
+    user-select: none;
+
+    margin-bottom: 5px;
+}
+
+#Name:hover, #JobTitle:hover {
+    cursor: pointer;
 }
 
 header button {
     margin: 15px;
+    padding: 0;
 
     border-radius: 15px;
 
@@ -96,6 +137,12 @@ header button {
     align-items: center;
 }
 
+header button img {
+    position: relative;
+
+    left: -10px;
+}
+
 header button:hover {
     cursor: pointer;
     
@@ -105,11 +152,42 @@ header button:hover {
 header ul li {
     transition: all ease-in-out .15s;
 
-    padding: 10px;
+    padding: 5px 15px 5px 10px;
+    margin: 0px 10px;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 30px;
+}
+
+header ul li.selected {
+    transform: scale(1.2);
+}
+
+header ul li img {
+    padding: 0px 5px;
+
+    fill: rgb(211, 159, 248);
 }
 
 header ul li:hover {
     cursor: pointer;
 
     transform: scale(1.2);
+
+    filter: brightness(1.1);
+    
+    /* outline: solid 1px rgba(211, 159, 248, 0.25); */
+}
+
+.selected {
+    outline: solid 2px rgb(211, 159, 248);
+}
+
+#newArticleBtn:hover {
+    background-color: rgb(90, 35, 129);
 }

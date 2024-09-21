@@ -6,13 +6,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const PORT = 3001;
-const JWT_SECRET = 'your_jwt_secret'; // Добавьте секретный ключ для JWT
+const JWT_SECRET = 'abobaPenisDickHYUzalupka';
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true,               
+}));
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -24,6 +27,15 @@ const db = mysql.createConnection({
 app.get('/', (req, res) => {
     res.send("Hello, world!");
 });
+
+app.post('/cookieclear', async (req, res) => {
+    res.cookie('token', null, {
+        httpOnly: true,       
+        secure: false,        
+        sameSite: 'Lax',
+    })
+    res.json({ message: 'cookie с токеном очищен' })
+})
 
 app.post('/register', async (req, res) => {
     const { login, password } = req.body;
@@ -90,14 +102,19 @@ app.post('/login', (req, res) => {
             return res.status(400).json({ message: "Неправильный пароль" });
         }
         
-        // Создание JWT токена
         const token = jwt.sign({ id: user.ID, permission: user.Permission }, JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, {
+            httpOnly: true,       
+            secure: false,        
+            sameSite: 'Lax',       
+            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+        });
         res.json({ token, message: 'Пользователь авторизован' });
     });
 });
 
 app.post('/protected', (req, res) => {
-    const token = req.headers['authorization'];
+    const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ message: "Доступ запрещён" });
@@ -107,7 +124,7 @@ app.post('/protected', (req, res) => {
         if (err) {
             return res.status(403).json({ message: "Неправильный токен" });
         }
-        res.json({ message: `Привет пользователь с ID: ${user.id}` });
+        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
     });
 });
 
