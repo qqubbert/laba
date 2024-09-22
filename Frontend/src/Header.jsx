@@ -12,7 +12,7 @@ import './Header.css';
 
 import ProfileWindow from './ProfileWindow.jsx';
 
-function Header({ userInfo, logout }) {
+function Header({ userInfo, logout, showArticleEditor }) {
   const [showProfileWin, setShowProfileWin] = useState(false);
 
    function showProfWin () {
@@ -28,20 +28,31 @@ function Header({ userInfo, logout }) {
     }
   }
 
-  function selectScience(e) {
-    const scienceArr = Array.from(document.getElementsByClassName('science'));
-    scienceArr.forEach(sc => {
-        sc.classList.remove('selected');
-    });
-    const selected = (document.getElementById(e.currentTarget.id));
-    selected.classList.add('selected');
+  function selectScience(e, clearOut) {
+    let clear = clearOut || false
+    
+    function clearSelect() {
+        const scienceArr = Array.from(document.getElementsByClassName('science'));
+        scienceArr.forEach(sc => {
+            sc.classList.remove('selected');
+        });
+    }
+
+    if (!clear) {
+        clearSelect();
+        showArticleEditor(true);
+        const selected = (document.getElementById(e.currentTarget.id));
+        selected.classList.add('selected');
+    } else {
+        clearSelect();
+    }
   }
 
   return (
     <>
         <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}}/>
         <header>
-            <button id="newArticleBtn"><img src={plusIcon} alt="" />Новая статья</button>
+            <button id="newArticleBtn" onClick={()=>{showArticleEditor(); selectScience('', true)}}><img src={plusIcon} alt="" />Новая статья</button>
             <ul>
                 <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>

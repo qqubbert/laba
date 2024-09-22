@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Auth from './Auth.jsx';
 import Header from './Header.jsx';
+import NewArticle from './NewArticle.jsx';
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
 // import './App.css';
@@ -8,6 +9,7 @@ import Header from './Header.jsx';
 function App() {
   const [logged, setLogged] = useState(undefined);
   const [firstLogin, setFirstLogin] = useState(true);
+  const [showArticleEditor, setShowArticleEditor] = useState(false);
 
   const AuthTry = async () => {
     try {  
@@ -49,7 +51,10 @@ function App() {
       <Auth logged={()=>{{setLogged(true); }}}/>}
 
       {(logged == true) &&
-      <Header logout={ async () => { await cookieClear(); setLogged(false);}}/>}
+      <Header showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false);}}/>}
+
+      {showArticleEditor && 
+      <NewArticle hideArticleEditor={()=>{ setShowArticleEditor(false) }}/>}
     </>
   )
 }
