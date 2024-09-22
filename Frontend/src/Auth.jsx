@@ -6,7 +6,6 @@ import './Auth.css';
 function Auth({ logged }) {
   // const [regWin, setRegWin] = useState(false);
   const [logWin, setLogWin] = useState(true);
-  const [firstLogin, setFirstLogin] = useState(true);
   const [showErr, setShowErr] = useState(true);
   const [errText, setErrText] = useState(' ');
   const [showPass, setShowPass] = useState(' ');
@@ -14,32 +13,6 @@ function Auth({ logged }) {
     login: '',
     password: '',
   })
-
-  const AuthTry = async () => {
-    try {  
-      const response = await fetch("http://localhost:3000/js-service/protected", {
-        method: 'POST',
-        credentials: 'include',
-        withCredentials: true,
-      });
-  
-      const responseData = await response.json();
-  
-      if (response.ok) {
-        logged();
-      } else {
-        // console.error("Ошибка во время авторизации:", responseData.message);
-      }
-    } catch (error) {
-      // console.error("Ошибка:", error);
-    }
-  }
-  
-  useEffect(() => {
-    if (firstLogin) {
-      AuthTry();
-    }
-  }, []);
 
   const AuthConfirm = async () => {
     const loginErr = document.getElementById("LoginErrorMsg");

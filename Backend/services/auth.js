@@ -122,7 +122,7 @@ app.post('/protected', (req, res) => {
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            return res.status(403).json({ message: "Неправильный токен" });
+            return res.status(403).json({ message: "Неправильный токен", access: false  });
         }
         res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
     });
