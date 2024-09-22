@@ -47,7 +47,7 @@ function Header({ userInfo, logout }) {
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
                 <li onClick={(e)=>selectScience(e)} id="physics" className='science'><img src={rocketIcon} alt="" />Физика</li>
                 <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li>
-                <li  onClick={(e)=>selectScience(e)} id="admin" className='science'><img src={terminalIcon} alt="" />Администрирование</li>
+                <li  onClick={(e)=>selectScience(e)} id="admin" className='science'><img src={adminIcon} alt="" />Администрирование</li>
             </ul>
             <div id="userHeadInfo">
                 <h1>Отдел физики и астрономии</h1>
