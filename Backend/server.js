@@ -1,14 +1,20 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Укажите фронтенд адрес (React-приложение)
+    credentials: true,               // Разрешить передачу куки
+}));
 
 // URL для микросервисов
-const JS_SERVICE_URL = 'http://localhost:3001';  // Микросервис на JS
+const AUTH_SERVICE_URL = 'http://localhost:3001';  // Микросервис на JS
 const GO_SERVICE_URL = 'http://localhost:3002';  // Микросервис на Go
 
 // Перенаправление запросов на микросервис на JS
-app.use('/js-service', createProxyMiddleware({
-    target: JS_SERVICE_URL,
+app.use('/auth-service', createProxyMiddleware({
+    target: AUTH_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
         '^/js-service': '',  // Удаляет "/js-service" из пути
