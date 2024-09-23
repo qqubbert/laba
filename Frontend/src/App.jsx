@@ -13,7 +13,7 @@ function App() {
 
   const AuthTry = async () => {
     try {  
-      const response = await fetch("http://localhost:3000/js-service/protected", {
+      const response = await fetch("http://localhost:3000/auth-service/protected", {
         method: 'POST',
         credentials: 'include',
         withCredentials: true,
@@ -32,7 +32,7 @@ function App() {
   }
 
   const cookieClear = async () => {
-    const response = await fetch("http://localhost:3000/js-service/cookieclear", {
+    const response = await fetch("http://localhost:3000/auth-service/cookieclear", {
       method: 'POST',
       credentials: 'include',
       withCredentials: true,
