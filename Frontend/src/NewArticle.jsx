@@ -8,6 +8,8 @@ import fileIcon from './assets/FileIcon.svg';
 import paragraphIcon from './assets/ParagraphIcon.svg';
 import headerIcon from './assets/HeaderIcon.svg';
 import saveIcon from './assets/SaveIcon.svg';
+import deleteIcon from './assets/TrashIcon.svg';
+import editIcon from './assets/EditIcon.svg';
 
 import './NewArticle.css';
 
@@ -36,8 +38,33 @@ function NewArticle({ hideArticleEditor }) {
     }
   }
 
-  function editText() {
+  function editHide(params) {
+    let editBtns = Array.from(document.getElementsByClassName('editBtns'));
+    editBtns.forEach((el)=>{
+      el.remove();
+    })
+  }
 
+  function editText(el) {
+    let editBtn = document.createElement('button');
+    let editIco = document.createElement('img');
+    let deleteBtn = document.createElement('button');
+    let deleteIco = document.createElement('img');
+
+    editIco.src = editIcon;
+    deleteIco.src = deleteIcon;
+
+    editIco.classList.add('editIcons');
+    deleteIco.classList.add('editIcons');
+
+    editBtn.appendChild(editIco);
+    deleteBtn.appendChild(deleteIco);
+
+    editBtn.classList.add('editBtns');
+    deleteBtn.classList.add('editBtns');
+
+    el.appendChild(editBtn);
+    el.appendChild(deleteBtn);
   }
 
   function saveToHtmlFile() {
@@ -53,7 +80,7 @@ function NewArticle({ hideArticleEditor }) {
         <title>Generated Article</title>
       </head>
       <body>
-        ${content} <!-- Вставляем содержимое редактора -->
+        ${content} 
       </body>
       </html>
     `;
@@ -100,7 +127,8 @@ function NewArticle({ hideArticleEditor }) {
         return;
     }
 
-    newElement.addEventListener('hover', editText);
+    newElement.addEventListener('mouseover', () => editText(newElement));
+    newElement.addEventListener('mouseout', () => editHide(newElement));
   
     setEmpty(false);
     articleEditor.appendChild(newElement);
@@ -129,7 +157,7 @@ function NewArticle({ hideArticleEditor }) {
                 </div>
             </div>
             <div id="newArticleBottom">
-                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile}}><img src={saveIcon} alt="" />Сохранить</button>
+                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile()}}><img src={saveIcon} alt="" />Сохранить</button>
             </div>
         </div>
     </>

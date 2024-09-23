@@ -167,3 +167,7 @@
 .mediaDescription {
     min-height: 10px;
 }
+
+.editBtns {
+    display: inline;
+}
