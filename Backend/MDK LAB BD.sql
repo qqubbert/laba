@@ -45,7 +45,7 @@ CREATE TABLE tasks (
     Task TEXT,
     Progress INT(3),
     FOREIGN KEY (Id_Employee)
-        REFERENCES Employee (ID)
+        REFERENCES Users (ID)
 );
 
 CREATE TABLE Departaments (
@@ -58,7 +58,7 @@ CREATE TABLE DepartamentsEmployee (
     Id_Employee INT(10) NOT NULL,
     Dep_ID INT(10) NOT NULL,
     FOREIGN KEY (Id_Employee)
-        REFERENCES Employee (ID),
+        REFERENCES Users (ID),
     FOREIGN KEY (Dep_ID)
         REFERENCES Departaments (DepID)
 );
