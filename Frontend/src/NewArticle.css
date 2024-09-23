@@ -69,12 +69,31 @@
 }
 
 #ArticleEditor h1 {
+    width: 100%;
+
     margin: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
 }
 
 #ArticleEditor p {
+    position: relative;
+
+    width: 100%;
+    min-height: 35px;
+
     text-indent: 50px;
     margin: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    
 }
 
 #ArticleEditor div img {
@@ -99,6 +118,83 @@
     width: 75%;
 }
 
+#ArticleEditor button {
+    max-width: 45px;
+    max-height: 25px;
+
+    margin: 0px;
+    padding: 0px;
+}
+
+#ArticleEditor button img {
+    /* width: 15px;
+    height: 15px; */
+
+    margin: 0;
+
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#ArticleEditor div.mediaDiv {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#ArticleEditor #editBtnsDiv {
+    min-width: 130px;
+
+    display: flex;
+    flex-direction: row;
+
+    position: absolute;
+
+    right: 10px;
+}
+
+#ArticleEditor .mediaParent #editBtnsDiv {
+    min-width: 130px;
+
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+}
+
+#ArticleEditor #editBtnsDiv button {
+    margin: 2px 3px;
+
+    pointer-events: auto;
+}
+
+#ArticleEditor #editBtnsDiv button:hover {
+    cursor: pointer;
+}
+
+#ArticleEditor .mediaParent #editBtnsDiv button {
+    margin: 8px 3px;
+}
+
+.mediaParent {
+    position: relative;
+
+    min-width: 100%;
+    margin: 10px auto;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.mediaDescription {
+    min-height: 10px;
+}
+
 #emptyDiv {
     user-select: none;
 
@@ -112,6 +208,7 @@
 #newArticleWin div#newArticleBottom {
     display: flex;
     flex-direction: row;
+    justify-content: right;
 }
 
 #newArticleWin button {
@@ -151,23 +248,4 @@
 
 #newArticleWin #CloseArticleBtn {
     padding: 10px;
-}
-
-.mediaParent {
-    min-width: 80%;
-    margin: 10px auto;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    text-align: center;
-}
-
-.mediaDescription {
-    min-height: 10px;
-}
-
-.editBtns {
-    display: inline;
 }

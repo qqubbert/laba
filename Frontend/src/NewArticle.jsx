@@ -20,10 +20,13 @@ function NewArticle({ hideArticleEditor }) {
   function handleFileChange(event, fileType) {
     const file = event.target.files[0];
     let newElementParent;
+    let newElementDiv;
     let newMediaDescription;
     newElementParent = document.createElement('div');
+    newElementDiv = document.createElement('div');
     newMediaDescription = document.createElement('span');
     newElementParent.classList.add('mediaParent');
+    newElementDiv.classList.add('mediaDiv');
     newMediaDescription.classList.add('mediaDescription');
     if (file) {
       const newElement = document.createElement(fileType);
@@ -31,21 +34,28 @@ function NewArticle({ hideArticleEditor }) {
       if (fileType === 'video' || fileType === 'audio') {
         newElement.controls = true;
       }
+      newMediaDescription.innerHTML = "Введите описание";
       setEmpty(false);
+      newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
+      newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
       document.getElementById('ArticleEditor').appendChild(newElementParent);
-      newElementParent.appendChild(newElement);
-      newElementParent.appendChild(newMediaDescription);
+      newElementDiv.appendChild(newElement);
+      newElementDiv.appendChild(newMediaDescription);
+      newElementParent.appendChild(newElementDiv);
     }
   }
 
   function editHide(params) {
     let editBtns = Array.from(document.getElementsByClassName('editBtns'));
+    let editBtnsDiv = document.getElementById('editBtnsDiv');
     editBtns.forEach((el)=>{
       el.remove();
-    })
+    });
+    editBtnsDiv.remove();
   }
 
   function editText(el) {
+    let editBtnsDiv = document.createElement('div');
     let editBtn = document.createElement('button');
     let editIco = document.createElement('img');
     let deleteBtn = document.createElement('button');
@@ -57,14 +67,18 @@ function NewArticle({ hideArticleEditor }) {
     editIco.classList.add('editIcons');
     deleteIco.classList.add('editIcons');
 
+    editBtnsDiv.id = 'editBtnsDiv';
+
     editBtn.appendChild(editIco);
     deleteBtn.appendChild(deleteIco);
+
+    editBtnsDiv.appendChild(editBtn);
+    editBtnsDiv.appendChild(deleteBtn);
 
     editBtn.classList.add('editBtns');
     deleteBtn.classList.add('editBtns');
 
-    el.appendChild(editBtn);
-    el.appendChild(deleteBtn);
+    el.appendChild(editBtnsDiv);
   }
 
   function saveToHtmlFile() {
@@ -127,11 +141,13 @@ function NewArticle({ hideArticleEditor }) {
         return;
     }
 
-    newElement.addEventListener('mouseover', () => editText(newElement));
-    newElement.addEventListener('mouseout', () => editHide(newElement));
+    newElement.addEventListener('mouseenter', () => editText(newElement));
+    if (el != 'img' || el != 'audio' || el != 'video') {
+      newElement.addEventListener('mouseout', () => editHide(newElement));
+      articleEditor.appendChild(newElement);
+      setEmpty(false);
+    }
   
-    setEmpty(false);
-    articleEditor.appendChild(newElement);
   }  
 
   return (
