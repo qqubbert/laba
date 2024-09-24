@@ -11,6 +11,8 @@ header {
     display: grid;
 
     grid-template-columns: 200px 800px auto;
+
+    z-index: 101;
 }
 
 header ul {

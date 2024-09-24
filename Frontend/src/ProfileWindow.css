@@ -8,6 +8,8 @@ ul#profileWinList {
 
     padding: 0;
     animation: showProfileWin .3s ease-in-out forwards;
+
+    z-index: 100;
 }
 
 ul#profileWinList.profWinClosing {
@@ -50,7 +52,7 @@ ul#profileWinList li:hover {
 
 @keyframes showProfileWin {
     0% {
-        top: -85px
+        top: -185px
     }
     100% {
         top: 85px
@@ -62,6 +64,6 @@ ul#profileWinList li:hover {
         top: 85px
     }
     100% {
-        top: -85px
+        top: -185px
     }
 }
