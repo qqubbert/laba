@@ -11,11 +11,6 @@ CREATE TABLE Users (
     Login VARCHAR(100),
     Pass VARCHAR(100),
     Permission VARCHAR(100),
-    RegDate TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()) 
-);
-
-CREATE TABLE Employee (
-    ID INT NOT NULL PRIMARY KEY UNIQUE,
     FirstName VARCHAR(30),
     LastName VARCHAR(30),
     Surname VARCHAR(30),
@@ -27,17 +22,10 @@ CREATE TABLE Employee (
     AcademicDegree VARCHAR(50),
     DepID INT,
     WorkExperience INT,
-    Salary INT, 
-	FOREIGN KEY (ID)
-		REFERENCES Users (ID)
-);
-
-CREATE TABLE Contacts (
-    Id_Employee INT,
+    Salary INT,
     PhoneNumber VARCHAR(11),
-    Email VARCHAR(50),
-    FOREIGN KEY (Id_Employee)
-        REFERENCES Employee (ID)
+    Email VARCHAR(50),    
+    RegDate TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()) 
 );
 
 CREATE TABLE tasks (
