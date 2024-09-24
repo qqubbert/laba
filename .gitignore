@@ -28,4 +28,8 @@ dist-ssr
 *.sw?
 
 *Dockerfile
+<<<<<<< HEAD
 docker-compose.yml
+=======
+docker-compose.yml
+>>>>>>> db89e7f8a679423303c05ab6164718d326bc9c54

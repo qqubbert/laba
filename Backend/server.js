@@ -22,11 +22,11 @@ app.use('/js-service', createProxyMiddleware({
 }));
 
 // Перенаправление запросов на микросервис на Go
-app.use('/go-service', createProxyMiddleware({
+app.use('/rest-api-service', createProxyMiddleware({
     target: GO_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-        '^/go-service': '',  // Удаляет "/go-service" из пути
+        '^/go-service': '',  // Удаляет "/rest-api-service" из пути
     },
 }));
 
