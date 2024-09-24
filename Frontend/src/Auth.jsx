@@ -16,7 +16,7 @@ function Auth({ logged }) {
 
   const AuthConfirm = async () => {
     const loginErr = document.getElementById("LoginErrorMsg");
-    const response = await fetch("http://localhost:3000/auth-service/login", {
+    const response = await fetch("http://localhost:3000/js-service/auth/login", {
       method: 'POST',
       credentials: 'include',
       headers: {

@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+
 import Auth from './Auth.jsx';
 import Header from './Header.jsx';
 import NewArticle from './NewArticle.jsx';
-// import reactLogo from './assets/react.svg';
-// import viteLogo from '/vite.svg';
-// import './App.css';
 
 function App() {
   const [logged, setLogged] = useState(undefined);
@@ -13,7 +11,7 @@ function App() {
 
   const AuthTry = async () => {
     try {  
-      const response = await fetch("http://localhost:3000/auth-service/protected", {
+      const response = await fetch("http://localhost:3000/js-service/auth/protected", {
         method: 'POST',
         credentials: 'include',
         withCredentials: true,
@@ -32,7 +30,7 @@ function App() {
   }
 
   const cookieClear = async () => {
-    const response = await fetch("http://localhost:3000/auth-service/cookieclear", {
+    const response = await fetch("http://localhost:3000/js-service/auth/cookieclear", {
       method: 'POST',
       credentials: 'include',
       withCredentials: true,
