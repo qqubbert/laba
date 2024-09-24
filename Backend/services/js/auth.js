@@ -5,14 +5,13 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const PORT = 3001;
 const JWT_SECRET = 'abobaPenisDickHYUzalupka';
 
-const app = express();
+const authApp = express();
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
+authApp.use(express.json());
+authApp.use(cookieParser());
+authApp.use(cors({
     origin: 'http://localhost:5173', 
     credentials: true,               
 }));
@@ -24,11 +23,11 @@ const db = mysql.createConnection({
     database: "lab",
 });
 
-app.get('/', (req, res) => {
+authApp.get('/', (req, res) => {
     res.send("Hello, world!");
 });
 
-app.post('/cookieclear', async (req, res) => {
+authApp.post('/cookieclear', async (req, res) => {
     res.cookie('token', null, {
         httpOnly: true,       
         secure: false,        
@@ -37,7 +36,7 @@ app.post('/cookieclear', async (req, res) => {
     res.json({ message: 'cookie с токеном очищен' })
 })
 
-app.post('/register', async (req, res) => {
+authApp.post('/register', async (req, res) => {
     const { login, password } = req.body;
 
     console.log('login: ' + login);
@@ -76,7 +75,7 @@ app.post('/register', async (req, res) => {
     })
 });
 
-app.post('/login', (req, res) => {
+authApp.post('/login', (req, res) => {
     const { login, password } = req.body;
 
     const query = `
@@ -113,7 +112,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.post('/protected', (req, res) => {
+authApp.post('/protected', (req, res) => {
     const token = req.cookies.token;
 
     if (!token) {
@@ -128,14 +127,4 @@ app.post('/protected', (req, res) => {
     });
 });
 
-const start = async () => {
-    try {
-        app.listen(PORT, () => {
-            console.log(`Node.js service is running on http://localhost:${PORT}`);
-        });
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-start();
+module.exports = authApp;

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import closeIcon from './assets/CloseIcon.svg';
 import imageIcon from './assets/ImageIcon.svg';
@@ -13,51 +13,107 @@ import editIcon from './assets/EditIcon.svg';
 
 import './NewArticle.css';
 
+// import EditArticleElWin from './EditArticleElWin.jsx';
+
 function NewArticle({ hideArticleEditor }) {
   const [empty, setEmpty] = useState(true);
-  const [fileType, setFileType] = useState(null);
+  // const [fileType, setFileType] = useState(null);
+  const [elCount, setElCount] = useState(0);
+
+  useEffect(()=>{
+    if (elCount <= 0) {
+      setEmpty(true);
+    }
+  }, [elCount]);
+
+  function editElText(editBtn) {
+    let elToEdit = (editBtn.parentElement).parentElement;
+    (editBtn.parentElement).remove();
+  
+    if (elToEdit.tagName === 'H1' || elToEdit.tagName === 'P') {
+      let editArea = document.createElement('div');
+      editArea.classList.add('editArea');
+      let originalText = elToEdit.innerHTML;
+  
+      let textarea = document.createElement('textarea');
+      textarea.value = originalText;
+      textarea.style.width = '100%';
+      textarea.style.height = 'auto';
+
+      editArea.appendChild(textarea);
+  
+      let saveBtn = document.createElement('button');
+      let img = document.createElement('img');
+      img.src = saveIcon;
+      saveBtn.appendChild(img);
+      saveBtn.classList.add('saveBtn');
+  
+      elToEdit.replaceWith(editArea);
+  
+      saveBtn.addEventListener('click', () => {
+        let updatedText = textarea.value;
+  
+        let newElement = document.createElement(elToEdit.tagName.toLowerCase());
+        newElement.innerHTML = updatedText;
+  
+        editBtnsAdd(newElement);
+        editArea.replaceWith(newElement);
+        saveBtn.remove();
+      });
+  
+      editArea.appendChild(saveBtn);
+    }
+  }  
 
   function handleFileChange(event, fileType) {
     const file = event.target.files[0];
     let newElementParent;
     let newElementDiv;
-    let newMediaDescription;
+    // let newMediaDescription;
     newElementParent = document.createElement('div');
     newElementDiv = document.createElement('div');
-    newMediaDescription = document.createElement('span');
+    // newMediaDescription = document.createElement('span');
     newElementParent.classList.add('mediaParent');
     newElementDiv.classList.add('mediaDiv');
-    newMediaDescription.classList.add('mediaDescription');
+    // newMediaDescription.classList.add('mediaDescription');
     if (file) {
       const newElement = document.createElement(fileType);
       newElement.src = URL.createObjectURL(file);
       if (fileType === 'video' || fileType === 'audio') {
         newElement.controls = true;
       }
-      newMediaDescription.innerHTML = "Введите описание";
+      // newMediaDescription.innerHTML = "Введите описание";
       setEmpty(false);
-      newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
-      newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
+      editBtnsAdd(newElementParent);
+      // newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
+      // newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
+      newElementParent.classList.add(fileType + 'Parent');
       document.getElementById('ArticleEditor').appendChild(newElementParent);
       newElementDiv.appendChild(newElement);
-      newElementDiv.appendChild(newMediaDescription);
+      // newElementDiv.appendChild(newMediaDescription);
       newElementParent.appendChild(newElementDiv);
+      setElCount(elCount => elCount + 1);
+      // console.log(elCount + 1);
     }
   }
 
-  function editHide(params) {
+  function editDelete() {
     let editBtns = Array.from(document.getElementsByClassName('editBtns'));
-    let editBtnsDiv = document.getElementById('editBtnsDiv');
+    let editBtnsDiv = Array.from(document.getElementsByClassName('editBtnsDiv'));
     editBtns.forEach((el)=>{
       el.remove();
     });
-    editBtnsDiv.remove();
+    editBtnsDiv.forEach((el)=>{
+      el.remove();
+    });
   }
 
-  function editText(el) {
+  function editBtnsAdd(el) {
     let editBtnsDiv = document.createElement('div');
+
     let editBtn = document.createElement('button');
     let editIco = document.createElement('img');
+
     let deleteBtn = document.createElement('button');
     let deleteIco = document.createElement('img');
 
@@ -66,6 +122,16 @@ function NewArticle({ hideArticleEditor }) {
 
     editIco.classList.add('editIcons');
     deleteIco.classList.add('editIcons');
+
+    deleteBtn.addEventListener('click', ()=>{
+      (deleteBtn.parentElement).parentElement.remove();
+      setElCount(elCount => elCount - 1);
+      // console.log(elCount);
+    })
+
+    editBtn.addEventListener('click', ()=>{
+      editElText(editBtn);
+    })
 
     editBtnsDiv.id = 'editBtnsDiv';
 
@@ -82,6 +148,8 @@ function NewArticle({ hideArticleEditor }) {
   }
 
   function saveToHtmlFile() {
+    editDelete();
+
     const articleEditor = document.getElementById('ArticleEditor');
     const content = articleEditor.innerHTML; 
 
@@ -109,7 +177,7 @@ function NewArticle({ hideArticleEditor }) {
   function addElement(el) {
     const articleEditor = document.getElementById('ArticleEditor');
     let newElement;
-  
+
     switch (el) {
       case 'h1':
         newElement = document.createElement('h1');
@@ -121,7 +189,7 @@ function NewArticle({ hideArticleEditor }) {
         break;
       case 'img':
       case 'video':
-      case 'audio':        
+      case 'audio':
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = el === 'img' ? 'image/*' : el === 'video' ? 'video/*' : 'audio/*';
@@ -141,13 +209,18 @@ function NewArticle({ hideArticleEditor }) {
         return;
     }
 
-    newElement.addEventListener('mouseenter', () => editText(newElement));
     if (el != 'img' || el != 'audio' || el != 'video') {
-      newElement.addEventListener('mouseout', () => editHide(newElement));
+      editBtnsAdd(newElement); 
+
+      newElement.classList.add(el + 'Media');
+
       articleEditor.appendChild(newElement);
       setEmpty(false);
+
+      setElCount(elCount => elCount + 1);
+      // console.log(elCount + 1);
     }
-  
+
   }  
 
   return (
@@ -173,7 +246,7 @@ function NewArticle({ hideArticleEditor }) {
                 </div>
             </div>
             <div id="newArticleBottom">
-                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile()}}><img src={saveIcon} alt="" />Сохранить</button>
+                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile(); hideArticleEditor()}}><img src={saveIcon} alt="" />Сохранить</button>
             </div>
         </div>
     </>
