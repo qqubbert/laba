@@ -5,14 +5,16 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const PORT = 3001;
-const JWT_SECRET = 'your_jwt_secret'; // Добавьте секретный ключ для JWT
+const JWT_SECRET = 'abobaPenisDickHYUzalupka';
 
-const app = express();
+const authApp = express();
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors());
+authApp.use(express.json());
+authApp.use(cookieParser());
+authApp.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true,               
+}));
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -21,15 +23,20 @@ const db = mysql.createConnection({
     database: "lab",
 });
 
-app.get('/hello', (req, res) => {
-    res.send("Hello, Gay!");
+authApp.get('/', (req, res) => {
+    res.send("Hello, world!");
 });
 
-app.get('/', (req, res) => {
-    res.send("Hello, Gay!");
-});
+authApp.post('/cookieclear', async (req, res) => {
+    res.cookie('token', null, {
+        httpOnly: true,       
+        secure: false,        
+        sameSite: 'Lax',
+    })
+    res.json({ message: 'cookie с токеном очищен' })
+})
 
-app.post('/register', async (req, res) => {
+authApp.post('/register', async (req, res) => {
     const { login, password } = req.body;
 
     console.log('login: ' + login);
@@ -68,7 +75,7 @@ app.post('/register', async (req, res) => {
     })
 });
 
-app.post('/login', (req, res) => {
+authApp.post('/login', (req, res) => {
     const { login, password } = req.body;
 
     const query = `
@@ -94,14 +101,19 @@ app.post('/login', (req, res) => {
             return res.status(400).json({ message: "Неправильный пароль" });
         }
         
-        // Создание JWT токена
         const token = jwt.sign({ id: user.ID, permission: user.Permission }, JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, {
+            httpOnly: true,       
+            secure: false,        
+            sameSite: 'Lax',       
+            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+        });
         res.json({ token, message: 'Пользователь авторизован' });
     });
 });
 
-app.post('/protected', (req, res) => {
-    const token = req.headers['authorization'];
+authApp.post('/protected', (req, res) => {
+    const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ message: "Доступ запрещён" });
@@ -109,32 +121,10 @@ app.post('/protected', (req, res) => {
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            return res.status(403).json({ message: "Неправильный токен" });
+            return res.status(403).json({ message: "Неправильный токен", access: false  });
         }
-        res.json({ message: `Привет пользователь с ID: ${user.id}` });
+        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
     });
 });
 
-app.post('/penis', (req, res) => {
-    const { size } = req.body; // Удалил ненужную переменную coolness
-
-    console.log('Received size:', size);
-
-    res.send(`${size}`);
-});
-
-app.get('/penis', (req, res) => {
-    res.send("Hello, penios!");
-});
-
-const start = async () => {
-    try {
-        app.listen(PORT, () => {
-            console.log(`Node.js service is running on http://localhost:${PORT}`);
-        });
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-start();
+module.exports = authApp;

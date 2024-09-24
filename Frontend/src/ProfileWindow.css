@@ -1,0 +1,69 @@
+ul#profileWinList {
+    list-style: none;
+
+    position: absolute;
+
+    top: -85px;
+    right: 15px;
+
+    padding: 0;
+    animation: showProfileWin .3s ease-in-out forwards;
+
+    z-index: 100;
+}
+
+ul#profileWinList.profWinClosing {
+    animation: hideProfileWin .3s ease-in-out forwards;
+}
+
+ul#profileWinList li:first-child {
+    border-radius: 15px 15px 0px 0px;
+}
+
+ul#profileWinList li:last-child {
+    border-radius: 0px 0px 15px 15px;
+}
+
+ul#profileWinList li {
+    background-color: rgb(63, 22, 92);
+
+    padding: 15px 25px;
+
+    user-select: none;
+
+    display: flex;
+    flex-direction: row;
+
+    /* justify-content: center; */
+    align-items: center;
+}
+
+ul#profileWinList li img {
+    margin: 0px 15px 0px 0px;
+}
+
+ul#profileWinList li:hover {
+    background-color: rgb(90, 35, 129);
+
+    padding: 15px 25px;
+
+    cursor: pointer;
+}
+
+@keyframes showProfileWin {
+    0% {
+        top: -185px
+    }
+    100% {
+        top: 85px
+    }
+}
+
+@keyframes hideProfileWin {
+    0% {
+        top: 85px
+    }
+    100% {
+        top: -185px
+    }
+}

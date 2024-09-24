@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "nodeService": "nodemon ./services/service1.js",
+    "nodeService": "nodemon ./services/app.js",
     "goService": "go run ./services/service2.go"
   },
   "author": "",
