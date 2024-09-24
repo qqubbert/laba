@@ -29,5 +29,3 @@ dist-ssr
 
 *Dockerfile
 docker-compose.yml
-
-go.mod
