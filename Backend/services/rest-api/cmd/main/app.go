@@ -5,11 +5,10 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/julienschmidt/httprouter"
-	"log"
 	"net"
 	"net/http"
 	"rest-api/internal/user"
-
+	"rest-api/pkg/logging"
 	"time"
 )
 
@@ -23,14 +22,23 @@ func main() {
 
 	fmt.Println("подключено к базе")
 
+	logger := logging.GetLogger()
+	logger.Info("create router")
 	router := httprouter.New()
 
-	handler := user.NewHandler()
+	logger.Info("register user handler")
+	handler := user.NewHandler(logger)
+	handler.Register(router)
+
+	start(router)
 
 }
 
 func start(router *httprouter.Router) {
-	listener, err := net.Listen("tcp", "127.0.0.1:3002")
+	logger := logging.GetLogger()
+	logger.Info("start application")
+
+	listener, err := net.Listen("tcp", ":3002")
 	if err != nil {
 		panic(err)
 	}
@@ -40,5 +48,6 @@ func start(router *httprouter.Router) {
 		WriteTimeout:      15 * time.Second,
 		ReadHeaderTimeout: 15 * time.Second,
 	}
-	log.Fatalln(server.Serve(listener))
+	logger.Info("server is listening port 0.0.0.0:3002")
+	logger.Fatal(server.Serve(listener))
 }
