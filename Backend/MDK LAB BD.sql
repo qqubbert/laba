@@ -31,8 +31,8 @@ CREATE TABLE Users (
     Salary INT,
     PhoneNumber VARCHAR(11),
     Email VARCHAR(50),
-    FOREIGN KEY (Id_Employee)
-        REFERENCES Employee (ID)
+    FOREIGN KEY (DepID)
+        REFERENCES Departaments (DepID)
 );
 
 CREATE TABLE tasks (
