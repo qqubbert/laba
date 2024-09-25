@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"rest-api/requests"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -37,7 +38,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/users", func(c *gin.Context) {
-		users, err := getUsers(db)
+		users, err := requests.GetUsers(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -46,30 +47,6 @@ func main() {
 	})
 
 	r.Run(":3002")
-}
-
-func getUsers(db *sql.DB) ([]User, error) {
-	query := `SELECT u.FirstName, u.LastName, u.JobTitle, d.DepTtl
-		FROM Users u
-		LEFT JOIN Departaments d ON u.DepID = d.DepID`
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var users []User
-	for rows.Next() {
-		var user User
-		if err := rows.Scan(&user.FirstName, &user.LastName, &user.JobTitle, &user.DepID); err != nil {
-			return nil, err
-		}
-		users = append(users, user)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return users, nil
 }
 
 func connectToDatabase() (*sql.DB, error) {
