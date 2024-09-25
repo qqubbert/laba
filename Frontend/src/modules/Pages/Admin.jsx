@@ -9,7 +9,7 @@ function Admin({  }) {
 
     const LoadUsers = async () => {
         try {  
-            const response = await fetch("http://localhost:3000/go-service/users", {
+            const response = await fetch("http://localhost:3000/rest-api-service/users", {
             method: 'GET',
             credentials: 'include',
             withCredentials: true,
@@ -19,7 +19,7 @@ function Admin({  }) {
 
             setUsers(responseData);
 
-            console.log(responseData);
+            // console.log(responseData);
         } catch (error) {
             // console.error("Ошибка:", error);
         }
@@ -31,9 +31,18 @@ function Admin({  }) {
 
   return (
     <>
-        {users.map((user)=>{
-            <UserCard userData={users}/>
-        })}
+        <div id="adminPane">
+            <div id="usersList">
+                {users.map((user, i)=>{
+                    // console.log(user);
+                    return (
+                        <div key={user[i]} className='UserCard'>
+                            <UserCard userData={users[i]} />
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
     </>
   )
 }

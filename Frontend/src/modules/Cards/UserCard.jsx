@@ -1,18 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import './UserCard.css';
 
 
 function UserCard({ userData }) {
 
+    useEffect(() => {
+        console.log(userData);
+    }, []);
+
   return (
     <>
-        <div key={ userData.ID }>
-            <h1>{userData.FirstName} {userData.LastName}</h1>
-            <h4>{userData.DepTtl} {userData.JobTitle}</h4>
-        </div>
+        <h1>{userData.first_name} {userData.last_name}</h1>
+        <h4>{userData.dep_id} {userData.job_title}</h4>
     </>
   )
 }
 
-export default UserCard
+export default UserCard;

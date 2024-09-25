@@ -51,10 +51,11 @@ function App() {
       <Auth logged={()=>{{setLogged(true); }}}/>}
 
       {(logged == true) &&
-      <Header showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false);}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId); console.log(selectedId)}}/>}
+      <Header showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false);}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
-        {selectedPage == 'admin' &&
-        <Admin />}
+      {selectedPage == 'admin' &&
+        <Admin />
+      }
 
       {showArticleEditor && 
       <NewArticle hideArticleEditor={()=>{ setShowArticleEditor(false) }}/>}
