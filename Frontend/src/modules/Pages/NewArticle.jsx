@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import closeIcon from './assets/CloseIcon.svg';
-import imageIcon from './assets/ImageIcon.svg';
-import videoIcon from './assets/VideoIcon.svg';
-import audioIcon from './assets/AudioIcon.svg';
-import fileIcon from './assets/FileIcon.svg';
-import paragraphIcon from './assets/ParagraphIcon.svg';
-import headerIcon from './assets/HeaderIcon.svg';
-import saveIcon from './assets/SaveIcon.svg';
-import deleteIcon from './assets/TrashIcon.svg';
-import editIcon from './assets/EditIcon.svg';
+import closeIcon from '../../assets/CloseIcon.svg';
+import imageIcon from '../../assets/ImageIcon.svg';
+import videoIcon from '../../assets/VideoIcon.svg';
+import audioIcon from '../../assets/AudioIcon.svg';
+import fileIcon from '../../assets/FileIcon.svg';
+import paragraphIcon from '../../assets/ParagraphIcon.svg';
+import headerIcon from '../../assets/HeaderIcon.svg';
+import saveIcon from '../../assets/SaveIcon.svg';
+import deleteIcon from '../../assets/TrashIcon.svg';
+import editIcon from '../../assets/EditIcon.svg';
 
 import './NewArticle.css';
 
