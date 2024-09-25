@@ -30,11 +30,9 @@ CREATE TABLE Users (
     WorkExperience INT,
     Salary INT,
     PhoneNumber VARCHAR(11),
-    Email VARCHAR(50),  
-    Dep_ID INT(10) NOT NULL,
-    RegDate TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()),
-    FOREIGN KEY (Dep_ID)
-        REFERENCES Departaments (DepID)
+    Email VARCHAR(50),
+    FOREIGN KEY (Id_Employee)
+        REFERENCES Employee (ID)
 );
 
 CREATE TABLE tasks (

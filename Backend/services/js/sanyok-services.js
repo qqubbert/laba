@@ -1,6 +1,8 @@
 const express = require('express');
+const mysql = require("mysql");
 
 const sanyaApp = express();
+sanyaApp.use(express.json());
 
 const db = mysql.createConnection({
     host: "localhost",
