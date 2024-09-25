@@ -36,7 +36,7 @@ function Admin({  }) {
                 {users.map((user, i)=>{
                     // console.log(user);
                     return (
-                        <div key={user[i]} className='UserCard'>
+                        <div key={user.first_name} className='UserCard'>
                             <UserCard userData={users[i]} />
                         </div>
                     )
