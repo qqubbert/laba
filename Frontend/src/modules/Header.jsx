@@ -1,18 +1,18 @@
 import { useState } from 'react'
 
-import plusIcon from './assets/PlusIcon.svg';
-import leafIcon from './assets/LeafIcon.svg';
-import rocketIcon from './assets/RocketIcon.svg';
-import pawIcon from './assets/PawIcon.svg';
-import terminalIcon from './assets/TerminalIcon.svg';
-import chemistryIcon from './assets/ChemistryIcon.svg';
-import adminIcon from './assets/AdminIcon.svg';
+import plusIcon from '../assets/PlusIcon.svg';
+import leafIcon from '../assets/LeafIcon.svg';
+import rocketIcon from '../assets/RocketIcon.svg';
+import pawIcon from '../assets/PawIcon.svg';
+import terminalIcon from '../assets/TerminalIcon.svg';
+import chemistryIcon from '../assets/ChemistryIcon.svg';
+import adminIcon from '../assets/AdminIcon.svg';
 
 import './Header.css';
 
-import ProfileWindow from './ProfileWindow.jsx';
+import ProfileWindow from './Windows/ProfileWindow.jsx';
 
-function Header({ userInfo, logout, showArticleEditor }) {
+function Header({ userInfo, logout, showArticleEditor, selectedFunc }) {
   const [showProfileWin, setShowProfileWin] = useState(false);
 
    function showProfWin () {
@@ -43,6 +43,8 @@ function Header({ userInfo, logout, showArticleEditor }) {
         showArticleEditor(true);
         const selected = (document.getElementById(e.currentTarget.id));
         selected.classList.add('selected');
+        let selectedFuncArg = e.currentTarget.id;
+        selectedFunc(selectedFuncArg);
     } else {
         clearSelect();
     }

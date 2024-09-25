@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import saveIcon from './assets/SaveIcon.svg';
+import saveIcon from '../../assets/SaveIcon.svg';
 
 import './EditArticleElWin.css';
 

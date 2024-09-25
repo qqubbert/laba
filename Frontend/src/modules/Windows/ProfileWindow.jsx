@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import profileIcon from './assets/ProfileIcon.svg';
-import settingsIcon from './assets/SettingsIcon.svg';
-import logoutIcon from './assets/LogoutIcon.svg';
-import editIcon from './assets/EditIcon.svg';
+import profileIcon from '../../assets/ProfileIcon.svg';
+import settingsIcon from '../../assets/SettingsIcon.svg';
+import logoutIcon from '../../assets/LogoutIcon.svg';
+import editIcon from '../../assets/EditIcon.svg';
 
 import './ProfileWindow.css';
 
