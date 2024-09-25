@@ -6,6 +6,12 @@ use lab;
 
 -- TABLES
 
+CREATE TABLE Departaments (
+    DepID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    DepTtl VARCHAR(100),
+    ProjID INT(10)
+);
+
 CREATE TABLE Users (
 	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
     Login VARCHAR(100),
@@ -24,8 +30,9 @@ CREATE TABLE Users (
     WorkExperience INT,
     Salary INT,
     PhoneNumber VARCHAR(11),
-    Email VARCHAR(50),    
-    RegDate TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()) 
+    Email VARCHAR(50),
+    FOREIGN KEY (Id_Employee)
+        REFERENCES Employee (ID)
 );
 
 CREATE TABLE tasks (
@@ -36,37 +43,16 @@ CREATE TABLE tasks (
         REFERENCES Users (ID)
 );
 
-CREATE TABLE Departaments (
-    DepID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    DepTtl VARCHAR(100),
-    ProjID INT(10)
-);
-
-CREATE TABLE DepartamentsEmployee (
-    Id_Employee INT(10) NOT NULL,
-    Dep_ID INT(10) NOT NULL,
-    FOREIGN KEY (Id_Employee)
-        REFERENCES Users (ID),
-    FOREIGN KEY (Dep_ID)
-        REFERENCES Departaments (DepID)
-);
-
 CREATE TABLE Projects (
     ProjID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ProjTtl VARCHAR(100),
     Deadlines DATE,
     Budget INT,
     Requirements TEXT,
-    Progress INT(3)
-);
-
-CREATE TABLE DepartamentsProj (
     Dep_ID INT(10) NOT NULL,
-    Proj_ID INT(10) NOT NULL,
+    Progress INT(3),
     FOREIGN KEY (Dep_ID)
-        REFERENCES Departaments (DepID),
-    FOREIGN KEY (Proj_ID)
-        REFERENCES Projects (ProjID)
+        REFERENCES Departaments (DepID)
 );
 
 create Table article (
