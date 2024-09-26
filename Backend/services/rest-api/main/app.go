@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	connectdb "rest-api/db"
-	"rest-api/handlers"
+	"rest-api/internal/handlers"
 )
 
 const (
@@ -16,13 +16,6 @@ const (
 	article     = "/articles"
 	articleById = "/articles/:id"
 )
-
-type User struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	JobTitle  string `json:"job_title"`
-	DepID     string `json:"dep_id"`
-}
 
 func main() {
 	// Загружаем данные из .env файла
