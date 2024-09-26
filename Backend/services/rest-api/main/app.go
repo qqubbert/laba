@@ -6,14 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
+	"net/http"
 	"os"
 	"rest-api/requests"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	allUsers = "/users"
+	allUsers  = "/users"
+	usersById = "/users/:id"
 )
 
 type User struct {
@@ -42,12 +45,34 @@ func main() {
 	r := gin.Default()
 
 	r.GET(allUsers, func(c *gin.Context) {
-		users, err := requests.GetUsers(db)
+		users, err := requests.GetAllUsers(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
 		c.JSON(200, users)
+	})
+
+	r.GET(usersById, func(c *gin.Context) {
+		idStr := c.Param("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+			return
+		}
+
+		user, err := requests.GetUser(db, id)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if user == nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+
+		c.JSON(200, user)
 	})
 
 	r.Run(":3002")
