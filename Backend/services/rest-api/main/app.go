@@ -17,6 +17,7 @@ import (
 const (
 	allUsers  = "/users"
 	usersById = "/users/:id"
+	article   = "/articles"
 )
 
 type User struct {
@@ -73,6 +74,15 @@ func main() {
 		}
 
 		c.JSON(200, user)
+	})
+
+	r.GET(article, func(c *gin.Context) {
+		articles, err := requests.GetAllArticles(db)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, articles)
 	})
 
 	r.Run(":3002")
