@@ -8,6 +8,7 @@ type Article struct {
 	Completed    bool   `json:"completed"`
 	AuthorId     int    `json:"author_id"`
 	CreatingDate string `json:"creating_date"`
+	HtmlLink     string `json:"html_link"`
 }
 
 func GetAllArticles(db *sql.DB) ([]Article, error) {
@@ -33,4 +34,8 @@ func GetAllArticles(db *sql.DB) ([]Article, error) {
 	}
 
 	return articles, nil
+}
+
+func GetArticleById() {
+
 }
