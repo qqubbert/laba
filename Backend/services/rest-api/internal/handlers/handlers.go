@@ -68,7 +68,7 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 		if article == nil {
-			c.JSON(404, gin.H{"error": "User not found"})
+			c.JSON(404, gin.H{"error": "article not found"})
 			return
 		}
 		c.JSON(200, article)
