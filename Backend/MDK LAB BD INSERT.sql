@@ -15,7 +15,7 @@ VALUES
 ('Отдел пищевых технологий и агрономии', 11);
 
 -- Insert into Users (Employee)
-INSERT INTO Users (Login, Permission, FirstName, LastName, Surname, Gender, Birthday, FamilyStatus, HavingChildren, JobTitle, AcademicDegree, DepID, WorkExperience, Salary, PhoneNumber, Email)
+INSERT INTO Users (Login, Permission, FirstName, Surname, LastName, Gender, Birthday, FamilyStatus, HavingChildren, JobTitle, AcademicDegree, DepID, WorkExperience, Salary, PhoneNumber, Email)
 VALUES 
 ('nikolai', 'user', 'Николай', 'Романович', 'Шебалков', 'M', '2005-08-25', 'Холост', 0, 'Лаборант', 'Кандидат наук', 1, 10, 100000, '1234567890', 'lolkek.doe@example.com'),
 ('alexander', 'user', 'Александр', 'Павлович', 'Наумов', 'M', '2006-08-29', 'В активном поиске', 1, 'Уборщик', 'Образование отсутствует', 1, 13, 19242, '9876543210', 'kekcheberek.doe@example.com'),
