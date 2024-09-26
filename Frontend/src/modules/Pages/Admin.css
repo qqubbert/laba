@@ -1,0 +1,45 @@
+#adminPane {
+    width: 100vw;
+    height: 90%;
+
+    position: relative;
+
+    display: flex;
+
+    margin-top: auto;
+}
+
+#usersList {
+    position: relative;
+    width: 450px;
+    height: 100%;
+
+    overflow-y: scroll;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 15px;
+}
+
+#usersList input {
+    position: sticky;
+
+    top: 10px;
+
+    width: 80%;
+    align-self: center;
+
+    border-radius: 20px;
+
+    padding: 10px 25px;
+
+    border: none;
+
+    background-color: rgb(90, 35, 129);
+}
+
+#usersList input:focus {
+    border: none;
+    outline: none;
+}
