@@ -34,6 +34,7 @@ func main() {
 
 	r := gin.Default()
 
+	//запросы ебанутого уровня кондиций
 	r.GET(allUsers, handlers.GetAllUsersHandler(db))
 	r.GET(usersById, handlers.GetUserByIdHandler(db))
 	r.GET(article, handlers.GetAllArticlesHandler(db))
