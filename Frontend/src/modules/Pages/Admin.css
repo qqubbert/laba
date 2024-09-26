@@ -43,3 +43,7 @@
     border: none;
     outline: none;
 }
+
+#usersList div:first-of-type {
+    margin-top: 20px;
+}
