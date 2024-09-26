@@ -26,7 +26,7 @@ app.use('/rest-api-service', createProxyMiddleware({
     target: GO_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-        '^/go-service': '',  // Удаляет "/rest-api-service" из пути
+        '^/rest-api-service': '',  // Удаляет "/rest-api-service" из пути
     },
 }));
 

@@ -37,24 +37,28 @@ function Header({ userInfo, logout, showArticleEditor, selectedFunc }) {
             sc.classList.remove('selected');
         });
     }
+    
+    let selectedFuncArg;
 
     if (!clear) {
         clearSelect();
         showArticleEditor(true);
         const selected = (document.getElementById(e.currentTarget.id));
         selected.classList.add('selected');
-        let selectedFuncArg = e.currentTarget.id;
-        selectedFunc(selectedFuncArg);
+        selectedFuncArg = e.currentTarget.id;
     } else {
         clearSelect();
+        selectedFuncArg = 'none';
     }
-  }
+
+    selectedFunc(selectedFuncArg);
+}
 
   return (
     <>
         <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}}/>
         <header>
-            <button id="newArticleBtn" onClick={()=>{showArticleEditor(); selectScience('', true)}}><img src={plusIcon} alt="" />Новая статья</button>
+            <button id="newArticleBtn" onClick={()=>{showArticleEditor(); selectScience('none', true)}}><img src={plusIcon} alt="" />Новая статья</button>
             <ul>
                 <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
