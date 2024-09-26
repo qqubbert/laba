@@ -3,13 +3,13 @@ package handlers
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	"rest-api/requests"
+	requests2 "rest-api/internal/requests"
 	"strconv"
 )
 
 func GetAllUsersHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		users, err := requests.GetAllUsers(db)
+		users, err := requests2.GetAllUsers(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -27,7 +27,7 @@ func GetUserByIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		user, err := requests.GetUser(db, id)
+		user, err := requests2.GetUser(db, id)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -44,7 +44,7 @@ func GetUserByIdHandler(db *sql.DB) gin.HandlerFunc {
 
 func GetAllArticlesHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		articles, err := requests.GetAllArticles(db)
+		articles, err := requests2.GetAllArticles(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -62,7 +62,7 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		article, err := requests.GetArticleById(db, id)
+		article, err := requests2.GetArticleById(db, id)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return

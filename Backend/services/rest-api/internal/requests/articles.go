@@ -68,18 +68,16 @@ func GetArticleById(db *sql.DB, id int) (*Article, error) {
 		WHERE article_id = ?
 	`
 	var tags []string
-	var biolody, chemistry, it, physics bool
-	if err := db.QueryRow(tagsQuery, article.ID).Scan(&biolody, &chemistry, &it, &physics); err == nil {
-		if biolody {
+	var biology, chemistry, it, physics bool
+	if err := db.QueryRow(tagsQuery, article.ID).Scan(&biology, &chemistry, &it, &physics); err == nil {
+		switch {
+		case biology:
 			tags = append(tags, "biology")
-		}
-		if chemistry {
+		case chemistry:
 			tags = append(tags, "chemistry")
-		}
-		if it {
+		case it:
 			tags = append(tags, "it")
-		}
-		if physics {
+		case physics:
 			tags = append(tags, "physics")
 		}
 	}
