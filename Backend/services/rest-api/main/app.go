@@ -11,9 +11,10 @@ import (
 )
 
 const (
-	allUsers  = "/users"
-	usersById = "/users/:id"
-	article   = "/articles"
+	allUsers    = "/users"
+	usersById   = "/users/:id"
+	article     = "/articles"
+	articleById = "/articles/:id"
 )
 
 type User struct {
@@ -43,6 +44,7 @@ func main() {
 	r.GET(allUsers, handlers.GetAllUsersHandler(db))
 	r.GET(usersById, handlers.GetUserByIdHandler(db))
 	r.GET(article, handlers.GetAllArticlesHandler(db))
+	r.GET(articleById, handlers.GetArticlesByIdHandler(db))
 
 	r.Run(":3002")
 }
