@@ -38,7 +38,7 @@ func GetAllUsers(db *sql.DB) ([]FullUser, error) {
 	var users []FullUser
 	for rows.Next() {
 		var user FullUser
-		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.JobTitle, &user.DepID); err != nil {
+		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.JobTitle, &user.Department); err != nil {
 			return nil, err
 		}
 		users = append(users, user)
