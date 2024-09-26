@@ -36,7 +36,8 @@ function NewArticle({ hideArticleEditor }) {
       let originalText = elToEdit.innerHTML;
   
       let textarea = document.createElement('textarea');
-      textarea.value = originalText;
+      // textarea.value = originalText;
+      textarea.placeholder = "Введите текст заголовка";
       textarea.style.width = '100%';
       textarea.style.height = 'auto';
 
@@ -54,6 +55,9 @@ function NewArticle({ hideArticleEditor }) {
         let updatedText = textarea.value;
   
         let newElement = document.createElement(elToEdit.tagName.toLowerCase());
+        if (updatedText == "") {
+          updatedText = originalText;
+        }
         newElement.innerHTML = updatedText;
   
         editBtnsAdd(newElement);
