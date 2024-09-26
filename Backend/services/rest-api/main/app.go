@@ -12,6 +12,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	allUsers = "/users"
+)
+
 type User struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
@@ -37,7 +41,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/users", func(c *gin.Context) {
+	r.GET(allUsers, func(c *gin.Context) {
 		users, err := requests.GetUsers(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
