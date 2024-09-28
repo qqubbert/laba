@@ -27,8 +27,13 @@ authApp.get('/', (req, res) => {
     res.send("Hello, world!");
 });
 
-authApp.post('/cookieclear', async (req, res) => {
+authApp.get('/cookieclear', async (req, res) => {
     res.cookie('token', null, {
+        httpOnly: true,       
+        secure: false,        
+        sameSite: 'Lax',
+    });
+    res.cookie('userid', null, {
         httpOnly: true,       
         secure: false,        
         sameSite: 'Lax',
@@ -108,12 +113,31 @@ authApp.post('/login', (req, res) => {
             sameSite: 'Lax',       
             maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
-        res.json({ token, message: 'Пользователь авторизован' });
+        res.cookie('userid', user.ID, {
+            httpOnly: true,       
+            secure: false,        
+            sameSite: 'Lax',       
+            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+        });
+        res.cookie('admin', user.Permission, {
+            httpOnly: true,       
+            secure: false,        
+            sameSite: 'Lax',       
+            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+        });
+        res.json({ token, message: 'Пользователь авторизован', userid: user.ID, permission: user.Permission });
     });
 });
 
+authApp.get('/cookiecheck', (req, res)=>{
+    const userid = req.cookies.userid;
+    const admin = req.cookies.admin;
+    res.json({ userid: userid, permission: admin });
+})
+
 authApp.post('/protected', (req, res) => {
     const token = req.cookies.token;
+    const userid = req.cookies.userid;
 
     if (!token) {
         return res.status(401).json({ message: "Доступ запрещён" });
@@ -123,7 +147,7 @@ authApp.post('/protected', (req, res) => {
         if (err) {
             return res.status(403).json({ message: "Неправильный токен", access: false  });
         }
-        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
+        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true, userid: userid });
     });
 });
 
