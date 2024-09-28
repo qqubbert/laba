@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate } from 'react-router-dom';
 
 import Auth from './modules/Auth.jsx';
 import Header from './modules/Header.jsx';
@@ -87,20 +88,31 @@ function App() {
   }, [usrId]);
 
   return (
-    <>
-      {(logged == false) && 
-      <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
+    <Router>
+      <>
+        {(logged == false) && 
+        <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
-      {(logged == true) &&
-      <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none')}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+        {(logged == true) &&
+        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none');}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
-      {selectedPage == 'admin' &&
-        <Admin />
-      }
+        <Routes>
+            <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />
+            <Route path="/newarticle" element={<NewArticle/>} />
+        </Routes>
+        {/* {selectedPage == 'article' &&
+          <Articles />
+        } */}
 
-      {showArticleEditor && 
-      <NewArticle hideArticleEditor={()=>{ setShowArticleEditor(false) }}/>}
-    </>
+        {/* {selectedPage == 'messages' &&
+          <Messages />
+        } */}
+
+        {/* {selectedPage == 'department' &&
+          <Department />
+        } */}
+      </>
+    </Router>
   )
 }
 

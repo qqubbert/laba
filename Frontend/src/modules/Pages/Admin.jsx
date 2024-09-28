@@ -45,6 +45,15 @@ function Admin({  }) {
         }
     }
 
+    const selectPersonFunc = (e, i) => {
+        const userCards = Array.from(document.getElementsByClassName('UserCard'));
+        userCards.forEach((el)=>{
+            el.classList.remove('selectedPersonAdmin');
+        });
+        const selectedPerson = document.getElementById('userCard'+i);
+        selectedPerson.classList.add('selectedPersonAdmin');
+    }
+
     useEffect(() => {
         LoadUsers();
     }, []);
@@ -52,16 +61,18 @@ function Admin({  }) {
   return (
     <>
         <div id="adminPane">
-            <div id="usersList">
+            <div id="usersListPane">
                 <input type="text" placeholder='Поиск' />
-                {users.map((user, i)=>{
-                    // console.log(user);
-                    return (
-                        <div key={user.id} className='UserCard' onClick={()=>{LoadUserPane(user.id); console.log(user.id)}}>
-                            <UserCard userData={users[i]} />
-                        </div>
-                    )
-                })}
+                <div id="usersList">
+                    {users.map((user, i)=>{
+                        // console.log(user);
+                        return (
+                            <div key={user.id} className='UserCard' id={'userCard' + i} onClick={(e)=>{LoadUserPane(user.id); selectPersonFunc(e, i)}}>
+                                <UserCard userData={users[i]} />
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
             <div id="userAdminPane">
                 <UserAdminPane userData={userPane || undefined}/>

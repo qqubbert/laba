@@ -58,6 +58,16 @@ header #userHeadInfo h1 {
     font-weight: 500;
 
     width: 400px;
+    /* max-height: 30px; */
+
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    display: -moz-box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical; */
 
     text-align: center;
 }
@@ -172,10 +182,10 @@ header button:hover {
     background-color: rgb(51, 17, 75);
 }
 
-header ul li {
+header ul li a{
     transition: all ease-in-out .15s;
 
-    padding: 5px 15px 5px 10px;
+    padding: 3px 10px 3px 5px;
     margin: 0px 10px;
 
     display: flex;
@@ -185,9 +195,11 @@ header ul li {
     align-items: center;
 
     border-radius: 30px;
+
+    text-decoration: none;
 }
 
-header ul li.selected {
+header ul li .selected {
     transform: scale(1.2);
 }
 
@@ -197,7 +209,7 @@ header ul li img {
     fill: rgb(211, 159, 248);
 }
 
-header ul li:hover {
+header ul li a:hover {
     cursor: pointer;
 
     transform: scale(1.2);
