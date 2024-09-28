@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	requests2 "rest-api/internal/requests"
 	"strconv"
 )
@@ -97,5 +98,68 @@ func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 		c.JSON(200, gin.H{"message": "Task created successfully!"})
+	}
+}
+
+func GetTasksByUserIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		//получаю айдишник из юрл
+		idStr := c.Param("id")
+		userId, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid user ID"})
+			return
+		}
+		//получаю таски
+		tasks, err := requests2.GetTaskByID(db, userId)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(200, tasks)
+
+	}
+
+}
+
+func CreateDepartmentHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var newDepartment requests2.Dep
+
+		if err := c.ShouldBindJSON(&newDepartment); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		depID, err := requests2.CreateDepartment(db, newDepartment)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "Department created", "department_id": depID})
+	}
+}
+
+func CreateProjectHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var newProject requests2.Project
+
+		// Привязываем JSON данные к структуре проекта
+		if err := c.ShouldBindJSON(&newProject); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Добавляем новый проект в базу данных
+		projID, err := requests2.CreateProject(db, newProject)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Возвращаем ответ с ID нового проекта
+		c.JSON(http.StatusOK, gin.H{"message": "Project created", "project_id": projID})
 	}
 }

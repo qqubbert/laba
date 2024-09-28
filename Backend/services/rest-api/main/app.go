@@ -11,11 +11,14 @@ import (
 )
 
 const (
-	allUsers    = "/users"
-	usersById   = "/users/:id"
-	article     = "/articles"
-	articleById = "/articles/:id"
-	tasks       = "/tasks"
+	allUsers      = "/users"
+	usersById     = "/users/:id"
+	article       = "/articles"
+	articleById   = "/articles/:id"
+	tasks         = "/tasks"
+	tasksByUserId = "/users/:id/tasks"
+	departments   = "/departments"
+	project       = "/projects"
 )
 
 func main() {
@@ -40,7 +43,11 @@ func main() {
 	r.GET(usersById, handlers.GetUserByIdHandler(db))
 	r.GET(article, handlers.GetAllArticlesHandler(db))
 	r.GET(articleById, handlers.GetArticlesByIdHandler(db))
+	r.GET(tasksByUserId, handlers.GetTasksByUserIdHandler(db))
+
 	r.POST(tasks, handlers.CreateTaskHandler(db))
+	r.POST(departments, handlers.CreateDepartmentHandler(db))
+	r.POST(project, handlers.CreateProjectHandler(db))
 
 	r.Run(":3002")
 }
