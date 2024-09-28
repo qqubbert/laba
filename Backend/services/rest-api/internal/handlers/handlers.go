@@ -74,3 +74,28 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 		c.JSON(200, article)
 	}
 }
+
+func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var task requests2.Task
+
+		//достаю данные из тела запроа
+		if err := c.BindJSON(&task); err != nil {
+			c.JSON(400, gin.H{"error": "Invalid request body"})
+			return
+		}
+		//проверяю на наличие айди работника и таски
+		if task.IdEmployee == 0 || task.Task == "" {
+			c.JSON(400, gin.H{"error": "Missing employee id or task description"})
+			return
+		}
+
+		//создаю задачу
+		err := requests2.CreateTask(db, task)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"message": "Task created successfully!"})
+	}
+}

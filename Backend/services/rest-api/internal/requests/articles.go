@@ -57,7 +57,7 @@ func GetArticleById(db *sql.DB, id int) (*Article, error) {
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil // Пользователь не найден
+			return nil, nil
 		}
 		return nil, err
 	}
