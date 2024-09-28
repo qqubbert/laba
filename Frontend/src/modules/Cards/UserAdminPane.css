@@ -79,7 +79,7 @@
     cursor: pointer;
 }
 
-#task {
+.task {
     width: 65%;
     height: 120px;
 
@@ -125,4 +125,14 @@ ul#progressbar li {
 
 .selectedPersonAdmin {
     outline: 2px solid rgb(211, 159, 248);
+}
+
+#taskList {
+    min-height: 200px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    overflow-x: scroll;
 }
