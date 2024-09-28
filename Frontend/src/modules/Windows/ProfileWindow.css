@@ -42,6 +42,14 @@ ul#profileWinList li img {
     margin: 0px 15px 0px 0px;
 }
 
+ul#profileWinList li a {
+    text-decoration: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 ul#profileWinList li:hover {
     background-color: rgb(90, 35, 129);
 
@@ -52,7 +60,7 @@ ul#profileWinList li:hover {
 
 @keyframes showProfileWin {
     0% {
-        top: -185px
+        top: -285px
     }
     100% {
         top: 85px
@@ -64,6 +72,6 @@ ul#profileWinList li:hover {
         top: 85px
     }
     100% {
-        top: -185px
+        top: -285px
     }
 }

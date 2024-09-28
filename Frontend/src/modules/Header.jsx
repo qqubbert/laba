@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import plusIcon from '../assets/PlusIcon.svg';
 import leafIcon from '../assets/LeafIcon.svg';
@@ -7,13 +8,18 @@ import pawIcon from '../assets/PawIcon.svg';
 import terminalIcon from '../assets/TerminalIcon.svg';
 import chemistryIcon from '../assets/ChemistryIcon.svg';
 import adminIcon from '../assets/AdminIcon.svg';
+import msgIcon from '../assets/MessageIcon.svg';
+import tasksIcon from '../assets/TaskIcon.svg';
+import articleIcon from '../assets/ArticleIcon.svg';
+import depIcon from '../assets/DepIcon.svg';
 
 import './Header.css';
 
 import ProfileWindow from './Windows/ProfileWindow.jsx';
 
-function Header({ userInfo, logout, showArticleEditor, selectedFunc, permission }) {
+function Header({ userInfo, logout, selectedFunc, permission }) {
   const [showProfileWin, setShowProfileWin] = useState(false);
+  const navigate = useNavigate();
 
    function showProfWin () {
     if (showProfileWin) {
@@ -32,7 +38,7 @@ function Header({ userInfo, logout, showArticleEditor, selectedFunc, permission 
     let clear = clearOut || false
     
     function clearSelect() {
-        const scienceArr = Array.from(document.getElementsByClassName('science'));
+        const scienceArr = Array.from(document.getElementsByClassName('page'));
         scienceArr.forEach(sc => {
             sc.classList.remove('selected');
         });
@@ -58,16 +64,40 @@ function Header({ userInfo, logout, showArticleEditor, selectedFunc, permission 
     <>
         <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}}/>
         <header>
-            <button id="newArticleBtn" onClick={()=>{showArticleEditor(); selectScience('none', true)}}><img src={plusIcon} alt="" />Новая статья</button>
+            <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}><img src={plusIcon} alt="" />Новая статья</button>
             <ul>
-                <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
+                {/* <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
                 <li onClick={(e)=>selectScience(e)} id="physics" className='science'><img src={rocketIcon} alt="" />Физика</li>
-                <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li>
-                {permission == 'admin' && <li  onClick={(e)=>selectScience(e)} id="admin" className='science'><img src={adminIcon} alt="" />Администрирование</li>}
+                <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li> */}
+                <li>
+                    <NavLink to="/articles" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={articleIcon} alt="" /> Статьи
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/messages" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={msgIcon} alt="" /> Сообщения
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/department" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={depIcon} alt="" /> Отдел
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/tasks" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={tasksIcon} alt="" /> Задачи
+                    </NavLink>
+                </li>
+                {permission == 'admin' && <li>
+                    <NavLink to="/admin" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={adminIcon} alt="" /> Администрирование
+                    </NavLink>
+              </li>}
             </ul>
             <div id="userHeadInfo">
-                <h1>{userInfo.department}</h1>
+                <h1 title={userInfo.department}>{userInfo.department}</h1>
                 <div id="usrProfile">
                     <h2 id="Name">{userInfo.first_name} {userInfo.last_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>

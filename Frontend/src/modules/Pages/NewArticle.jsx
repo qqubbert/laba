@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { NavLink, useNavigate, Navigate } from 'react-router-dom';
 
 import closeIcon from '../../assets/CloseIcon.svg';
 import imageIcon from '../../assets/ImageIcon.svg';
@@ -19,7 +20,8 @@ function NewArticle({ hideArticleEditor }) {
   const [empty, setEmpty] = useState(true);
   // const [fileType, setFileType] = useState(null);
   const [elCount, setElCount] = useState(0);
-
+  const navigate = useNavigate();
+  
   useEffect(()=>{
     if (elCount <= 0) {
       setEmpty(true);
@@ -232,21 +234,23 @@ function NewArticle({ hideArticleEditor }) {
         <div id="newArticleWin">
             <div id="newArticleTop">
                 <div id="newArticleEditorBtns">
-                    <button onClick={()=>{addElement('h1')}}><img src={headerIcon} alt="" />Title</button>
-                    <button onClick={()=>{addElement('p')}}><img src={paragraphIcon} alt="" />Paragraph</button>
-                    <button onClick={()=>{addElement('img')}}><img src={imageIcon} alt="" />Img</button>
-                    <button onClick={()=>{addElement('video')}}><img src={videoIcon} alt="" />Video</button>
-                    <button onClick={()=>{addElement('audio')}}><img src={audioIcon} alt="" />Audio</button>
-                    <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button>
+                  <button onClick={()=>{addElement('h1')}}><img src={headerIcon} alt="" />Title</button>
+                  <button onClick={()=>{addElement('p')}}><img src={paragraphIcon} alt="" />Paragraph</button>
+                  <button onClick={()=>{addElement('img')}}><img src={imageIcon} alt="" />Img</button>
+                  <button onClick={()=>{addElement('video')}}><img src={videoIcon} alt="" />Video</button>
+                  <button onClick={()=>{addElement('audio')}}><img src={audioIcon} alt="" />Audio</button>
+                  <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button>
                 </div>
-                <button id="CloseArticleBtn" onClick={()=>{hideArticleEditor()}}> <img src={closeIcon} alt="" /> </button>
+                <button id="CloseArticleBtn" onClick={() => { navigate('/', { replace: true }); }}> 
+                  <img src={closeIcon} alt="" /> 
+                </button>
             </div>
             <div id="newArticleEditor">
                 <div id="ArticleEditor">
-                    {empty &&
-                    <div id="emptyDiv">
-                        <h2 id="emptyTitle">Тут ещё ничего нет</h2>
-                    </div>}
+                  {empty &&
+                  <div id="emptyDiv">
+                      <h2 id="emptyTitle">Тут ещё ничего нет</h2>
+                  </div>}
                 </div>
             </div>
             <div id="newArticleBottom">

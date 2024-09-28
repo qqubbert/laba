@@ -9,12 +9,12 @@
     margin-top: auto;
 }
 
-#usersList {
+#usersListPane {
     position: relative;
     width: 450px;
     height: 100%;
 
-    overflow-y: scroll;
+    overflow-y: hidden;
 
     display: flex;
     flex-direction: column;
@@ -22,8 +22,8 @@
     border-radius: 15px;
 }
 
-#usersList input {
-    position: sticky;
+#usersListPane input {
+    position: relative;
 
     top: 10px;
 
@@ -43,7 +43,13 @@
     border: none;
     outline: none;
 }
-
+/* 
 #usersList div:first-of-type {
+    margin-top: 20px;
+} */
+
+#usersList {
+    overflow-y: scroll;
+
     margin-top: 20px;
 }

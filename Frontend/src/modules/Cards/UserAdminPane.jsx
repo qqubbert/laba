@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 
-import './UserAdminPane.css';
+import msgIcon from '../../assets/MessageIcon.svg';
+import closeIcon from '../../assets/CloseIcon.svg';
 
+import './UserAdminPane.css';
 
 function UserAdminPane({ userData }) {
 
@@ -19,7 +21,7 @@ function UserAdminPane({ userData }) {
 
   useEffect(()=>{
     if (userData) {
-      progressUpd(20);
+      progressUpd(45);
     }
   }, [userData])
 
@@ -38,6 +40,7 @@ function UserAdminPane({ userData }) {
               <h3>Зарплата: {new Intl.NumberFormat('ru-IN', { maximumSignificantDigits: 3 }).format( userData.salary )} ₽</h3>
               <h3>Номер телефона: {userData.phone_number}</h3>
               <h3>Электронная почта: {userData.email}</h3>
+              <h3>Отдел: {userData.department}</h3>
 
               <h3>Текущая задача:</h3>
               <div id="task">
@@ -150,8 +153,8 @@ function UserAdminPane({ userData }) {
               </div>
             </div>
             <div id="adminBtns">
-                <button>Сообщение</button>
-                <button>Уволить</button>
+                <button><img src={msgIcon} alt="" />Сообщение</button>
+                <button><img src={closeIcon} alt="" />Уволить</button>
             </div>
         </>}
     </>
