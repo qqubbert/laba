@@ -15,6 +15,7 @@ const (
 	usersById   = "/users/:id"
 	article     = "/articles"
 	articleById = "/articles/:id"
+	tasks       = "/tasks"
 )
 
 func main() {
@@ -24,10 +25,10 @@ func main() {
 		log.Fatalf("Ошибка при загрузке .env файла: %v", err)
 	}
 	// Подключение к БД
-	db, err := connectdb.ConnectToDatabase()
-	if err != nil {
-		log.Fatalf("Ошибка при подключении к базе данных: %v", err)
-	}
+	db, err := connectdb.ConToDatabase()
+	//if err != nil {
+	//	log.Fatalf("Ошибка при подключении к базе данных: %v", err)
+	//}
 	defer db.Close()
 
 	fmt.Println("Подключение к базе данных успешно установлено")
@@ -39,6 +40,7 @@ func main() {
 	r.GET(usersById, handlers.GetUserByIdHandler(db))
 	r.GET(article, handlers.GetAllArticlesHandler(db))
 	r.GET(articleById, handlers.GetArticlesByIdHandler(db))
+	r.POST(tasks, handlers.CreateTaskHandler(db))
 
 	r.Run(":3002")
 }
