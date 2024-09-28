@@ -10,6 +10,9 @@ function App() {
   const [selectedPage, setSelectedPage] = useState('none');
   const [firstLogin, setFirstLogin] = useState(true);
   const [showArticleEditor, setShowArticleEditor] = useState(false);
+  const [usrInf, setUsrInf] = useState({});
+  const [usrId, setUsrId] = useState();
+  const [permission, setPermission] = useState('user');
 
   const AuthTry = async () => {
     try {  
@@ -26,17 +29,50 @@ function App() {
       } else {
         setLogged(false);
       }
+
+      try {
+        const response = await fetch("http://localhost:3000/js-service/auth/cookiecheck", {
+          method: 'GET',
+          credentials: 'include',
+          withCredentials: true,
+        });
+  
+        const responseData = await response.json();
+        setUsrId(responseData.userid);
+        setPermission(responseData.permission);
+      } catch (error) {
+        console.error("Ошибка:", error);
+      }
     } catch (error) {
-      // console.error("Ошибка:", error);
+      console.error("Ошибка:", error);
     }
   }
 
   const cookieClear = async () => {
     const response = await fetch("http://localhost:3000/js-service/auth/cookieclear", {
-      method: 'POST',
+      method: 'GET',
       credentials: 'include',
       withCredentials: true,
     });
+  }
+
+  const loadUsrInfo = async (usrId) => {
+    console.log(usrId);
+    try {  
+        const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
+        method: 'GET',
+        credentials: 'include',
+        withCredentials: true,
+        });
+    
+        const userData = await response.json();
+
+        setUsrInf(userData);
+
+        console.log(userData);
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
   }
 
   useEffect(() => {
@@ -45,13 +81,18 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(usrId);
+    loadUsrInfo(usrId);
+  }, [usrId]);
+
   return (
     <>
       {(logged == false) && 
-      <Auth logged={()=>{{setLogged(true); }}}/>}
+      <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
       {(logged == true) &&
-      <Header showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false);}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+      <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none')}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
       {selectedPage == 'admin' &&
         <Admin />

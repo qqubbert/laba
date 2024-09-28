@@ -1,12 +1,19 @@
 #userAdminPane {
     width: 100%;
+    height: auto;
+
+    overflow: hidden;
 
     margin: 30px;
-    padding: 15px;
+    padding: 0px;
 
     border-radius: 15px;
 
     background-color: rgb(63, 22, 92);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #userAdminPane h1 {
@@ -19,4 +26,91 @@
     margin: 10px 20px;
 
     font-size: 25px;
+}
+
+#divInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    overflow-y: scroll;
+}
+
+#adminBtns {
+    position: relative;
+
+    width: 100%;
+    height: 90px;
+
+    background-color: rgb(73, 23, 109);
+
+    padding: 10px 25px;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+#adminBtns button {
+    padding: 15px;
+    margin: 15px;
+
+    min-width: 100px;
+
+    border-radius: 15px;
+
+    outline: none;
+    border: none;
+
+    background-color: rgb(86, 31, 126);
+}
+
+#adminBtns button:hover {
+    background-color: rgb(102, 39, 148);
+
+    cursor: pointer;
+}
+
+#task {
+    width: 65%;
+    height: 120px;
+
+    padding: 15px;
+    margin: 15px;
+
+    background-color: rgb(86, 31, 126);
+
+    border-radius: 15px;
+}
+
+ul#progressbar {
+    list-style: none;
+
+    display: flex;
+    flex-direction: row;
+
+    padding: 0;
+
+    margin: 25px 0px;
+}
+
+ul#progressbar li:first-of-type {
+    border-radius: 15px 0px 0px 15px;
+}
+
+ul#progressbar li:last-of-type {
+    border-radius: 0px 15px 15px 0px;
+}
+
+ul#progressbar li {
+    width: 10px;
+    height: 10px;
+
+    /* outline: 1px solid black; */
+
+    background-color: rgb(46, 12, 44);
+}
+
+.progressFilled {
+    background-color: lime !important;
 }

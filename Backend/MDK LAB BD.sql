@@ -7,9 +7,9 @@ use lab;
 -- TABLES
 
 CREATE TABLE Departaments (
-    DepID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    DepID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     DepTtl VARCHAR(100),
-    ProjID INT(10)
+    ProjID INT
 );
 
 CREATE TABLE Users (
@@ -36,21 +36,23 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE tasks (
-    Id_Employee INT(10) NOT NULL PRIMARY KEY,
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Id_Employee INT,
     Task TEXT,
-    Progress INT(3),
+    Progress INT,
     FOREIGN KEY (Id_Employee)
         REFERENCES Users (ID)
 );
 
 CREATE TABLE Projects (
-    ProjID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ProjID INT,
     ProjTtl VARCHAR(100),
     Deadlines DATE,
     Budget INT,
     Requirements TEXT,
-    Dep_ID INT(10) NOT NULL,
-    Progress INT(3),
+    Dep_ID INT NOT NULL,
+    Progress INT,
     FOREIGN KEY (Dep_ID)
         REFERENCES Departaments (DepID)
 );
