@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 import './UserCard.css';
 
-
 function UserCard({ userData }) {
 
     useEffect(() => {

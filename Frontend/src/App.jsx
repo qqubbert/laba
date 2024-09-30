@@ -5,6 +5,8 @@ import Auth from './modules/Auth.jsx';
 import Header from './modules/Header.jsx';
 import NewArticle from './modules/Pages/NewArticle.jsx';
 import Admin from './modules/Pages/Admin.jsx';
+import Articles from './modules/Pages/Articles.jsx';
+import SelectedArticle from './modules/Cards/SelectedArticle.jsx';
 
 function App() {
   const [logged, setLogged] = useState(undefined);
@@ -98,7 +100,10 @@ function App() {
 
         <Routes>
             <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />
-            <Route path="/newarticle" element={<NewArticle/>} />
+            <Route path="/newarticle" element={logged ? <NewArticle /> : <Navigate to="/" replace />} />
+            <Route path="/articles" element={logged ? <Articles /> : <Navigate to="/" replace />}>
+              <Route path=":articleId" element={logged ? <SelectedArticle /> : <Navigate to="/" replace />} />
+            </Route>
         </Routes>
         {/* {selectedPage == 'article' &&
           <Articles />
@@ -111,6 +116,8 @@ function App() {
         {/* {selectedPage == 'department' &&
           <Department />
         } */}
+
+        {/* <iframe src="../src/article.html" frameborder="0"></iframe> */}
       </>
     </Router>
   )

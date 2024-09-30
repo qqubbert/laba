@@ -1,12 +1,17 @@
 #adminPane {
+    position: relative;
+    top: 70px;
+
     width: 100vw;
-    height: 90%;
+    height: 100vh;
 
     position: relative;
 
     display: flex;
 
-    margin-top: auto;
+    /* margin-top: 70px; */
+
+    flex: 1;
 }
 
 #usersListPane {
