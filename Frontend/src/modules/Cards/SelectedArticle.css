@@ -1,0 +1,81 @@
+#selectedArticle {
+    position: relative;
+
+    width: 100%;
+
+    margin: 20px;
+
+    background-color: rgb(79, 30, 114);
+
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#articleInfo {
+    width: 100%;
+    height: 70px;
+
+    background-color: rgb(87, 32, 126);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#articleInfo h1 {
+    margin: 25px;
+}
+
+#articleInfo #selectedArticleBtns {
+    margin: 25px;
+}
+
+#selectedArticleBtns button {
+    width: 40px;
+    height: 40px;
+
+    margin: 5px;
+    padding: 5px;
+
+    border-radius: 19px;
+
+    border: none;
+
+    background-color: rgb(104, 41, 150);
+}
+
+#selectedArticleBtns button:hover {
+    cursor: pointer;
+    background-color: rgb(116, 48, 165);
+}
+
+#articleAndComms {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+}
+
+#articleAndComms iframe {
+    min-width: 70%;
+    height: 100%;
+}
+
+#articleComms {
+    overflow-y: scroll;
+}
+
+.Comment {
+    background-color: rgb(104, 52, 143);
+
+    margin: 15px;
+    padding: 15px;
+
+    border-radius: 15px;
+}
+
+.Comment:last-of-type {
+    margin-bottom: 150px;
+}

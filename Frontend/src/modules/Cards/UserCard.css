@@ -11,6 +11,10 @@
     padding: 15px;
 }
 
+.UserCard:last-of-type {
+    margin-bottom: 100px;
+}
+
 .UserCard:hover {
     cursor: pointer;
     
