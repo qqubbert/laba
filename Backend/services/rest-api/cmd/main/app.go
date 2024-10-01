@@ -16,6 +16,7 @@ const (
 	article           = "/articles"
 	articleById       = "/articles/:id"
 	commentsByID      = "/articles/:id/comments"
+	addComm           = "/articles/:id/comments"
 	CreateTasks       = "/tasks"
 	tasksByUserId     = "/users/:id/tasks"
 	CreateDepartments = "/departments"
@@ -50,6 +51,7 @@ func main() {
 	r.POST(CreateTasks, http.CreateTaskHandler(db))
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))
 	r.POST(CreateProject, http.CreateProjectHandler(db))
+	r.POST(addComm, http.CreateComHandler(db))
 
 	r.Run(":3002")
 }
