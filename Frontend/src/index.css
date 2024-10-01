@@ -6,6 +6,8 @@
   font-family: "Roboto", sans-serif;
 
   color: rgb(211, 159, 248);
+
+  /* box-sizing: border-box; */
 }
 
 body #root {

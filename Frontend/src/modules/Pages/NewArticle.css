@@ -1,7 +1,8 @@
 #newArticleWin {
     margin: 100px 50px 50px 50px;
 
-    width: 1800px;
+    min-width: 90%;
+    max-width: 1800px;
     height: 750px;
 
     background-color: rgb(63, 22, 92);

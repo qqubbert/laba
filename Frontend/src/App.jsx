@@ -31,8 +31,8 @@ function App() {
       if (responseData.access) {
         setLogged(true);
       } else {
-        setLogged(false);
         <Navigate to="/" replace />
+        setLogged(false);
       }
 
       try {
@@ -98,7 +98,7 @@ function App() {
         <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
         {(logged == true) &&
-        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); <Navigate to="/" replace /> }} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { <Navigate to="/" replace />; await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
         <Routes>
             <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />

@@ -71,37 +71,76 @@ function NewArticle({ hideArticleEditor }) {
     }
   }  
 
-  function handleFileChange(event, fileType) {
+  // function handleFileChange(event, fileType) {
+  //   const file = event.target.files[0];
+  //   let newElementParent;
+  //   let newElementDiv;
+  //   // let newMediaDescription;
+  //   newElementParent = document.createElement('div');
+  //   newElementDiv = document.createElement('div');
+  //   // newMediaDescription = document.createElement('span');
+  //   newElementParent.classList.add('mediaParent');
+  //   newElementDiv.classList.add('mediaDiv');
+  //   // newMediaDescription.classList.add('mediaDescription');
+  //   if (file) {
+  //     const newElement = document.createElement(fileType);
+  //     newElement.src = URL.createObjectURL(file);
+  //     if (fileType === 'video' || fileType === 'audio') {
+  //       newElement.controls = true;
+  //     }
+  //     // newMediaDescription.innerHTML = "Введите описание";
+  //     setEmpty(false);
+  //     editBtnsAdd(newElementParent);
+  //     // newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
+  //     // newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
+  //     newElementParent.classList.add(fileType + 'Parent');
+  //     document.getElementById('ArticleEditor').appendChild(newElementParent);
+  //     newElementDiv.appendChild(newElement);
+  //     // newElementDiv.appendChild(newMediaDescription);
+  //     newElementParent.appendChild(newElementDiv);
+  //     setElCount(elCount => elCount + 1);
+  //     // console.log(elCount + 1);
+  //   }
+  // }
+
+  const uploadFile = async (event, fileType) => {
     const file = event.target.files[0];
-    let newElementParent;
-    let newElementDiv;
-    // let newMediaDescription;
-    newElementParent = document.createElement('div');
-    newElementDiv = document.createElement('div');
-    // newMediaDescription = document.createElement('span');
-    newElementParent.classList.add('mediaParent');
-    newElementDiv.classList.add('mediaDiv');
-    // newMediaDescription.classList.add('mediaDescription');
-    if (file) {
-      const newElement = document.createElement(fileType);
-      newElement.src = URL.createObjectURL(file);
-      if (fileType === 'video' || fileType === 'audio') {
-        newElement.controls = true;
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch('http://localhost:3000/rest-api-service/upload', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',  // если нужно отправлять куки или другие креды
+        });
+
+        const fileUrl = await response.text();  // сервер возвращает ссылку на загруженный файл
+
+        // Создаем элемент для вставки в статью
+        const newElement = document.createElement(fileType);
+        newElement.src = fileUrl;
+        if (fileType === 'video' || fileType === 'audio') {
+            newElement.controls = true;
+        }
+
+        // Добавляем новый элемент в редактор
+        const articleEditor = document.getElementById('ArticleEditor');
+        const newElementParent = document.createElement('div');
+        newElementParent.classList.add('mediaParent');
+        const newElementDiv = document.createElement('div');
+        newElementDiv.classList.add('mediaDiv');
+        newElementDiv.appendChild(newElement);
+        newElementParent.appendChild(newElementDiv);
+        articleEditor.appendChild(newElementParent);
+
+        setEmpty(false);
+        setElCount(elCount => elCount + 1);
+
+      } catch (error) {
+          console.error('Ошибка загрузки файла:', error);
       }
-      // newMediaDescription.innerHTML = "Введите описание";
-      setEmpty(false);
-      editBtnsAdd(newElementParent);
-      // newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
-      // newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
-      newElementParent.classList.add(fileType + 'Parent');
-      document.getElementById('ArticleEditor').appendChild(newElementParent);
-      newElementDiv.appendChild(newElement);
-      // newElementDiv.appendChild(newMediaDescription);
-      newElementParent.appendChild(newElementDiv);
-      setElCount(elCount => elCount + 1);
-      // console.log(elCount + 1);
-    }
-  }
+  };
 
   function editDelete() {
     let editBtns = Array.from(document.getElementsByClassName('editBtns'));
@@ -153,7 +192,7 @@ function NewArticle({ hideArticleEditor }) {
     el.appendChild(editBtnsDiv);
   }
 
-  function saveToHtmlFile() {
+  async function saveToHtmlFile() {
     editDelete();
 
     const articleEditor = document.getElementById('ArticleEditor');
@@ -174,10 +213,30 @@ function NewArticle({ hideArticleEditor }) {
     `;
 
     const blob = new Blob([htmlContent], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'article.html'; 
-    link.click();
+    // const link = document.createElement('a');
+    // link.href = URL.createObjectURL(blob);
+    // link.download = 'article.html'; 
+    // link.click();
+    const formData = new FormData();
+    formData.append('file', blob, 'article.html');
+
+    try {
+      // Отправляем данные на сервер
+      const response = await fetch('http://localhost:3000/rest-api-service/upload-article', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',  // Если нужно передавать куки
+      });
+  
+      // Получаем ссылку на сохраненный файл
+      const fileUrl = await response.text(); 
+  
+      // Здесь можно, например, сохранить ссылку на файл в базе данных или вывести пользователю
+      console.log('Файл успешно загружен. Ссылка на файл:', fileUrl);
+  
+    } catch (error) {
+      console.error('Ошибка при сохранении файла:', error);
+    }
   }
 
   function addElement(el) {
@@ -201,7 +260,7 @@ function NewArticle({ hideArticleEditor }) {
         fileInput.accept = el === 'img' ? 'image/*' : el === 'video' ? 'video/*' : 'audio/*';
         fileInput.style.display = 'none';
 
-        fileInput.addEventListener('change', (event) => handleFileChange(event, el));
+        fileInput.addEventListener('change', (event) => uploadFile(event, el));
         document.body.appendChild(fileInput);
         fileInput.click();
 
