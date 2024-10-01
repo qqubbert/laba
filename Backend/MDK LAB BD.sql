@@ -47,7 +47,6 @@ CREATE TABLE tasks (
 
 CREATE TABLE Projects (
 	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    ProjID INT,
     ProjTtl VARCHAR(100),
     Deadlines DATE,
     Budget INT,

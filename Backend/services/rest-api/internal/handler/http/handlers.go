@@ -162,3 +162,27 @@ func CreateProjectHandler(db *sql.DB) gin.HandlerFunc {
 		c.JSON(201, gin.H{"message": "Project created", "project_id": projID})
 	}
 }
+
+func GetCommentByIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid comment ID"})
+			return
+		}
+
+		comment, err := requests.GetCommentsByArticleId(db, id)
+
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		if comment == nil {
+			c.JSON(404, gin.H{"error": "comment not found"})
+			return
+		}
+		c.JSON(200, comment)
+	}
+
+}
