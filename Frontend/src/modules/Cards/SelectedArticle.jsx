@@ -54,7 +54,7 @@ useEffect(()=>{
                     <div id="articleComms">
                         {Array.isArray(articleComms) && articleComms.map((comment, i)=>{
                             return (
-                                <div key={comment.id} className='Comment' id={'commentCard' + i} onClick={(e)=>{setArticleComms(comment.id); }}>
+                                <div key={comment.id} className='Comment' id={'commentCard' + i} >
                                     <Comment commentData={articleComms[i]} />
                                 </div>
                             )

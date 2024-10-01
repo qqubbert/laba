@@ -45,6 +45,15 @@ function Articles() {
         navigate('/articles'); 
     };
 
+    const selectArticleFunc = (e, i) => {
+        const userCards = Array.from(document.getElementsByClassName('ArticleCard'));
+        userCards.forEach((el)=>{
+            el.classList.remove('SelectedArticleCard');
+        });
+        const selectedPerson = document.getElementById('articleCard'+i);
+        selectedPerson.classList.add('SelectedArticleCard');
+    }
+
     useEffect(() => {
         LoadArticles();
     }, []);
@@ -76,10 +85,12 @@ function Articles() {
                                 <NavLink 
                                     to={ArticleLink} 
                                     key={article.id} 
+                                    id={`articleCard${i}`}
                                     className='ArticleCard' 
                                     onClick={(e) => { 
                                         LoadSelectedArticle(article.id); 
                                         setSingleColumn(true);
+                                        selectArticleFunc(e, i);
                                     }}
                                 >
                                     <ArticleCard articleData={article} />

@@ -32,6 +32,7 @@ function App() {
         setLogged(true);
       } else {
         setLogged(false);
+        <Navigate to="/" replace />
       }
 
       try {
