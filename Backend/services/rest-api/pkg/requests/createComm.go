@@ -2,7 +2,7 @@ package requests
 
 import "database/sql"
 
-type CreateCommentRequest struct {
+type CreateComment struct {
 	ArticleID int    `json:"article_id"`
 	AuthorID  int    `json:"author_id"`
 	Comm      string `json:"comm"`

@@ -53,5 +53,7 @@ func main() {
 	r.POST(CreateProject, http.CreateProjectHandler(db))
 	r.POST(addComm, http.CreateComHandler(db))
 
+	r.PATCH(usersById, http.UserUpdateHandler(db))
+
 	r.Run(":3002")
 }

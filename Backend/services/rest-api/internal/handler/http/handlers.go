@@ -192,7 +192,7 @@ func CreateComHandler(db *sql.DB) gin.HandlerFunc {
 
 		idStr := c.Param("id")
 
-		var newComment requests.CreateCommentRequest
+		var newComment requests.CreateComment
 
 		if err := c.ShouldBindJSON(&newComment); err != nil {
 			c.JSON(400, gin.H{"error": err.Error()})
@@ -201,7 +201,7 @@ func CreateComHandler(db *sql.DB) gin.HandlerFunc {
 
 		articleID, err := strconv.Atoi(idStr)
 		if err != nil {
-			c.JSON(400, gin.H{"error": "Invalid artile ID"})
+			c.JSON(400, gin.H{"error": "Invalid article ID"})
 			return
 		}
 		//вставляю комент в бдшку
@@ -212,5 +212,30 @@ func CreateComHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		c.JSON(201, gin.H{"message": "Comment added successfully"})
+	}
+}
+
+func UserUpdateHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		userId, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid user ID"})
+			return
+		}
+
+		var updateUser requests.UserUdpate
+		if err := c.ShouldBindJSON(&updateUser); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		err = requests.UserUpdate(db, userId, updateUser)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(204, gin.H{"message": "User updated successfully!"})
 	}
 }
