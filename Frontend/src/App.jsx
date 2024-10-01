@@ -6,6 +6,7 @@ import Header from './modules/Header.jsx';
 import NewArticle from './modules/Pages/NewArticle.jsx';
 import Admin from './modules/Pages/Admin.jsx';
 import Articles from './modules/Pages/Articles.jsx';
+import Tasks from './modules/Pages/Tasks.jsx';
 import SelectedArticle from './modules/Cards/SelectedArticle.jsx';
 
 function App() {
@@ -96,28 +97,17 @@ function App() {
         <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
         {(logged == true) &&
-        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none');}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); <Navigate to="/" replace /> }} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
         <Routes>
             <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />
-            <Route path="/newarticle" element={logged ? <NewArticle /> : <Navigate to="/" replace />} />
-            <Route path="/articles" element={logged ? <Articles /> : <Navigate to="/" replace />}>
-              <Route path=":articleId" element={logged ? <SelectedArticle /> : <Navigate to="/" replace />} />
+            <Route path="/newarticle" element={<NewArticle /> } />
+            <Route path="/tasks" element={<Tasks /> } />
+            <Route path="/articles" element={ <Articles /> }>
+              <Route path=":articleId" element={<SelectedArticle /> } />
             </Route>
         </Routes>
-        {/* {selectedPage == 'article' &&
-          <Articles />
-        } */}
 
-        {/* {selectedPage == 'messages' &&
-          <Messages />
-        } */}
-
-        {/* {selectedPage == 'department' &&
-          <Department />
-        } */}
-
-        {/* <iframe src="../src/article.html" frameborder="0"></iframe> */}
       </>
     </Router>
   )

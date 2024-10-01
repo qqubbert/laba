@@ -9,7 +9,7 @@ function Articles() {
     const [singleColumn, setSingleColumn] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
     const { articleId } = useParams();
-    const navigate = useNavigate(); // Используем useNavigate
+    const navigate = useNavigate();
 
     const LoadArticles = async () => {
         try {  
@@ -40,9 +40,9 @@ function Articles() {
     };
 
     const clearSelectedArticle = () => {
-        setSelectedArticle(null); // Сброс выбранной статьи
-        setSingleColumn(false); // Переключение на режим списка статей
-        navigate('/articles'); // Перенаправление на список статей
+        setSelectedArticle(null); 
+        setSingleColumn(false); 
+        navigate('/articles'); 
     };
 
     useEffect(() => {

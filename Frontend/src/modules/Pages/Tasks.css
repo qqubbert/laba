@@ -1,0 +1,30 @@
+#tasksPane {
+    position: relative;
+    top: 75px;
+
+    width: 100vw;
+    height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    /* margin: 0px 70px; */
+    /* padding: 0px 100px; */
+
+    flex: 1;
+}
+
+#selectedArticle {
+    position: relative;
+
+    width: 100%;
+
+    margin: 20px;
+
+    background-color: rgb(79, 30, 114);
+
+    border-radius: 15px;
+    overflow: hidden;
+}
