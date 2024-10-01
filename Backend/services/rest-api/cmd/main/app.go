@@ -8,6 +8,7 @@ import (
 	"log"
 	"rest-api/internal/handler/http"
 	"rest-api/pkg/db"
+	"rest-api/pkg/requests"
 )
 
 const (
@@ -21,6 +22,9 @@ const (
 	tasksByUserId     = "/users/:id/tasks"
 	CreateDepartments = "/departments"
 	CreateProject     = "/projects"
+	uploadFilePath    = "/upload"
+	staticUploadFile  = "/uploads"
+	uploadHtmlPath    = "/upload-html"
 )
 
 func main() {
@@ -55,8 +59,10 @@ func main() {
 
 	r.PATCH(usersById, http.UserUpdateHandler(db))
 
-	r.POST("/upload", http.UploadFile)
-	r.Static("/uploads", "./uploads")
+	r.POST(uploadFilePath, requests.UploadFile)
+	r.Static(staticUploadFile, "./uploads")
+
+	r.POST(uploadHtmlPath, http.CreateArticleHandler(db))
 
 	r.Run(":3002")
 }
