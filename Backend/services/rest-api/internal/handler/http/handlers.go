@@ -1,15 +1,15 @@
-package handlers
+package http
 
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	requests2 "rest-api/internal/requests"
+	"rest-api/pkg/requests"
 	"strconv"
 )
 
 func GetAllUsersHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		users, err := requests2.GetAllUsers(db)
+		users, err := requests.GetAllUsers(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -27,7 +27,7 @@ func GetUserByIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		user, err := requests2.GetUser(db, id)
+		user, err := requests.GetUser(db, id)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -44,7 +44,7 @@ func GetUserByIdHandler(db *sql.DB) gin.HandlerFunc {
 
 func GetAllArticlesHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		articles, err := requests2.GetAllArticles(db)
+		articles, err := requests.GetAllArticles(db)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -62,7 +62,7 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		article, err := requests2.GetArticleById(db, id)
+		article, err := requests.GetArticleById(db, id)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -77,7 +77,7 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 
 func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var task requests2.Task
+		var task requests.Task
 
 		//достаю данные из тела запроа
 		if err := c.BindJSON(&task); err != nil {
@@ -91,7 +91,7 @@ func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		//создаю задачу
-		err := requests2.CreateTask(db, task)
+		err := requests.CreateTask(db, task)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -110,7 +110,7 @@ func GetTasksByUserIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 		//получаю таски
-		tasks, err := requests2.GetTaskByID(db, userId)
+		tasks, err := requests.GetTaskByID(db, userId)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -124,14 +124,14 @@ func GetTasksByUserIdHandler(db *sql.DB) gin.HandlerFunc {
 
 func CreateDepartmentHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var newDepartment requests2.Dep
+		var newDepartment requests.Dep
 
 		if err := c.ShouldBindJSON(&newDepartment); err != nil {
 			c.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
 
-		depID, err := requests2.CreateDepartment(db, newDepartment)
+		depID, err := requests.CreateDepartment(db, newDepartment)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
@@ -143,7 +143,7 @@ func CreateDepartmentHandler(db *sql.DB) gin.HandlerFunc {
 
 func CreateProjectHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var newProject requests2.Project
+		var newProject requests.Project
 
 		// Привязываем JSON данные к структуре проекта
 		if err := c.ShouldBindJSON(&newProject); err != nil {
@@ -152,7 +152,7 @@ func CreateProjectHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		// Добавляем новый проект в базу данных
-		projID, err := requests2.CreateProject(db, newProject)
+		projID, err := requests.CreateProject(db, newProject)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return

@@ -6,8 +6,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"log"
-	connectdb "rest-api/db"
-	"rest-api/internal/handlers"
+	"rest-api/db"
+	"rest-api/internal/handler/http"
 )
 
 const (
@@ -28,7 +28,7 @@ func main() {
 		log.Fatalf("Ошибка при загрузке .env файла: %v", err)
 	}
 	// Подключение к БД
-	db, err := connectdb.ConToDatabase()
+	db, err := connect.ConToDatabase()
 	//if err != nil {
 	//	log.Fatalf("Ошибка при подключении к базе данных: %v", err)
 	//}
@@ -39,15 +39,15 @@ func main() {
 	r := gin.Default()
 
 	//запросы ебанутого уровня кондиций
-	r.GET(allUsers, handlers.GetAllUsersHandler(db))
-	r.GET(usersById, handlers.GetUserByIdHandler(db))
-	r.GET(article, handlers.GetAllArticlesHandler(db))
-	r.GET(articleById, handlers.GetArticlesByIdHandler(db))
-	r.GET(tasksByUserId, handlers.GetTasksByUserIdHandler(db))
+	r.GET(allUsers, http.GetAllUsersHandler(db))
+	r.GET(usersById, http.GetUserByIdHandler(db))
+	r.GET(article, http.GetAllArticlesHandler(db))
+	r.GET(articleById, http.GetArticlesByIdHandler(db))
+	r.GET(tasksByUserId, http.GetTasksByUserIdHandler(db))
 
-	r.POST(CreateTasks, handlers.CreateTaskHandler(db))
-	r.POST(CreateDepartments, handlers.CreateDepartmentHandler(db))
-	r.POST(CreateProject, handlers.CreateProjectHandler(db))
+	r.POST(CreateTasks, http.CreateTaskHandler(db))
+	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))
+	r.POST(CreateProject, http.CreateProjectHandler(db))
 
 	r.Run(":3002")
 }
