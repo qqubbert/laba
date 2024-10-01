@@ -186,3 +186,31 @@ func GetCommentByIdHandler(db *sql.DB) gin.HandlerFunc {
 	}
 
 }
+
+func CreateComHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		idStr := c.Param("id")
+
+		var newComment requests.CreateCommentRequest
+
+		if err := c.ShouldBindJSON(&newComment); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		articleID, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid artile ID"})
+			return
+		}
+		//вставляю комент в бдшку
+		err = requests.AddComment(db, articleID, newComment.AuthorID, newComment.Comm)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(201, gin.H{"message": "Comment added successfully"})
+	}
+}
