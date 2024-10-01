@@ -30,7 +30,8 @@ CREATE TABLE Users (
     WorkExperience INT,
     Salary INT,
     PhoneNumber VARCHAR(11),
-    Email VARCHAR(50),
+    Email VARCHAR(50) UNIQUE,
+    Isblocked bool DEFAULT(false),
     FOREIGN KEY (DepID)
         REFERENCES Departaments (DepID)
 );
