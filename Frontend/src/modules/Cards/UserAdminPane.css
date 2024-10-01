@@ -40,7 +40,7 @@
     position: relative;
 
     width: 100%;
-    height: 90px;
+    height: 120px;
 
     background-color: rgb(73, 23, 109);
 
@@ -48,12 +48,12 @@
 
     display: flex;
     justify-content: left;
-    align-items: center;
+    align-items: start;
 }
 
 #adminBtns button {
     padding: 15px;
-    margin: 15px;
+    margin: 5px 15px 15px 15px;
 
     min-width: 100px;
 

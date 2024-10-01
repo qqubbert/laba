@@ -19,7 +19,7 @@ function ProfileWindow({ showProfileWin, logout }) {
         <ul id="profileWinList">
             <li><img src={profileIcon} alt="" />Профиль</li>
             <li><img src={settingsIcon} alt="" />Настройки</li>
-            <li><img src={editIcon} alt="" />Черновики</li>
+            <li><img src={editIcon} alt="" />Мои статьи</li>
             <li onClick={()=>{logout();}}>
               <NavLink to="/">
                   <img src={logoutIcon} alt="" /> Выйти

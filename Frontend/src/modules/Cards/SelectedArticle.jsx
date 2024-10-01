@@ -11,6 +11,7 @@ import Comment from './Comment.jsx';
 
 function SelectedArticle({ articleData, onClose }) {
     const [articleComms, setArticleComms] = useState([]);
+    const [newCommentText, setNewCommentText] = useState('');
 
     const LoadArticleComms = async () => {
         try {  
@@ -27,11 +28,40 @@ function SelectedArticle({ articleData, onClose }) {
         }
     };
 
-useEffect(()=>{
-    if (articleData) {
-        LoadArticleComms();
-    }
-}, [articleData])
+    const commentSend = async () => {
+        const commentTextArea = document.getElementById('newCommentTextarea');
+        console.log(newCommentText);
+        if (newCommentText != '') {
+            const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleData.id}/comments`,{
+                method: 'POST',
+                credentials: 'include',
+                withCredentials: true,
+                body: JSON.stringify({
+                    author_id: 4,
+                    comm: newCommentText
+                })
+            });
+            if (response.ok) {
+                commentTextArea.value = '';
+                setNewCommentText('');
+                LoadArticleComms();
+            } else {
+                // console.log('Ошибка');
+            }
+        } else {
+            commentTextArea.style.outline = '2px solid red';
+            setTimeout(() => {
+                commentTextArea.style.outline = '0px solid red';
+            }, 1500);
+        }
+        
+    } 
+
+    useEffect(()=>{
+        if (articleData) {
+            LoadArticleComms();
+        }
+    }, [articleData]);
 
   return (
     <>
@@ -52,13 +82,19 @@ useEffect(()=>{
                         Браузер не может загрузить страницу
                     </iframe>
                     <div id="articleComms">
-                        {Array.isArray(articleComms) && articleComms.map((comment, i)=>{
-                            return (
-                                <div key={comment.id} className='Comment' id={'commentCard' + i} >
-                                    <Comment commentData={articleComms[i]} />
-                                </div>
-                            )
-                        })}
+                        <div id="addCommentDiv">
+                            <textarea name="" id="newCommentTextarea" placeholder='Введите текст комментария' onChange={(e)=>{setNewCommentText(e.target.value)}}></textarea>
+                            {newCommentText && <button onClick={commentSend}>Сохранить</button>}
+                        </div>
+                        <div id="articleCommsDiv">
+                            {Array.isArray(articleComms) && articleComms.map((comment, i)=>{
+                                return (
+                                    <div key={comment.id} className='Comment' id={'commentCard' + i} >
+                                        <Comment commentData={articleComms[i]} />
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
