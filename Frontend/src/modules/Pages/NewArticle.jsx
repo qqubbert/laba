@@ -115,11 +115,11 @@ function NewArticle({ hideArticleEditor }) {
             credentials: 'include',  // если нужно отправлять куки или другие креды
         });
 
-        const fileUrl = await response.text();  // сервер возвращает ссылку на загруженный файл
+        const fileUrl = await response.json();  // сервер возвращает ссылку на загруженный файл
 
         // Создаем элемент для вставки в статью
         const newElement = document.createElement(fileType);
-        newElement.src = fileUrl;
+        newElement.src = fileUrl.file_url;
         if (fileType === 'video' || fileType === 'audio') {
             newElement.controls = true;
         }
@@ -213,30 +213,30 @@ function NewArticle({ hideArticleEditor }) {
     `;
 
     const blob = new Blob([htmlContent], { type: 'text/html' });
-    // const link = document.createElement('a');
-    // link.href = URL.createObjectURL(blob);
-    // link.download = 'article.html'; 
-    // link.click();
-    const formData = new FormData();
-    formData.append('file', blob, 'article.html');
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'article.html'; 
+    link.click();
+    // const formData = new FormData();
+    // formData.append('file', blob, 'article.html');
 
-    try {
-      // Отправляем данные на сервер
-      const response = await fetch('http://localhost:3000/rest-api-service/upload-article', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',  // Если нужно передавать куки
-      });
+    // try {
+    //   // Отправляем данные на сервер
+    //   const response = await fetch('http://localhost:3000/rest-api-service/upload-article', {
+    //     method: 'POST',
+    //     body: formData,
+    //     credentials: 'include',  // Если нужно передавать куки
+    //   });
   
-      // Получаем ссылку на сохраненный файл
-      const fileUrl = await response.text(); 
+    //   // Получаем ссылку на сохраненный файл
+    //   const fileUrl = await response.text(); 
   
-      // Здесь можно, например, сохранить ссылку на файл в базе данных или вывести пользователю
-      console.log('Файл успешно загружен. Ссылка на файл:', fileUrl);
+    //   // Здесь можно, например, сохранить ссылку на файл в базе данных или вывести пользователю
+    //   console.log('Файл успешно загружен. Ссылка на файл:', fileUrl);
   
-    } catch (error) {
-      console.error('Ошибка при сохранении файла:', error);
-    }
+    // } catch (error) {
+    //   console.error('Ошибка при сохранении файла:', error);
+    // }
   }
 
   function addElement(el) {
