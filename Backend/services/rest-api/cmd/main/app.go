@@ -55,5 +55,8 @@ func main() {
 
 	r.PATCH(usersById, http.UserUpdateHandler(db))
 
+	r.POST("/upload", http.UploadFile)
+	r.Static("/uploads", "./uploads")
+
 	r.Run(":3002")
 }
