@@ -25,10 +25,10 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	}
 
 	// Проверяем, существует ли папка uploads, если нет — создаём
-	if _, err := os.Stat("./uploads"); os.IsNotExist(err) {
-		err := os.Mkdir("./uploads", os.ModePerm)
+	if _, err := os.Stat("./articles"); os.IsNotExist(err) {
+		err := os.Mkdir("./articles", os.ModePerm)
 		if err != nil {
-			c.JSON(500, gin.H{"error": "Failed to create upload directory"})
+			c.JSON(500, gin.H{"error": "Failed to create articles directory"})
 			return
 		}
 	}
@@ -42,7 +42,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	defer file.Close()
 
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./uploads/%s", req.File.Filename)
+	filePath := fmt.Sprintf("./articles/%s", req.File.Filename)
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -58,7 +58,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/%s", req.File.Filename)
+	fileURL := fmt.Sprintf("http://localhost:3002/articles/%s", req.File.Filename)
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id) VALUES (?, ?, ?)", req.Title, fileURL, req.AuthorID)
