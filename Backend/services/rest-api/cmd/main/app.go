@@ -6,8 +6,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"log"
-	"rest-api/db"
 	"rest-api/internal/handler/http"
+	"rest-api/pkg/db"
 )
 
 const (
@@ -15,6 +15,7 @@ const (
 	usersById         = "/users/:id"
 	article           = "/articles"
 	articleById       = "/articles/:id"
+	commentsByID      = "/articles/:id/comments"
 	CreateTasks       = "/tasks"
 	tasksByUserId     = "/users/:id/tasks"
 	CreateDepartments = "/departments"
@@ -44,6 +45,7 @@ func main() {
 	r.GET(article, http.GetAllArticlesHandler(db))
 	r.GET(articleById, http.GetArticlesByIdHandler(db))
 	r.GET(tasksByUserId, http.GetTasksByUserIdHandler(db))
+	r.GET(commentsByID, http.GetCommentByIdHandler(db))
 
 	r.POST(CreateTasks, http.CreateTaskHandler(db))
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))

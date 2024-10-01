@@ -85,3 +85,7 @@ func GetArticleById(db *sql.DB, id int) (*Article, error) {
 	article.Tags = tags
 	return &article, nil
 }
+
+func ShowComsById() {
+
+}
