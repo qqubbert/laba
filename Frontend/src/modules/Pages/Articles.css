@@ -120,6 +120,10 @@
     background-color: rgb(79, 30, 114);
 
     text-decoration: none;
+
+    transition: all .2s ease-in-out;
+
+    outline: 2px solid transparent;
 }
 
 .ArticleCard:last-of-type {
@@ -140,4 +144,12 @@
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
+}
+
+.ArticleCard:hover {
+    background-color: rgb(95, 38, 136);
+}
+
+.ArticleCard.active {
+    outline: 2px solid pink;
 }

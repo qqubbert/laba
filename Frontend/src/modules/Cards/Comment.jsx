@@ -14,9 +14,9 @@ function Comment({ commentData }) {
         <h4>{(articleData.creating_date)}</h4>
         <h4>{commentData.text}</h4> */}
 
-        <h2>Фамилия Имя Отчество</h2>
-        <h4>2020-06-01</h4>
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, nisi saepe ea repudiandae id voluptas! Necessitatibus quasi culpa qui saepe dolor at dicta assumenda quas laudantium quis! Sunt, nemo perspiciatis!</h4>
+        <h2>{commentData.author}</h2>
+        {/* <h4>2020-06-01</h4> */}
+        <h4>{commentData.comm}</h4>
     </>
   )
 }

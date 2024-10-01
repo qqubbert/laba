@@ -10,6 +10,28 @@ import './SelectedArticle.css';
 import Comment from './Comment.jsx';
 
 function SelectedArticle({ articleData, onClose }) {
+    const [articleComms, setArticleComms] = useState([]);
+
+    const LoadArticleComms = async () => {
+        try {  
+            const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleData.id}/comments`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
+            const commsData = await response.json();
+            console.log(commsData);
+            setArticleComms(commsData);
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    };
+
+useEffect(()=>{
+    if (articleData) {
+        LoadArticleComms();
+    }
+}, [articleData])
 
   return (
     <>
@@ -30,24 +52,13 @@ function SelectedArticle({ articleData, onClose }) {
                         Браузер не может загрузить страницу
                     </iframe>
                     <div id="articleComms">
-                        <div className="Comment">
-                            <Comment />
-                        </div>
-                        <div className="Comment">
-                            <Comment />
-                        </div>
-                        <div className="Comment">
-                            <Comment />
-                        </div>
-                        <div className="Comment">
-                            <Comment />
-                        </div>
-                        <div className="Comment">
-                            <Comment />
-                        </div>
-                        <div className="Comment">
-                            <Comment />
-                        </div>
+                        {Array.isArray(articleComms) && articleComms.map((comment, i)=>{
+                            return (
+                                <div key={comment.id} className='Comment' id={'commentCard' + i} >
+                                    <Comment commentData={articleComms[i]} />
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
