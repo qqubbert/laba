@@ -19,7 +19,7 @@ type Article struct {
 func GetAllArticles(db *sql.DB) ([]Article, error) {
 	query := `SELECT id, title, completed, author_id, creating_date
 	FROM article
- WHERE completed = true
+ 	WHERE completed = true
 	`
 	rows, err := db.Query(query)
 	if err != nil {

@@ -3,7 +3,6 @@ package handlers
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	requests2 "rest-api/internal/requests"
 	"strconv"
 )
@@ -97,7 +96,7 @@ func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(200, gin.H{"message": "Task created successfully!"})
+		c.JSON(201, gin.H{"message": "Task created successfully!"})
 	}
 }
 
@@ -138,7 +137,7 @@ func CreateDepartmentHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(200, gin.H{"message": "Department created", "department_id": depID})
+		c.JSON(201, gin.H{"message": "Department created", "department_id": depID})
 	}
 }
 
@@ -148,18 +147,18 @@ func CreateProjectHandler(db *sql.DB) gin.HandlerFunc {
 
 		// Привязываем JSON данные к структуре проекта
 		if err := c.ShouldBindJSON(&newProject); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
 
 		// Добавляем новый проект в базу данных
 		projID, err := requests2.CreateProject(db, newProject)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
 
 		// Возвращаем ответ с ID нового проекта
-		c.JSON(http.StatusOK, gin.H{"message": "Project created", "project_id": projID})
+		c.JSON(201, gin.H{"message": "Project created", "project_id": projID})
 	}
 }
