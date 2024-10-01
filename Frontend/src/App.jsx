@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate } from 'react-router-dom';
 
 import Auth from './modules/Auth.jsx';
 import Header from './modules/Header.jsx';
 import NewArticle from './modules/Pages/NewArticle.jsx';
 import Admin from './modules/Pages/Admin.jsx';
+import Articles from './modules/Pages/Articles.jsx';
+import SelectedArticle from './modules/Cards/SelectedArticle.jsx';
 
 function App() {
   const [logged, setLogged] = useState(undefined);
@@ -87,20 +90,36 @@ function App() {
   }, [usrId]);
 
   return (
-    <>
-      {(logged == false) && 
-      <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
+    <Router>
+      <>
+        {(logged == false) && 
+        <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
-      {(logged == true) &&
-      <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none')}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+        {(logged == true) &&
+        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none');}} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
-      {selectedPage == 'admin' &&
-        <Admin />
-      }
+        <Routes>
+            <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />
+            <Route path="/newarticle" element={logged ? <NewArticle /> : <Navigate to="/" replace />} />
+            <Route path="/articles" element={logged ? <Articles /> : <Navigate to="/" replace />}>
+              <Route path=":articleId" element={logged ? <SelectedArticle /> : <Navigate to="/" replace />} />
+            </Route>
+        </Routes>
+        {/* {selectedPage == 'article' &&
+          <Articles />
+        } */}
 
-      {showArticleEditor && 
-      <NewArticle hideArticleEditor={()=>{ setShowArticleEditor(false) }}/>}
-    </>
+        {/* {selectedPage == 'messages' &&
+          <Messages />
+        } */}
+
+        {/* {selectedPage == 'department' &&
+          <Department />
+        } */}
+
+        {/* <iframe src="../src/article.html" frameborder="0"></iframe> */}
+      </>
+    </Router>
   )
 }
 
