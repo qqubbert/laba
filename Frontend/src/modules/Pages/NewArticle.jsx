@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useNavigate, Navigate } from 'react-router-dom';
+import { NavLink, useNavigate, Navigate, json } from 'react-router-dom';
 
 import closeIcon from '../../assets/CloseIcon.svg';
 import imageIcon from '../../assets/ImageIcon.svg';
@@ -193,7 +193,7 @@ function NewArticle({ hideArticleEditor }) {
   }
 
   async function saveToHtmlFile() {
-    editDelete();
+    editDelete();  // Удаляем кнопки редактирования перед сохранением
 
     const articleEditor = document.getElementById('ArticleEditor');
     const content = articleEditor.innerHTML; 
@@ -212,31 +212,38 @@ function NewArticle({ hideArticleEditor }) {
       </html>
     `;
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'article.html'; 
-    link.click();
-    // const formData = new FormData();
-    // formData.append('file', blob, 'article.html');
+    const htmlblob = new Blob([htmlContent], { type: 'text/html' });
 
-    // try {
-    //   // Отправляем данные на сервер
-    //   const response = await fetch('http://localhost:3000/rest-api-service/upload-article', {
-    //     method: 'POST',
-    //     body: formData,
-    //     credentials: 'include',  // Если нужно передавать куки
-    //   });
+    const jsonData = {
+      title: 'Article Title',
+      author_id: 1
+    };
+    const jsonString = JSON.stringify(jsonData);
+
+    const formData = new FormData();
+    formData.append('file', htmlblob, 'article.html');
+    formData.append('title', 'Article title'); 
+    formData.append('author_id', '5');  
+
+    try {
+      // Отправляем данные на сервер
+      const response = await fetch('http://localhost:3000/rest-api-service/upload-html', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',  // Если нужно передавать куки
+      });
   
-    //   // Получаем ссылку на сохраненный файл
-    //   const fileUrl = await response.text(); 
+      // Получаем ссылку на сохраненный файл
+      if (response.ok) {
+        console.log('Файл успешно загружен');
+        navigate('/articles', { replace: true });  // Используем useNavigate для перенаправления
+      } else {
+        console.log('Ошибка при загрузке файла');
+      }
   
-    //   // Здесь можно, например, сохранить ссылку на файл в базе данных или вывести пользователю
-    //   console.log('Файл успешно загружен. Ссылка на файл:', fileUrl);
-  
-    // } catch (error) {
-    //   console.error('Ошибка при сохранении файла:', error);
-    // }
+    } catch (error) {
+      console.error('Ошибка при сохранении файла:', error);
+    }
   }
 
   function addElement(el) {
@@ -313,7 +320,7 @@ function NewArticle({ hideArticleEditor }) {
                 </div>
             </div>
             <div id="newArticleBottom">
-                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile(); hideArticleEditor()}}><img src={saveIcon} alt="" />Сохранить</button>
+                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile(); }}><img src={saveIcon} alt="" />Сохранить</button>
             </div>
         </div>
     </>

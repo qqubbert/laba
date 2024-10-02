@@ -3,10 +3,11 @@ package requests
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"mime/multipart"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 type CreateArticleRequest struct {
@@ -25,7 +26,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	}
 
 	// Проверяем, существует ли папка uploads, если нет — создаём
-	if _, err := os.Stat("./articles"); os.IsNotExist(err) {
+	if _, err := os.Stat("./uploads/articles"); os.IsNotExist(err) {
 		err := os.Mkdir("./articles", os.ModePerm)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Failed to create articles directory"})
