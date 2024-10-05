@@ -8,6 +8,7 @@ import (
 	"mime/multipart"
 	"os"
 	"strconv"
+	"time"
 )
 
 type CreateArticleRequest struct {
@@ -54,8 +55,11 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	}
 	defer file.Close()
 
+	// Генерируем уникальное имя файла, добавляя к имени оригинального файла timestamp
+	uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), req.File.Filename)
+
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./uploads/articles/%s", req.File.Filename)
+	filePath := fmt.Sprintf("./uploads/articles/%s", uniqueFilename)
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -71,7 +75,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", req.File.Filename)
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", uniqueFilename)
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed) VALUES (?, ?, ?, TRUE)", req.Title, fileURL, userID)
