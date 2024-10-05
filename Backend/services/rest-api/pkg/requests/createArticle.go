@@ -8,7 +8,7 @@ import (
 	"os"
 	"github.com/gin-gonic/gin"
 	"strconv"
->>>>>>> d5767ada224e434c47115eadc3c52278bb6d2177
+	"time"
 )
 
 type CreateArticleRequest struct {
@@ -43,8 +43,11 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	}
 	defer file.Close()
 
+	// Генерируем уникальное имя файла, добавляя к имени оригинального файла timestamp
+	uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), req.File.Filename)
+
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./articles/%s", req.File.Filename)
+	filePath := fmt.Sprintf("./uploads/articles/%s", uniqueFilename)
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -60,7 +63,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/articles/%s", req.File.Filename)
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", uniqueFilename)
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id) VALUES (?, ?, ?)", req.Title, fileURL, req.AuthorID)
