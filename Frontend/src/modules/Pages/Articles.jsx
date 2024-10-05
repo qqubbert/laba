@@ -71,12 +71,12 @@ function Articles() {
                 <div id="allArticles" className={singleColumn ? "singleColumn" : ''}>
                     <div id="searchArticle">
                         <input type="text" placeholder='Поиск' />
-                        <div id="articleTags">
+                        {/* <div id="articleTags">
                             <label><input type="checkbox" />Биология</label>
                             <label><input type="checkbox" />Химия</label>
                             <label><input type="checkbox" />Физика</label>
                             <label><input type="checkbox" />IT</label>
-                        </div>
+                        </div> */}
                     </div>
                     <div id="articlesList" className={singleColumn ? "singleColumn" : ''}>
                         {articles.map((article, i) => {
@@ -87,6 +87,7 @@ function Articles() {
                                     key={article.id} 
                                     id={`articleCard${i}`}
                                     className='ArticleCard' 
+                                    title={article.title}
                                     onClick={(e) => { 
                                         LoadSelectedArticle(article.id); 
                                         setSingleColumn(true);

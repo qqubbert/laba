@@ -25,7 +25,6 @@ const (
 	uploadFilePath    = "/upload"
 	staticUploadFile  = "/uploads"
 	uploadHtmlPath    = "/upload-html"
-	getUserByIDCookie = "/self"
 )
 
 func main() {
@@ -52,7 +51,6 @@ func main() {
 	r.GET(articleById, http.GetArticlesByIdHandler(db))
 	r.GET(tasksByUserId, http.GetTasksByUserIdHandler(db))
 	r.GET(commentsByID, http.GetCommentByIdHandler(db))
-	r.GET(getUserByIDCookie, http.GetUserBySelfHandler(db))
 
 	r.POST(CreateTasks, http.CreateTaskHandler(db))
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))

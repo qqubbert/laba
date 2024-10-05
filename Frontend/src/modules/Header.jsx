@@ -81,20 +81,15 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/department" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={depIcon} alt="" /> Отдел
-                    </NavLink>
-                </li>
-                <li>
                     <NavLink to="/tasks" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
                         <img src={tasksIcon} alt="" /> Задачи
                     </NavLink>
                 </li>
-                {permission == 'admin' && <li>
-                    <NavLink to="/admin" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={adminIcon} alt="" /> Администрирование
+                <li>
+                    <NavLink to="/employee" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
+                        <img src={adminIcon} alt="" /> Сотрудники
                     </NavLink>
-              </li>}
+                </li>
             </ul>
             <div id="userHeadInfo">
                 <h1 title={userInfo.department}>{userInfo.department}</h1>
@@ -102,7 +97,7 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                     <h2 id="Name">{userInfo.first_name} {userInfo.last_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>
                     <div id="photoBorder">
-                        <img onClick={showProfWin} id="Photo" src="https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album" alt="" />
+                        <img onClick={showProfWin} id="Photo" src={userInfo.photoLink || "https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album"} alt="" />
                     </div>
                 </div>
             </div>

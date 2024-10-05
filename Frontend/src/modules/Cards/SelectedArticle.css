@@ -2,7 +2,8 @@
     position: relative;
 
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    /* min-height: 100%; */
 
     margin: 20px;
 
@@ -33,6 +34,7 @@
 
 #articleInfo #selectedArticleBtns {
     margin: 25px;
+    min-width: 100px;
 }
 
 #selectedArticleBtns button {
@@ -68,18 +70,19 @@
 
 #articleAndComms iframe {
     min-width: 70%;
-    height: 100%;
+    min-height: 100%;
 }
 
 #articleComms {
     overflow: hidden;
     position: relative;
     padding-bottom: 150px;
+    width: 100%;
 }
 
 #articleCommsDiv {
-    min-width: 450px;
-    max-width: 450px;
+    min-width: 100%;
+    max-width: 100%;
     height: 100%;
     overflow-y: scroll;
 }
@@ -90,19 +93,22 @@
     margin: 15px;
     padding: 15px;
 
+    max-width: 100%;
+
     border-radius: 15px;
 
     word-wrap: break-word;
 }
 
 .Comment:last-of-type {
-    margin-bottom: 150px;
+    margin-bottom: 50px;
 }
 
 #addCommentDiv {
+    max-width: 100%;
     position: relative;
 
-    margin: 15px;
+    margin: 15px 15px 5px 15px;
 
     display: flex;
     flex-direction: column;
@@ -120,6 +126,13 @@
     padding: 10px;
 
     border-radius: 15px;
+
+    transition: all .15s ease-in-out;
+}
+
+#addCommentDiv button[disabled]:hover {
+    cursor: not-allowed;
+    filter: brightness(.5);
 }
 
 #addCommentDiv button:hover {
@@ -129,9 +142,10 @@
 
 #addCommentDiv textarea {
     min-width: 95%;
+    max-width: 95%;
     height: 60px;
 
-    margin: 5px;
+    margin: 5px 10px;
     padding: 15px;
 
     border-radius: 15px;

@@ -1,9 +1,10 @@
 #articles {
     position: relative;
-    top: 75px;
+    /* top: 75px; */
 
     width: 100vw;
-    height: 100vh;
+    height: 100%;
+    max-height: calc(100% - 70px);
 
     position: relative;
 
@@ -16,6 +17,7 @@
 }
 
 #allArticles {
+    margin: 15px;
     width: 100%;
     height: 100%;
 
@@ -39,8 +41,7 @@
 }
 
 #searchArticle input[type="text"] {
-    width: 90%;
-
+    width: 100%;
     margin: 5px 15px;
     padding: 8px 10px;
     border-radius: 15px;
@@ -49,6 +50,8 @@
 
     border: none;
     outline: none;
+
+    transition: all .15s ease-in-out;
 }
 
 #searchArticle input[type="checkbox"] {
@@ -97,11 +100,20 @@
     overflow-x: hidden;
 }
 
-.singleColumn {
-    max-width: 380px;
+#allArticles.singleColumn {
+    max-width: 400px;
+}
+
+#allArticles.singleColumn #searchArticle input[type="text"]  {
+    max-width: 90%;
+}
+
+#articlesList.singleColumn {
+    width: 100%;
     display: grid;
     /* grid-auto-columns: auto; */
     grid-template-columns: auto !important; 
+    justify-content: center;
 }
 
 .ArticleCard {
@@ -125,10 +137,10 @@
 
     outline: 2px solid transparent;
 }
-
+/* 
 .ArticleCard:last-of-type {
     margin-bottom: 120px;
-}
+} */
 
 .ArticleCard h1 {
     line-height: 40px;
