@@ -22,16 +22,29 @@ const db = mysql.createConnection({
 
 sanyaApp.get("/chatmsgs/:chat_id", (req, res) => {
     const {chat_id} = req.params.chat_id;
-    console.log(chat_id);
-    const MsgView = `
-    SELECT * FROM chat_msgs WHERE chat_id = ?;
-    `;
-    db.query(MsgView, [chat_id], (err, rs) => {
-        console.log(rs);
+    let user_id = req.cookies.userid;
+    console.log(chat_id + " " + user_id);
+    const inChat = `
+    SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
+    `
+    db.query(inChat, [chat_id, user_id], (err, rsIn) => {
+        console.log(rsIn);
         if (err) {
             console.log(err);
+        } else if (rsIn.length >= 1) {
+            const MsgView = `
+            SELECT * FROM chat_msgs WHERE chat_id = ?;
+            `;
+            db.query(MsgView, [chat_id], (err, rs) => {
+                console.log(rs);
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.status(200).json(rs)
+                }
+            });
         } else {
-            res.status(200).json(rs)
+            res.status(401).json({message: "User is not in this chat!"});
         }
     });
 });
@@ -64,6 +77,7 @@ sanyaApp.post("/chatcreate", (req, res) => {
         (?);
     `;
     db.query(ChatCreate, [title, ID], (err, rsChat) => {
+        console.log(rsChat);
         if (err) {
             console.log(err);
         } else {
@@ -74,6 +88,7 @@ sanyaApp.post("/chatcreate", (req, res) => {
                 (?, ?);
             `;
             db.query(UserChat, [chatID, ID], (err, rsUserChat) => {
+                console.log(rsUserChat);
                 if (err) {
                     console.log(err);
                 } else {
@@ -98,6 +113,7 @@ sanyaApp.post("/chatadduser", (req, res) => {
     SELECT * FROM chat_users WHERE user_id = ? AND chat_id = ?;
     `
     db.query(inChat, [user_id, chat_id], (err, rsIn) => {
+        console.log(rsIn);
         if (err) {
             console.log(err);
         } else if (rsIn.length >= 1) {
@@ -109,6 +125,7 @@ sanyaApp.post("/chatadduser", (req, res) => {
                 (?, ?);
             `
             db.query(addUser, [user_id, chat_id], (err, rs) => {
+                console.log(rs);
                 if (err) {
                     console.log(err);
                 } else {
@@ -116,6 +133,26 @@ sanyaApp.post("/chatadduser", (req, res) => {
                     res.status(200).json(rs)
                 }
             });
+        }
+    });
+});
+
+sanyaApp.post("/msgsend", (req, res) => {
+    const{chat_id, msg} = req.body;
+    let sender_id = req.cookies.userid;
+    console.log(chat_id + " " + sender_id + " " + msg);
+    const sendMsg = `
+    INSERT INTO chat_msgs (chat_id, sender_id, msg)
+    VALUES
+        (?, ?, ?);
+    `
+    db.query(sendMsg, [chat_id, sender_id, msg], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Message sended!");
+            res.status(200).json(rs);
         }
     });
 });
