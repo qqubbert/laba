@@ -6,8 +6,9 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
-
 	"github.com/gin-gonic/gin"
+	"strconv"
+>>>>>>> d5767ada224e434c47115eadc3c52278bb6d2177
 )
 
 type CreateArticleRequest struct {
@@ -27,7 +28,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 
 	// Проверяем, существует ли папка uploads, если нет — создаём
 	if _, err := os.Stat("./uploads/articles"); os.IsNotExist(err) {
-		err := os.Mkdir("./articles", os.ModePerm)
+		err := os.Mkdir("./uploads/articles", os.ModePerm)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Failed to create articles directory"})
 			return
