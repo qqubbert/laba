@@ -1,6 +1,7 @@
 #userAdminPane {
     width: 100%;
-    height: auto;
+    min-height: auto;
+    max-height: 100%;
 
     overflow: hidden;
 
@@ -36,11 +37,28 @@
     overflow-y: scroll;
 }
 
+#divInfoAll {
+    display: flex;
+}
+
+#divInfo img.userPic {
+    min-width: 220px;
+    max-width: 220px;
+    max-height: 220px;
+    min-height: 220px;
+
+    position: relative;
+
+    margin: 55px 55px 55px auto;
+
+    border-radius: 25px;
+}
+
 #adminBtns {
     position: relative;
 
     width: 100%;
-    height: 120px;
+    height: 100px;
 
     background-color: rgb(73, 23, 109);
 
@@ -48,7 +66,7 @@
 
     display: flex;
     justify-content: left;
-    align-items: start;
+    align-items: center;
 }
 
 #adminBtns button {
@@ -80,8 +98,8 @@
 }
 
 .task {
-    width: 65%;
-    height: 120px;
+    width: 35%;
+    height: 80px;
 
     padding: 15px;
     margin: 15px;
@@ -89,6 +107,20 @@
     background-color: rgb(86, 31, 126);
 
     border-radius: 15px;
+}
+
+.task h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    display: -moz-box;
+
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
 }
 
 ul#progressbar {
@@ -99,7 +131,7 @@ ul#progressbar {
 
     padding: 0;
 
-    margin: 25px 0px;
+    margin: 15px 0px;
 }
 
 ul#progressbar li:first-of-type {
@@ -128,11 +160,64 @@ ul#progressbar li {
 }
 
 #taskList {
-    min-height: 200px;
+    min-height: 140px;
     width: 100%;
 
     display: flex;
     flex-direction: row;
 
     overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+#addTaskBtn {
+    min-width: 60px;
+    height: 60px;
+
+    margin: 0 15px 0 0;
+
+    align-self: center;
+
+    border-radius: 20px;
+
+    border: none;
+
+    background-color: rgb(86, 31, 126);
+
+    transition: all .15s ease-in-out;
+}
+
+#addTaskBtn:hover {
+    cursor: pointer;
+    background-color: rgb(102, 39, 148);
+}
+
+.textdiv {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.textdiv button {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+
+    border: none;
+
+    background-color: rgb(86, 31, 126);
+
+    transition: all .15s ease-in-out;
+
+    opacity: 0;
+}
+
+.textdiv:hover button {
+    opacity: 1;
+}
+
+.textdiv button:hover {
+    background-color: rgb(102, 39, 148);
+    cursor: pointer;
 }

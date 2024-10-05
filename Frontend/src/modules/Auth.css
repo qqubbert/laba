@@ -1,8 +1,10 @@
 form {
-    position: absolute;
+    position: relative;
     
     width: 450px;
     height: fit-content;
+
+    margin: 20vh auto;
     
     background-color: rgb(49, 13, 73);
 

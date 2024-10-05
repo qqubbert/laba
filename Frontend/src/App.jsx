@@ -101,7 +101,7 @@ function App() {
         <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { <Navigate to="/" replace />; await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
 
         <Routes>
-            <Route path="/admin" element={permission == "admin" ? <Admin /> : <Navigate to="/" replace />  } />
+            <Route path="/employee" element={<Admin permission={permission}/>} />
             <Route path="/newarticle" element={<NewArticle /> } />
             <Route path="/tasks" element={<Tasks /> } />
             <Route path="/articles" element={ <Articles /> }>

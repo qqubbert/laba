@@ -5,7 +5,7 @@ import './Admin.css';
 import UserCard from '../Cards/UserCard.jsx';
 import UserAdminPane from '../Cards/UserAdminPane.jsx';
 
-function Admin({  }) {
+function Admin({ permission }) {
     const [users, setUsers] = useState([]);
     const [userPane, setUserPane] = useState();
 
@@ -75,7 +75,7 @@ function Admin({  }) {
                 </div>
             </div>
             <div id="userAdminPane">
-                <UserAdminPane userData={userPane || undefined}/>
+                <UserAdminPane userData={userPane || undefined} permission={permission}/>
             </div>
         </div>
     </>

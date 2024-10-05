@@ -84,7 +84,7 @@ function SelectedArticle({ articleData, onClose }) {
                     <div id="articleComms">
                         <div id="addCommentDiv">
                             <textarea name="" id="newCommentTextarea" placeholder='Введите текст комментария' onChange={(e)=>{setNewCommentText(e.target.value)}}></textarea>
-                            {newCommentText && <button onClick={commentSend}>Сохранить</button>}
+                            <button onClick={commentSend} disabled={!newCommentText}>Сохранить</button>
                         </div>
                         <div id="articleCommsDiv">
                             {Array.isArray(articleComms) && articleComms.map((comment, i)=>{

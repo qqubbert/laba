@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 
 import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
+import plusIcon from '../../assets/PlusIcon.svg';
+import editIcon from '../../assets/EditIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData }) {
+function UserAdminPane({ userData, permission }) {
   const [userTasks, setUserTasks] = useState([]);
 
   function progressUpd(userTasks) {
@@ -68,18 +70,46 @@ function UserAdminPane({ userData }) {
         {userData && 
         <>
             <div id="divInfo">
-              <h1>{userData.first_name} {userData.last_name} {userData.surname}</h1>
-              <h3>Дата рождения: {userData.birthday}</h3>
-              <h3>Семейное положение: {userData.family_status}</h3>
-              <h3>Количество детей: {userData.having_children}</h3>
-              <h3>Должность: {userData.job_title}</h3>
-              <h3>Учёная степень: {userData.academic_degree}</h3>
-              <h3>Опыт работы: {userData.work_experience}</h3>
-              <h3>Зарплата: {new Intl.NumberFormat('ru-IN', { maximumSignificantDigits: 3 }).format( userData.salary )} ₽</h3>
-              <h3>Номер телефона: {userData.phone_number}</h3>
-              <h3>Электронная почта: {userData.email}</h3>
-              <h3>Отдел: {userData.department}</h3>
-
+              <div id="divInfoAll">
+                <div id="userInfoTxt">
+                  <div className="textdiv"><h1>{userData.first_name} {userData.last_name} {userData.surname}</h1>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Дата рождения: {userData.birthday}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Должность: {userData.job_title}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Учёная степень: {userData.academic_degree}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Опыт работы: {userData.work_experience}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Зарплата: {new Intl.NumberFormat('ru-IN', { maximumSignificantDigits: 3 }).format( userData.salary )} ₽</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Номер телефона: {userData.phone_number}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Электронная почта: {userData.email}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Отдел: {userData.department}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                </div>
+                <img className='userPic' src={userData.photoLink ||
+                  "https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album"
+                } alt="" />
+              </div>
               <h3>{userTasks.length == 1 && 'Текущая задача:'} {userTasks.length > 1 && 'Текущие задачи:'}{userTasks.length <= 0 && 'Текущих задач нет'}</h3>
               <div id="taskList">
                 {userTasks.length > 0 &&
@@ -194,13 +224,14 @@ function UserAdminPane({ userData }) {
                     </div>
                     )
                   })}
+                  {permission == 'admin' && <button id="addTaskBtn"><img src={plusIcon} alt="" /></button>}
                 </>
                 }
               </div>
             </div>
             <div id="adminBtns">
                 <button><img src={msgIcon} alt="" />Сообщение</button>
-                <button><img src={closeIcon} alt="" />Уволить</button>
+                {permission == 'admin' && <button><img src={closeIcon} alt="" />Уволить</button>}
             </div>
         </>}
     </>
