@@ -24,6 +24,7 @@ function NewArticle({ hideArticleEditor }) {
   const [showSaveWin, setShowSaveWin] = useState(false);
   // const [fileType, setFileType] = useState(null);
   const [elCount, setElCount] = useState(0);
+  const [edCount, setEdCount] = useState(0);
   const navigate = useNavigate();
   
   useEffect(()=>{
@@ -33,6 +34,7 @@ function NewArticle({ hideArticleEditor }) {
   }, [elCount]);
 
   function editElText(editBtn) {
+    setEdCount(prevCount => prevCount + 1);
     let elToEdit = (editBtn.parentElement).parentElement;
     (editBtn.parentElement).remove();
   
@@ -42,8 +44,9 @@ function NewArticle({ hideArticleEditor }) {
       let originalText = elToEdit.innerHTML;
   
       let textarea = document.createElement('textarea');
-      // textarea.value = originalText;
-      textarea.placeholder = "Введите текст заголовка";
+      textarea.classList.add("editArticleEditArea");
+      textarea.placeholder = elToEdit.tagName === 'H1' ? "Введите текст заголовка" : "Введите текст параграфа";
+      textarea.value = originalText === 'Введите текст заголовка' ? '' : originalText === 'Введите текст параграфа' ? '' : originalText;
       textarea.style.width = '100%';
       textarea.style.height = 'auto';
 
@@ -62,13 +65,14 @@ function NewArticle({ hideArticleEditor }) {
   
         let newElement = document.createElement(elToEdit.tagName.toLowerCase());
         if (updatedText == "") {
-          updatedText = originalText;
+          updatedText = elToEdit.tagName === 'H1' ? "Введите текст заголовка" : "Введите текст параграфа";
         }
         newElement.innerHTML = updatedText;
   
         editBtnsAdd(newElement);
         editArea.replaceWith(newElement);
         saveBtn.remove();
+        setEdCount(prevCount => prevCount - 1);
       });
   
       editArea.appendChild(saveBtn);
@@ -108,7 +112,7 @@ function NewArticle({ hideArticleEditor }) {
 
         setEmpty(false);
         setElCount(elCount => elCount + 1);
-
+        editBtnsAdd(newElementParent); 
       } catch (error) {
           console.error('Ошибка загрузки файла:', error);
       }
@@ -129,16 +133,23 @@ function NewArticle({ hideArticleEditor }) {
     let editBtnsDiv = document.createElement('div');
     editBtnsDiv.classList.add('editBtnsDiv');
 
-    let editBtn = document.createElement('button');
-    let editIco = document.createElement('img');
+    if (el.tagName === 'H1' || el.tagName === 'P') {
+      let editBtn = document.createElement('button');
+      let editIco = document.createElement('img');
+      editIco.src = editIcon;
+      editBtn.addEventListener('click', ()=>{
+        editElText(editBtn);
+      })
+      editIco.classList.add('editIcons');
+      editBtn.appendChild(editIco);
+      editBtn.classList.add('editBtns');
+      editBtnsDiv.appendChild(editBtn);
+    }
 
     let deleteBtn = document.createElement('button');
     let deleteIco = document.createElement('img');
-
-    editIco.src = editIcon;
     deleteIco.src = deleteIcon;
 
-    editIco.classList.add('editIcons');
     deleteIco.classList.add('editIcons');
 
     deleteBtn.addEventListener('click', ()=>{
@@ -146,20 +157,10 @@ function NewArticle({ hideArticleEditor }) {
       setElCount(elCount => elCount - 1);
       // console.log(elCount);
     })
-
-    editBtn.addEventListener('click', ()=>{
-      editElText(editBtn);
-    })
-
-    editBtn.appendChild(editIco);
-    deleteBtn.appendChild(deleteIco);
-
-    editBtnsDiv.appendChild(editBtn);
+    
     editBtnsDiv.appendChild(deleteBtn);
-
-    editBtn.classList.add('editBtns');
+    deleteBtn.appendChild(deleteIco);
     deleteBtn.classList.add('editBtns');
-
     el.appendChild(editBtnsDiv);
   }
 
@@ -359,6 +360,7 @@ function NewArticle({ hideArticleEditor }) {
   }  
 
   function showSaveWinFunc () {
+    console.log(edCount);
     if (showSaveWin) {
         const saveWinList = document.getElementById('EditArticleElWin');
         saveWinList.classList.add('saveWinClosing');
@@ -370,7 +372,19 @@ function NewArticle({ hideArticleEditor }) {
             saveWinList.classList.remove('saveWinClosing');
         }, 290);
     } else {
-        setShowSaveWin(true);
+        if (edCount == 0) {
+          setShowSaveWin(true);
+        } else {
+          const textareas = Array.from(document.getElementsByClassName('editArea'));
+          textareas.forEach(el => {
+            el.classList.add('edError');
+          })
+          setTimeout(() => {
+            textareas.forEach(el => {
+              el.classList.remove('edError');
+            });
+          }, 1000);
+        }
     }
   }
 

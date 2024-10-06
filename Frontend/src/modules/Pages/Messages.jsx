@@ -6,8 +6,8 @@ import UserCard from '../Cards/UserCard.jsx';
 import UserAdminPane from '../Cards/UserAdminPane.jsx';
 
 function Messages({ }) {
-    const [chats, setChats] = useState([]);
-    const [userPane, setUserPane] = useState();
+    // const [chats, setChats] = useState([]);
+    // const [userPane, setUserPane] = useState();
 
     // const LoadChats = async () => {
     //     try {  
@@ -45,22 +45,22 @@ function Messages({ }) {
     //     }
     // }
 
-    const selectPersonFunc = (e, i) => {
-        const userCards = Array.from(document.getElementsByClassName('UserCard'));
-        userCards.forEach((el)=>{
-            el.classList.remove('selectedPersonAdmin');
-        });
-        const selectedPerson = document.getElementById('userCard'+i);
-        selectedPerson.classList.add('selectedPersonAdmin');
-    }
+    // const selectPersonFunc = (e, i) => {
+    //     const userCards = Array.from(document.getElementsByClassName('UserCard'));
+    //     userCards.forEach((el)=>{
+    //         el.classList.remove('selectedPersonAdmin');
+    //     });
+    //     const selectedPerson = document.getElementById('userCard'+i);
+    //     selectedPerson.classList.add('selectedPersonAdmin');
+    // }
 
-    useEffect(() => {
-        LoadUsers();
-    }, []);
+    // useEffect(() => {
+    //     LoadUsers();
+    // }, []);
 
   return (
     <>
-        <div id="adminPane">
+        {/* <div id="adminPane">
             <div id="usersListPane">
                 <input type="text" placeholder='Поиск' />
                 <div id="usersList">
@@ -77,7 +77,7 @@ function Messages({ }) {
             <div id="userAdminPane">
                 <UserAdminPane userData={userPane || undefined} permission={permission}/>
             </div>
-        </div>
+        </div> */}
     </>
   )
 }

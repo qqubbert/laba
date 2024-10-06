@@ -193,6 +193,8 @@
     border-radius: 15px;
     
     padding: 5px;
+
+    transition: .3s ease-in-out;
 }
 
 #ArticleEditor .editArea .saveBtn {
@@ -294,4 +296,8 @@
 
 #newArticleWin #CloseArticleBtn {
     padding: 10px;
+}
+
+.edError {
+    border: 1px solid rgb(216, 86, 103) !important;
 }

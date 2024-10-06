@@ -107,7 +107,7 @@ function UserAdminPane({ userData, permission }) {
                   </div>
                 </div>
                 <img className='userPic' src={userData.photoLink ||
-                  "https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album"
+                  "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
                 } alt="" />
               </div>
               <h3>{userTasks.length == 1 && 'Текущая задача:'} {userTasks.length > 1 && 'Текущие задачи:'}{userTasks.length <= 0 && 'Текущих задач нет'}</h3>

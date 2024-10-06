@@ -11,7 +11,7 @@ function UserCard({ userData }) {
   return (
     <>
         <img className='image' src={userData.photoLink ||
-          "https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album"
+          "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
         } alt="" />
         <div className="userCardText">
           <h1 className='name'>{userData.last_name} {userData.first_name}</h1>
