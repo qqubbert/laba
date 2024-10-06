@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, NavLink, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
 
 import Auth from './modules/Auth.jsx';
 import Header from './modules/Header.jsx';
@@ -18,6 +18,7 @@ function App() {
   const [usrInf, setUsrInf] = useState({});
   const [usrId, setUsrId] = useState();
   const [permission, setPermission] = useState('user');
+  const navigate = useNavigate();
 
   const AuthTry = async () => {
     try {  
@@ -93,7 +94,7 @@ function App() {
   }, [usrId]);
 
   return (
-    <Router>
+    // <Router>
       <>
         {(logged == false) && 
         <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
@@ -101,7 +102,7 @@ function App() {
         {(logged == true) &&
         <Header permission={permission} userInfo={usrInf} 
         showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} 
-        logout={ async () => { <Navigate to="/" replace />; await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
+        logout={ async () => { navigate("/", { replace: true }); await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
         selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}
         />}
 
@@ -111,14 +112,14 @@ function App() {
             </Route>
             <Route path="/newarticle" element={<NewArticle />} />
             <Route path="/messages" element={<Messages />} />
-            <Route path="/tasks" element={logged == true ? <Tasks /> : <Navigate to="/" replace />} />
+            <Route path="/tasks" element={<Tasks />} />
             <Route path="/articles" element={<Articles />}>
               <Route path=":articleId" element={<SelectedArticle />} />
             </Route>
         </Routes>
 
       </>
-    </Router>
+    // </Router>
   )
 }
 
