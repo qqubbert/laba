@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
+	"time"
 )
 
 func UploadFile(c *gin.Context) {
@@ -24,8 +25,10 @@ func UploadFile(c *gin.Context) {
 	}
 	defer file.Close()
 
+	uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), header.Filename)
+
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./uploads/%s", header.Filename)
+	filePath := fmt.Sprintf("./uploads/%s", uniqueFilename)
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -40,6 +43,6 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/%s", header.Filename)
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/%s", uniqueFilename)
 	c.JSON(201, gin.H{"file_url": fileURL})
 }
