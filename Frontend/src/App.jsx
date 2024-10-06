@@ -65,7 +65,7 @@ function App() {
   const loadUsrInfo = async (usrId) => {
     console.log(usrId);
     try {  
-        const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
+        const response = await fetch(`http://localhost:3000/rest-api-service/self`, {
         method: 'GET',
         credentials: 'include',
         withCredentials: true,
@@ -99,7 +99,11 @@ function App() {
         <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
 
         {(logged == true) &&
-        <Header permission={permission} userInfo={usrInf} showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} logout={ async () => { <Navigate to="/" replace />; await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}/>}
+        <Header permission={permission} userInfo={usrInf} 
+        showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} 
+        logout={ async () => { <Navigate to="/" replace />; await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
+        selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}
+        />}
 
         <Routes>
             <Route path="/employee" element={<Admin permission={permission}/>}>
