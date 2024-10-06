@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-type FullUser struct {
+type User struct {
 	ID             int    `json:"id"`
 	FirstName      string `json:"first_name"`
 	LastName       string `json:"last_name"`
@@ -23,33 +23,10 @@ type FullUser struct {
 	Email          string `json:"email"`
 	RegDate        string `json:"reg_date"`
 	Department     string `json:"department"`
+	ProfilePicLink string `json:"profile_pic_link"`
 }
 
-func GetAllUsers(db *sql.DB) ([]FullUser, error) {
-	query := `SELECT u.ID, u.FirstName, u.LastName, u.JobTitle, d.DepTtl
-		FROM Users u
-		LEFT JOIN Departaments d ON u.DepID = d.DepID`
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var users []FullUser
-	for rows.Next() {
-		var user FullUser
-		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.JobTitle, &user.Department); err != nil {
-			return nil, err
-		}
-		users = append(users, user)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return users, nil
-}
-
-func GetUser(db *sql.DB, id int) (*FullUser, error) {
+func GetUser(db *sql.DB, id int) (*User, error) {
 	query := `
 		SELECT u.ID, u.FirstName, u.LastName, u.Surname, u.Gender, u.Birthday, u.FamilyStatus, 
 		       u.HavingChildren, u.JobTitle, u.AcademicDegree, u.DepID, u.WorkExperience, 
@@ -59,7 +36,7 @@ func GetUser(db *sql.DB, id int) (*FullUser, error) {
 		WHERE u.ID = ?
 	`
 
-	var user FullUser
+	var user User
 	err := db.QueryRow(query, id).Scan(
 		&user.ID, &user.FirstName, &user.LastName, &user.Surname, &user.Gender, &user.Birthday,
 		&user.FamilyStatus, &user.HavingChildren, &user.JobTitle, &user.AcademicDegree, &user.DepID,
