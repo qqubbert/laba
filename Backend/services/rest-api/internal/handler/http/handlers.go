@@ -272,3 +272,24 @@ func GetUserBySelfHandler(db *sql.DB) gin.HandlerFunc {
 		c.JSON(200, user)
 	}
 }
+
+func GetTaskByUserIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized, userid is not found in cookie"})
+			return
+		}
+		userId, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid userid in cookie"})
+			return
+		}
+		tasks, err := requests.GetTaskByID(db, userId)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, tasks)
+	}
+}
