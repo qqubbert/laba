@@ -20,13 +20,14 @@ type FullUser struct {
 	PhoneNumber    string `json:"phone_number"`
 	Email          string `json:"email"`
 	IsBlocked      bool   `json:"is_blocked"`
+	ProfilePicLink string `json:"profile_pic_link"`
 }
 
 func GetAllUsers(db *sql.DB) ([]FullUser, error) {
 	query := `SELECT u.ID, u.FirstName, u.LastName, u.JobTitle, d.DepTtl, 
 	                 u.Permission, u.Surname, u.Gender, u.Birthday, u.FamilyStatus,
 	                 u.HavingChildren, u.AcademicDegree, u.WorkExperience, 
-	                 u.Salary, u.PhoneNumber, u.Email, u.Isblocked
+	                 u.Salary, u.PhoneNumber, u.Email, u.Isblocked, u.ProfilePicLink
 	          FROM Users u
 	          LEFT JOIN Departaments d ON u.DepID = d.DepID
 	          WHERE u.Isblocked = false`
@@ -43,7 +44,7 @@ func GetAllUsers(db *sql.DB) ([]FullUser, error) {
 		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.JobTitle, &user.Department,
 			&user.Permission, &user.Surname, &user.Gender, &user.Birthday, &user.FamilyStatus,
 			&user.HavingChildren, &user.AcademicDegree, &user.WorkExperience,
-			&user.Salary, &user.PhoneNumber, &user.Email, &user.IsBlocked); err != nil {
+			&user.Salary, &user.PhoneNumber, &user.Email, &user.IsBlocked, &user.ProfilePicLink); err != nil {
 			return nil, err
 		}
 		users = append(users, user)
