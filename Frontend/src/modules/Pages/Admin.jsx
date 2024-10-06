@@ -64,7 +64,7 @@ function Admin({ permission }) {
             <div id="usersListPane">
                 <input type="text" placeholder='Поиск' />
                 <div id="usersList">
-                    {users.map((user, i)=>{
+                    {users && users.map((user, i)=>{
                         // console.log(user);
                         return (
                             <div key={user.id} className='UserCard' id={'userCard' + i} onClick={(e)=>{LoadUserPane(user.id); selectPersonFunc(e, i)}}>

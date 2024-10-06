@@ -79,7 +79,7 @@ function Articles() {
                         </div> */}
                     </div>
                     <div id="articlesList" className={singleColumn ? "singleColumn" : ''}>
-                        {articles.map((article, i) => {
+                        {articles && articles.map((article, i) => {
                             const ArticleLink = `/articles/${article.id}`;
                             return (
                                 <NavLink 
