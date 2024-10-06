@@ -5,45 +5,45 @@ import './Admin.css';
 import UserCard from '../Cards/UserCard.jsx';
 import UserAdminPane from '../Cards/UserAdminPane.jsx';
 
-function Admin({ permission }) {
-    const [users, setUsers] = useState([]);
+function Messages({ }) {
+    const [chats, setChats] = useState([]);
     const [userPane, setUserPane] = useState();
 
-    const LoadUsers = async () => {
-        try {  
-            const response = await fetch("http://localhost:3000/rest-api-service/users", {
-            method: 'GET',
-            credentials: 'include',
-            withCredentials: true,
-            });
+    // const LoadChats = async () => {
+    //     try {  
+    //         const response = await fetch("http://localhost:3000/rest-api-service/users", {
+    //         method: 'GET',
+    //         credentials: 'include',
+    //         withCredentials: true,
+    //         });
         
-            const responseData = await response.json();
+    //         const responseData = await response.json();
 
-            setUsers(responseData);
+    //         setUsers(responseData);
 
-            // console.log(responseData);
-        } catch (error) {
-            // console.error("Ошибка:", error);
-        }
-    }
+    //         // console.log(responseData);
+    //     } catch (error) {
+    //         // console.error("Ошибка:", error);
+    //     }
+    // }
 
-    const LoadUserPane = async (usrId) => {
-        try {  
-            const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
-            method: 'GET',
-            credentials: 'include',
-            withCredentials: true,
-            });
+    // const LoadUserPane = async (usrId) => {
+    //     try {  
+    //         const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
+    //         method: 'GET',
+    //         credentials: 'include',
+    //         withCredentials: true,
+    //         });
         
-            const adminUserData = await response.json();
+    //         const adminUserData = await response.json();
 
-            setUserPane(adminUserData);
+    //         setUserPane(adminUserData);
 
-            console.log(adminUserData);
-        } catch (error) {
-            console.error("Ошибка:", error);
-        }
-    }
+    //         console.log(adminUserData);
+    //     } catch (error) {
+    //         console.error("Ошибка:", error);
+    //     }
+    // }
 
     const selectPersonFunc = (e, i) => {
         const userCards = Array.from(document.getElementsByClassName('UserCard'));
@@ -82,4 +82,4 @@ function Admin({ permission }) {
   )
 }
 
-export default Admin
+export default Messages

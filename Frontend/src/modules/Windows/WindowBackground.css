@@ -1,0 +1,33 @@
+#winBackground {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    /* background-color: rgba(0, 0, 0, 0.205); */
+    z-index: 100;
+
+    animation: bgShow .3s ease-in-out forwards;
+
+    backdrop-filter: blur(2px);
+}
+
+#winBackground.winClose {
+    animation: bgHide .3s ease-in-out forwards;
+}
+
+@keyframes bgShow {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes bgHide {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0;
+    }
+}

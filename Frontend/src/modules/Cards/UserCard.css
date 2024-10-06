@@ -9,6 +9,25 @@
     margin: 7px 20px;
     
     padding: 15px;
+
+    display: flex;
+
+    user-select: none;
+}
+
+.UserCard img {
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 50px;
+    max-height: 50px;
+
+    margin: 5px 10px 5px 0;
+
+    align-self: center;
+
+    border-radius: 15px;
+
+    object-fit: cover;
 }
 
 .UserCard:last-of-type {
@@ -20,6 +39,20 @@
     
     background-color: rgb(71, 26, 104);
     /* outline: 1px solid rgb(211, 159, 248); */
+}
+
+.UserCard .dep {
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    display: -moz-box;
+
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
 }
 
 .UserCard h1 {

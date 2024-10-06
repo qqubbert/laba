@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useNavigate, Navigate } from 'react-router-dom';
+import { NavLink, useNavigate, Navigate, json } from 'react-router-dom';
 
 import closeIcon from '../../assets/CloseIcon.svg';
 import imageIcon from '../../assets/ImageIcon.svg';
@@ -12,12 +12,16 @@ import saveIcon from '../../assets/SaveIcon.svg';
 import deleteIcon from '../../assets/TrashIcon.svg';
 import editIcon from '../../assets/EditIcon.svg';
 
+import WindowBG from '../Windows/WindowBackground.jsx';
+import EditArticleElWin from '../Windows/EditArticleElWin.jsx';
+
 import './NewArticle.css';
 
 // import EditArticleElWin from './EditArticleElWin.jsx';
 
 function NewArticle({ hideArticleEditor }) {
   const [empty, setEmpty] = useState(true);
+  const [showSaveWin, setShowSaveWin] = useState(false);
   // const [fileType, setFileType] = useState(null);
   const [elCount, setElCount] = useState(0);
   const navigate = useNavigate();
@@ -71,38 +75,6 @@ function NewArticle({ hideArticleEditor }) {
     }
   }  
 
-  // function handleFileChange(event, fileType) {
-  //   const file = event.target.files[0];
-  //   let newElementParent;
-  //   let newElementDiv;
-  //   // let newMediaDescription;
-  //   newElementParent = document.createElement('div');
-  //   newElementDiv = document.createElement('div');
-  //   // newMediaDescription = document.createElement('span');
-  //   newElementParent.classList.add('mediaParent');
-  //   newElementDiv.classList.add('mediaDiv');
-  //   // newMediaDescription.classList.add('mediaDescription');
-  //   if (file) {
-  //     const newElement = document.createElement(fileType);
-  //     newElement.src = URL.createObjectURL(file);
-  //     if (fileType === 'video' || fileType === 'audio') {
-  //       newElement.controls = true;
-  //     }
-  //     // newMediaDescription.innerHTML = "Введите описание";
-  //     setEmpty(false);
-  //     editBtnsAdd(newElementParent);
-  //     // newElementParent.addEventListener('mouseenter', () => editText(newElementParent));
-  //     // newElementParent.addEventListener('mouseout', () => editHide(newElementParent));
-  //     newElementParent.classList.add(fileType + 'Parent');
-  //     document.getElementById('ArticleEditor').appendChild(newElementParent);
-  //     newElementDiv.appendChild(newElement);
-  //     // newElementDiv.appendChild(newMediaDescription);
-  //     newElementParent.appendChild(newElementDiv);
-  //     setElCount(elCount => elCount + 1);
-  //     // console.log(elCount + 1);
-  //   }
-  // }
-
   const uploadFile = async (event, fileType) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -155,6 +127,7 @@ function NewArticle({ hideArticleEditor }) {
 
   function editBtnsAdd(el) {
     let editBtnsDiv = document.createElement('div');
+    editBtnsDiv.classList.add('editBtnsDiv');
 
     let editBtn = document.createElement('button');
     let editIco = document.createElement('img');
@@ -178,8 +151,6 @@ function NewArticle({ hideArticleEditor }) {
       editElText(editBtn);
     })
 
-    editBtnsDiv.id = 'editBtnsDiv';
-
     editBtn.appendChild(editIco);
     deleteBtn.appendChild(deleteIco);
 
@@ -192,8 +163,9 @@ function NewArticle({ hideArticleEditor }) {
     el.appendChild(editBtnsDiv);
   }
 
-  async function saveToHtmlFile() {
-    editDelete();
+  async function saveToHtmlFile(data) {
+    showSaveWinFunc();
+    editDelete();  // Удаляем кнопки редактирования перед сохранением
 
     const articleEditor = document.getElementById('ArticleEditor');
     const content = articleEditor.innerHTML; 
@@ -205,6 +177,92 @@ function NewArticle({ hideArticleEditor }) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Generated Article</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+          * {
+                margin: 0;
+
+                font-family: "Roboto", sans-serif;
+
+                color: rgb(211, 159, 248);
+          }
+          body {
+              max-width: 100%;
+              overflow-x: hidden;
+              height: fit-content;
+
+              min-height: 500px;
+
+              background-color: rgb(57, 18, 85);
+
+              border-radius: 15px;
+
+              padding: 20px;
+              margin: 40px;
+
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              align-items: flex-start;
+          }
+
+          h1 {
+              width: 100%;
+
+              margin: 8px;
+
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              position: relative;
+          }
+
+          p {
+              position: relative;
+
+              width: 100%;
+              min-height: 35px;
+
+              text-indent: 50px;
+              margin: 5px;
+
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              
+          }
+
+          div img {
+              border-radius: 15px;
+              margin: 20px auto;
+
+              max-width: 75%;
+
+              max-height: 300px;
+          }
+
+          div video {
+              margin: 20px auto;
+              width: 75%;
+
+              border-radius: 15px;
+          }
+
+          div audio {
+              margin: 20px auto;
+              border-radius: 15px;
+              width: 75%;
+          }
+
+          #ArticleEditor div.mediaDiv {
+              width: 90%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+          }
+        </style>
       </head>
       <body>
         ${content} 
@@ -212,31 +270,43 @@ function NewArticle({ hideArticleEditor }) {
       </html>
     `;
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'article.html'; 
-    link.click();
-    // const formData = new FormData();
-    // formData.append('file', blob, 'article.html');
+    const htmlblob = new Blob([htmlContent], { type: 'text/html' });
 
-    // try {
-    //   // Отправляем данные на сервер
-    //   const response = await fetch('http://localhost:3000/rest-api-service/upload-article', {
-    //     method: 'POST',
-    //     body: formData,
-    //     credentials: 'include',  // Если нужно передавать куки
-    //   });
+    // const jsonData = {
+    //   title: 'Article Title',
+    //   author_id: 1
+    // };
+    // const jsonString = JSON.stringify(jsonData);
+
+    const formData = new FormData();
+    formData.append('file', htmlblob, 'article.html');
+    formData.append('title', data.articleTtl); 
+    formData.append('publish', data.publish); 
+    formData.append('biology', data.bio); 
+    formData.append('chemistry', data.chemistry); 
+    formData.append('physics', data.physics); 
+    formData.append('it', data.it); 
+    formData.append('author_id', '5');  
+
+    try {
+      // Отправляем данные на сервер
+      const response = await fetch('http://localhost:3000/rest-api-service/upload-html', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',  // Если нужно передавать куки
+      });
   
-    //   // Получаем ссылку на сохраненный файл
-    //   const fileUrl = await response.text(); 
+      // Получаем ссылку на сохраненный файл
+      if (response.ok) {
+        console.log('Файл успешно загружен');
+        navigate('/articles', { replace: true });  // Используем useNavigate для перенаправления
+      } else {
+        console.log('Ошибка при загрузке файла');
+      }
   
-    //   // Здесь можно, например, сохранить ссылку на файл в базе данных или вывести пользователю
-    //   console.log('Файл успешно загружен. Ссылка на файл:', fileUrl);
-  
-    // } catch (error) {
-    //   console.error('Ошибка при сохранении файла:', error);
-    // }
+    } catch (error) {
+      console.error('Ошибка при сохранении файла:', error);
+    }
   }
 
   function addElement(el) {
@@ -288,9 +358,31 @@ function NewArticle({ hideArticleEditor }) {
 
   }  
 
+  function showSaveWinFunc () {
+    if (showSaveWin) {
+        const saveWinList = document.getElementById('EditArticleElWin');
+        saveWinList.classList.add('saveWinClosing');
+        const winBG = document.getElementById('winBackground');
+        winBG.classList.add('winClose');
+        setTimeout(() => {
+            winBG.classList.remove('winClose');
+            setShowSaveWin(false);
+            saveWinList.classList.remove('saveWinClosing');
+        }, 290);
+    } else {
+        setShowSaveWin(true);
+    }
+  }
+
   return (
     <>
         <div id="newArticleWin">
+            {showSaveWin &&
+              <>
+                <WindowBG hide={()=>{showSaveWinFunc()}}/>
+                <EditArticleElWin hide={()=>{setShowSaveWin(false)}} save={(data)=>{saveToHtmlFile(data)}}/>
+              </>
+            }
             <div id="newArticleTop">
                 <div id="newArticleEditorBtns">
                   <button onClick={()=>{addElement('h1')}}><img src={headerIcon} alt="" />Title</button>
@@ -313,7 +405,7 @@ function NewArticle({ hideArticleEditor }) {
                 </div>
             </div>
             <div id="newArticleBottom">
-                <button id="SaveArticleBtn" onClick={()=>{saveToHtmlFile(); hideArticleEditor()}}><img src={saveIcon} alt="" />Сохранить</button>
+                <button id="SaveArticleBtn" onClick={()=>{showSaveWinFunc();}}><img src={saveIcon} alt="" />Сохранить</button>
             </div>
         </div>
     </>

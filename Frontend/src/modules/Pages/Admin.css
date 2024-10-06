@@ -1,9 +1,9 @@
 #adminPane {
     position: relative;
-    top: 70px;
+    /* top: 70px; */
 
     width: 100vw;
-    height: 100vh;
+    max-height: calc(100% - 70px);
 
     position: relative;
 
@@ -16,8 +16,8 @@
 
 #usersListPane {
     position: relative;
-    width: 450px;
-    height: 100%;
+    width: 600px;
+    max-height: 100%;
 
     overflow-y: hidden;
 
@@ -44,7 +44,7 @@
     background-color: rgb(90, 35, 129);
 }
 
-#usersList input:focus {
+#usersListPane input:focus {
     border: none;
     outline: none;
 }
@@ -54,7 +54,8 @@
 } */
 
 #usersList {
+    max-height: 100%;
     overflow-y: scroll;
 
-    margin-top: 20px;
+    margin-top: 15px;
 }

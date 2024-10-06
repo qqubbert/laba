@@ -1,9 +1,11 @@
 const cors = require('cors');
 const express = require('express');
 const mysql = require("mysql");
+const cookieParser = require('cookie-parser');
 
 const sanyaApp = express();
 sanyaApp.use(express.json());
+sanyaApp.use(cookieParser());
 sanyaApp.use(cors({
     origin: 'http://localhost:5173', 
     credentials: true,               
@@ -20,14 +22,31 @@ const db = mysql.createConnection({
 //     res.send('penis');
 // }); xuy
 
-sanyaApp.get("/chatmsgs/:chat_id", (req, res) => {
-    const {chat_id} = req.params.chat_id;
+sanyaApp.get("/chats", (req, res) => {
+    const user_id = req.cookies.userid;
+    console.log(user_id);
+    const getChats = `
+    SELECT * FROM chats c LEFT JOIN chat_users cu ON c.id = cu.chat_id WHERE cu.user_id = ?;
+    `
+    db.query(getChats, [user_id], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(rs);
+        }
+    });
+});
+
+sanyaApp.get("/chatmsgs/:chatid", (req, res) => {
+    const chatid = req.params.chatid;
     let user_id = req.cookies.userid;
-    console.log(chat_id + " " + user_id);
+    console.log(req.params);
+    console.log(chatid + " " + user_id);
     const inChat = `
     SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
     `
-    db.query(inChat, [chat_id, user_id], (err, rsIn) => {
+    db.query(inChat, [chatid, user_id], (err, rsIn) => {
         console.log(rsIn);
         if (err) {
             console.log(err);
@@ -35,7 +54,7 @@ sanyaApp.get("/chatmsgs/:chat_id", (req, res) => {
             const MsgView = `
             SELECT * FROM chat_msgs WHERE chat_id = ?;
             `;
-            db.query(MsgView, [chat_id], (err, rs) => {
+            db.query(MsgView, [chatid], (err, rs) => {
                 console.log(rs);
                 if (err) {
                     console.log(err);
@@ -50,7 +69,7 @@ sanyaApp.get("/chatmsgs/:chat_id", (req, res) => {
 });
 
 sanyaApp.get("/chatusers/:chat_id", (req, res) => {
-    const{chat_id} = req.params.chat_id;
+    const chat_id = req.params.chat_id;
     console.log(chat_id);
     const ChatUserView = `
     SELECT cu.chat_id, c.title AS chat_title, u.ID AS user_id, u.Login, u.FirstName, u.LastName FROM chat_users cu JOIN  Users u ON cu.user_id = u.ID JOIN chats c ON cu.chat_id = c.id WHERE cu.chat_id = ?;
@@ -87,7 +106,7 @@ sanyaApp.post("/chatcreate", (req, res) => {
             VALUES
                 (?, ?);
             `;
-            db.query(UserChat, [chatID, ID], (err, rsUserChat) => {
+            db.query(UserChat, [ID, chatID], (err, rsUserChat) => {
                 console.log(rsUserChat);
                 if (err) {
                     console.log(err);
@@ -140,19 +159,32 @@ sanyaApp.post("/chatadduser", (req, res) => {
 sanyaApp.post("/msgsend", (req, res) => {
     const{chat_id, msg} = req.body;
     let sender_id = req.cookies.userid;
-    console.log(chat_id + " " + sender_id + " " + msg);
-    const sendMsg = `
-    INSERT INTO chat_msgs (chat_id, sender_id, msg)
-    VALUES
-        (?, ?, ?);
+    console.log(sender_id);
+    const inChat = `
+    SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
     `
-    db.query(sendMsg, [chat_id, sender_id, msg], (err, rs) => {
-        console.log(rs);
+    db.query(inChat, [chat_id, sender_id], (err, rsIn) => {
+        console.log(rsIn);
         if (err) {
             console.log(err);
+        } else if (rsIn.length >= 1) {
+            console.log(chat_id + " " + sender_id + " " + msg);
+            const sendMsg = `
+            INSERT INTO chat_msgs (chat_id, sender_id, msg)
+            VALUES
+                (?, ?, ?);
+            `
+            db.query(sendMsg, [chat_id, sender_id, msg], (err, rs) => {
+                console.log(rs);
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("Message sended!");
+                    res.status(200).json(rs);
+                }
+            });
         } else {
-            console.log("Message sended!");
-            res.status(200).json(rs);
+            res.status(401).json({message: "User is not in this chat!"});
         }
     });
 });

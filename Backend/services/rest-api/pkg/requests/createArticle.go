@@ -3,12 +3,13 @@ package requests
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"mime/multipart"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type CreateArticleRequest struct {

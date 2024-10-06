@@ -1,0 +1,123 @@
+#EditArticleElWin {
+    position: absolute;
+
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    min-width: 500px;
+    min-height: 250px;
+    
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #3f165c;
+
+    border-radius: 15px;
+
+    animation: .3s ease-in-out forwards saveWinOpen;
+}
+
+#EditArticleElWin.saveWinClosing {
+    animation: .3s ease-in-out forwards saveWinClose;
+}
+
+@keyframes saveWinClose {
+    0% {
+        top: 45%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+@keyframes saveWinOpen {
+    0% {
+        top: 50%;
+    }
+    100% {
+        top: 45%;
+    }
+}
+
+#EditArticleElWin label {
+    user-select: none;
+}
+
+#EditArticleElWin label:hover {
+    cursor: pointer;
+}
+
+#EditArticleElWin h1 {
+    user-select: none;
+}
+
+#EditArticleElWin #form {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#EditArticleElWin #form input[type=text] {
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: #4f1e72;
+    border: 2px solid rgba(255, 192, 203, 0);
+    transition: all .3s ease-in-out;
+}
+
+#EditArticleElWin #form input.err {
+    border: 2px solid rgb(230, 71, 145);
+}
+
+#EditArticleElWin #form input[type=checkbox] {
+    margin: 0 10px;
+}
+
+#EditArticleElWin #form #saveTags {
+    margin: 15px;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#EditArticleElWin #EditArticleElWinBtns {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#EditArticleElWin #saveWinHead {
+    width: calc(100% - 30px);
+    max-height: 50px;
+
+    margin: 10px 10px 5px 10px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+#EditArticleElWin button {
+    margin: 0 5px;
+}
+
+#EditArticleElWin #saveWinHead button {
+    max-width: 45px;
+    min-width: 45px;
+    max-height: 45px;
+    min-height: 45px;
+    padding: 15px;
+}

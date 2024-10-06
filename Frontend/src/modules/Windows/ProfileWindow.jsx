@@ -9,23 +9,26 @@ import taskIcon from '../../assets/TaskIcon.svg';
 import msgIcon from '../../assets/MessageIcon.svg';
 
 import './ProfileWindow.css';
-
-function ProfileWindow({ showProfileWin, logout }) {
+import WindowBG from './WindowBackground.jsx'
+function ProfileWindow({ showProfileWin, logout, hideWindow }) {
 //   const [showProfileWin, setShowProfileWin] = useState(false);
 
   return (
     <>
         {showProfileWin &&
-        <ul id="profileWinList">
-            <li><img src={profileIcon} alt="" />Профиль</li>
-            <li><img src={settingsIcon} alt="" />Настройки</li>
-            <li><img src={editIcon} alt="" />Мои статьи</li>
-            <li onClick={()=>{logout();}}>
-              <NavLink to="/">
-                  <img src={logoutIcon} alt="" /> Выйти
-              </NavLink>
-            </li>
-        </ul>}
+        <>
+          <ul id="profileWinList">
+              <li><img src={profileIcon} alt="" />Профиль</li>
+              <li><img src={settingsIcon} alt="" />Настройки</li>
+              <li><img src={editIcon} alt="" />Мои статьи</li>
+              <li onClick={()=>{logout();}}>
+                <NavLink to="/">
+                    <img src={logoutIcon} alt="" /> Выйти
+                </NavLink>
+              </li>
+          </ul>
+          <WindowBG hide={()=>hideWindow()}/>
+        </>}
     </>
   )
 }

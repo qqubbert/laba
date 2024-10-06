@@ -9,7 +9,7 @@ ul#profileWinList {
     padding: 0;
     animation: showProfileWin .3s ease-in-out forwards;
 
-    z-index: 100;
+    z-index: 101;
 }
 
 ul#profileWinList.profWinClosing {
