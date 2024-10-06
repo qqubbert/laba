@@ -13,7 +13,7 @@ import (
 
 const (
 	allUsers          = "/users"
-	usersById         = "/users/:id"
+	userById          = "/users/:id"
 	article           = "/articles"
 	articleById       = "/articles/:id"
 	commentsByID      = "/articles/:id/comments"
@@ -48,7 +48,7 @@ func main() {
 
 	//запросы ебанутого уровня кондиций
 	r.GET(allUsers, http.GetAllUsersHandler(db))
-	r.GET(usersById, http.GetUserByIdHandler(db))
+	r.GET(userById, http.GetUserByIdHandler(db))
 	r.GET(article, http.GetAllArticlesHandler(db))
 	r.GET(articleById, http.GetArticlesByIdHandler(db))
 	r.GET(tasksByUserId, http.GetTasksByUserIdHandler(db))
@@ -61,7 +61,7 @@ func main() {
 	r.POST(CreateProject, http.CreateProjectHandler(db))
 	r.POST(addComm, http.CreateComHandler(db))
 
-	r.PATCH(usersById, http.UserUpdateHandler(db))
+	r.PATCH(userById, http.UserUpdateHandler(db))
 
 	r.POST(uploadFilePath, requests.UploadFile)
 	r.Static(staticUploadFile, "./uploads")
