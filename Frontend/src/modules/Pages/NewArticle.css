@@ -1,5 +1,5 @@
 #newArticleWin {
-    margin: 100px 50px 50px 50px;
+    margin: 50px auto;
 
     min-width: 90%;
     max-width: 1800px;
@@ -144,7 +144,7 @@
     align-items: center;
 }
 
-#ArticleEditor #editBtnsDiv {
+#ArticleEditor .editBtnsDiv {
     min-width: 130px;
 
     display: flex;
@@ -159,7 +159,7 @@
     transition: all .3s ease-in-out;
 }
 
-#ArticleEditor .mediaParent #editBtnsDiv {
+#ArticleEditor .mediaParent .editBtnsDiv {
     min-width: 130px;
 
     display: flex;
@@ -168,7 +168,7 @@
     justify-content: center;
 }
 
-#ArticleEditor *:hover #editBtnsDiv {
+#ArticleEditor *:hover .editBtnsDiv {
     opacity: 100;
 }
 
@@ -201,17 +201,17 @@
     right: 0;
 }
 
-#ArticleEditor #editBtnsDiv button {
+#ArticleEditor .editBtnsDiv button {
     margin: 2px 3px;
 
     pointer-events: auto;
 }
 
-#ArticleEditor #editBtnsDiv button:hover {
+#ArticleEditor .editBtnsDiv button:hover {
     cursor: pointer;
 }
 
-#ArticleEditor .mediaParent #editBtnsDiv button {
+#ArticleEditor .mediaParent .editBtnsDiv button {
     margin: 8px 3px;
 }
 
