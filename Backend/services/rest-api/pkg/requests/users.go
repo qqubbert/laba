@@ -30,7 +30,7 @@ func GetUser(db *sql.DB, id int) (*User, error) {
 	query := `
 		SELECT u.ID, u.FirstName, u.LastName, u.Surname, u.Gender, u.Birthday, u.FamilyStatus, 
 		       u.HavingChildren, u.JobTitle, u.AcademicDegree, u.DepID, u.WorkExperience, 
-		       u.Salary, u.PhoneNumber, u.Email, d.DepTtl
+		       u.Salary, u.PhoneNumber, u.Email, u.ProfilePicLink, d.DepTtl
 		FROM Users u
 		LEFT JOIN Departaments d ON u.DepID = d.DepID
 		WHERE u.ID = ?
@@ -40,7 +40,7 @@ func GetUser(db *sql.DB, id int) (*User, error) {
 	err := db.QueryRow(query, id).Scan(
 		&user.ID, &user.FirstName, &user.LastName, &user.Surname, &user.Gender, &user.Birthday,
 		&user.FamilyStatus, &user.HavingChildren, &user.JobTitle, &user.AcademicDegree, &user.DepID,
-		&user.WorkExperience, &user.Salary, &user.PhoneNumber, &user.Email, &user.Department,
+		&user.WorkExperience, &user.Salary, &user.PhoneNumber, &user.Email, &user.ProfilePicLink, &user.Department,
 	)
 
 	if err != nil {
