@@ -189,22 +189,31 @@ func GetCommentByIdHandler(db *sql.DB) gin.HandlerFunc {
 func CreateComHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		idStr := c.Param("id")
-
-		var newComment requests.CreateComment
-
-		if err := c.ShouldBindJSON(&newComment); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized, userid is not found in cookie"})
 			return
 		}
+		authorID, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid userid in cookie"})
+		}
 
+		idStr := c.Param("id")
 		articleID, err := strconv.Atoi(idStr)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "Invalid article ID"})
 			return
 		}
+
+		var newComment requests.CreateComment
+		if err := c.ShouldBindJSON(&newComment); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
 		//вставляю комент в бдшку
-		err = requests.AddComment(db, articleID, newComment.AuthorID, newComment.Comm)
+		err = requests.AddComment(db, articleID, authorID, newComment.Comm)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
