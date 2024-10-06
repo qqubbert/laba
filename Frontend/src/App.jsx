@@ -65,7 +65,7 @@ function App() {
   const loadUsrInfo = async (usrId) => {
     console.log(usrId);
     try {  
-        const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
+        const response = await fetch(`http://localhost:3000/rest-api-service/self`, {
         method: 'GET',
         credentials: 'include',
         withCredentials: true,
