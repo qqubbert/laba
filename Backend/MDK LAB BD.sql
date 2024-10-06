@@ -32,7 +32,7 @@ CREATE TABLE Users (
     PhoneNumber VARCHAR(11),
     Email VARCHAR(50) UNIQUE,
     Isblocked bool DEFAULT(false),
-    ProfilePicLink VARCHAR(100),
+    ProfilePicLink VARCHAR(100) DEFAULT(""),
     FOREIGN KEY (DepID)
         REFERENCES Departaments (DepID)
 );
