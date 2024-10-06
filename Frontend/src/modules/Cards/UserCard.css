@@ -13,6 +13,8 @@
     display: flex;
 
     user-select: none;
+
+    text-decoration: none;
 }
 
 .UserCard img {

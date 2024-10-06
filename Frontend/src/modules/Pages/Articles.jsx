@@ -10,6 +10,7 @@ function Articles() {
     const [selectedArticle, setSelectedArticle] = useState(null);
     const { articleId } = useParams();
     const navigate = useNavigate();
+    const [isArticlesLoaded, setIsArticlesLoaded] = useState(false);
 
     const LoadArticles = async () => {
         try {  
@@ -20,6 +21,7 @@ function Articles() {
             });
             const responseData = await response.json();
             setArticles(responseData);
+            setIsArticlesLoaded(true);
         } catch (error) {
             console.error("Ошибка:", error);
         }
@@ -27,13 +29,21 @@ function Articles() {
 
     const LoadSelectedArticle = async (articleId) => {
         try {  
-            const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleId}`, {
-                method: 'GET',
-                credentials: 'include',
-                withCredentials: true,
-            });
-            const articleData = await response.json();
-            setSelectedArticle(articleData);
+            if (isArticlesLoaded) {
+                const articleExists = articles.some(article => article.id === parseInt(articleId));
+                if (!articleExists) {
+                    navigate('/articles'); 
+                    return;
+                    // console.log('пользователь не существует');
+                }
+                const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    withCredentials: true,
+                });
+                const articleData = await response.json();
+                setSelectedArticle(articleData);
+            }
         } catch (error) {
             console.error("Ошибка:", error);
         }
@@ -63,7 +73,7 @@ function Articles() {
             LoadSelectedArticle(articleId);
             setSingleColumn(true);
         }
-    }, [articleId]);
+    }, [isArticlesLoaded, articleId]);
 
     return (
         <>
@@ -79,7 +89,7 @@ function Articles() {
                         </div> */}
                     </div>
                     <div id="articlesList" className={singleColumn ? "singleColumn" : ''}>
-                        {articles.map((article, i) => {
+                        {articles && articles.map((article, i) => {
                             const ArticleLink = `/articles/${article.id}`;
                             return (
                                 <NavLink 

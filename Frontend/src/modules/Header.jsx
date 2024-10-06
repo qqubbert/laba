@@ -65,7 +65,7 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
 
   return (
     <>
-        <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}} hideWindow={()=>{showProfWin()}}/>
+        <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}} profile={()=>{navigate(`/employee/${userInfo.id}`); showProfWin()}} hideWindow={()=>{showProfWin()}}/>
         <header>
             <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}><img src={plusIcon} alt="" />Новая статья</button>
             <ul>
@@ -97,10 +97,10 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
             <div id="userHeadInfo">
                 <h1 title={userInfo.department}>{userInfo.department}</h1>
                 <div id="usrProfile">
-                    <h2 id="Name">{userInfo.first_name} {userInfo.last_name} {userInfo.surname}</h2>
+                    <h2 id="Name" onClick={()=>navigate(`/employee/${userInfo.id}`)}>{userInfo.first_name} {userInfo.last_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>
                     <div id="photoBorder">
-                        <img onClick={showProfWin} id="Photo" src={userInfo.photoLink || "https://sun1-54.userapi.com/impg/CsWwpMtsi5yuPAVR0RIXsnp57xBcTLBRONnLKQ/YFqj6Pbck6I.jpg?size=961x1280&quality=95&sign=369a5d28a3e8d0fcae8a32c90514e223&type=album"} alt="" />
+                        <img onClick={showProfWin} id="Photo" src={userInfo.photoLink || "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"} alt="" />
                     </div>
                 </div>
             </div>

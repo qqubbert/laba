@@ -16,10 +16,10 @@ function EditArticleElWin({ hide, save }) {
   });
 
   const toggleBio = () => setNewArticleData({...newArticleData, bio: !newArticleData.bio});
-  const toggleChemistry = () => setNewArticleData({...newArticleData, bio: !newArticleData.chemistry});
-  const togglePhysics = () => setNewArticleData({...newArticleData, bio: !newArticleData.physics});
-  const toggleIt = () => setNewArticleData({...newArticleData, bio: !newArticleData.it});
-  const togglePublish = () => setNewArticleData({...newArticleData, bio: !newArticleData.publish});
+  const toggleChemistry = () => setNewArticleData({...newArticleData, chemistry: !newArticleData.chemistry});
+  const togglePhysics = () => setNewArticleData({...newArticleData, physics: !newArticleData.physics});
+  const toggleIt = () => setNewArticleData({...newArticleData, it: !newArticleData.it});
+  const togglePublish = () => setNewArticleData({...newArticleData, publish: !newArticleData.publish});
   const toggleTtl = (ttl) => setNewArticleData({...newArticleData, articleTtl: ttl});
   const checkSave = () => {
     const ttlInput = document.getElementById('newArticleTtl');
