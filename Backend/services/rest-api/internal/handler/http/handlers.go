@@ -244,3 +244,52 @@ func CreateArticleHandler(db *sql.DB) gin.HandlerFunc {
 		requests.CreateArticle(c, db)
 	}
 }
+
+func GetUserBySelfHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized, no userid cookie found"})
+			return
+		}
+
+		userId, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid user ID"})
+			return
+		}
+
+		user, err := requests.GetSelf(db, userId)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		if user == nil {
+			c.JSON(400, gin.H{"error": "User not found"})
+			return
+		}
+
+		c.JSON(200, user)
+	}
+}
+
+func GetTaskByUserIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized, userid is not found in cookie"})
+			return
+		}
+		userId, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid userid in cookie"})
+			return
+		}
+		tasks, err := requests.GetTaskByID(db, userId)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, tasks)
+	}
+}
