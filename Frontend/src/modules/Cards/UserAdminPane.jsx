@@ -72,7 +72,7 @@ function UserAdminPane({ userData, permission }) {
             <div id="divInfo">
               <div id="divInfoAll">
                 <div id="userInfoTxt">
-                  <div className="textdiv"><h1>{userData.first_name} {userData.last_name} {userData.surname}</h1>
+                  <div className="textdiv"><h1>{userData.last_name} {userData.first_name} {userData.surname}</h1>
                     {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Дата рождения: {userData.birthday}</h3>
@@ -117,7 +117,7 @@ function UserAdminPane({ userData, permission }) {
                   {userTasks.map((el, i)=>{
                     return (
                       <div className='task' id={`${i}taskInfo${el.id_employee}`}>
-                      <h2>{el.task}</h2>
+                      <h2 title={el.task}>{el.task}</h2>
                       <h4>Прогресс: </h4>
                       <ul id="progressbar">
                         <li id="progress001" className={`${i}progress`}></li>

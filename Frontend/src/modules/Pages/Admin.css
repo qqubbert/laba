@@ -44,7 +44,7 @@
     background-color: rgb(90, 35, 129);
 }
 
-#usersList input:focus {
+#usersListPane input:focus {
     border: none;
     outline: none;
 }

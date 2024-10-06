@@ -25,7 +25,10 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
     if (showProfileWin) {
         const profWinList = document.getElementById('profileWinList');
         profWinList.classList.add('profWinClosing');
+        const winBG = document.getElementById('winBackground');
+        winBG.classList.add('winClose');
         setTimeout(() => {
+            winBG.classList.remove('winClose');
             setShowProfileWin(false);
             profWinList.classList.remove('profWinClosing');
         }, 290);
@@ -62,7 +65,7 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
 
   return (
     <>
-        <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}}/>
+        <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}} hideWindow={()=>{showProfWin()}}/>
         <header>
             <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}><img src={plusIcon} alt="" />Новая статья</button>
             <ul>
