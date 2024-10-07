@@ -75,31 +75,6 @@ func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
-func CreateTaskHandler(db *sql.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var task requests.Task
-
-		//достаю данные из тела запроа
-		if err := c.BindJSON(&task); err != nil {
-			c.JSON(400, gin.H{"error": "Invalid request body"})
-			return
-		}
-		//проверяю на наличие айди работника и таски
-		if task.IdEmployee == 0 || task.Task == "" {
-			c.JSON(400, gin.H{"error": "Missing employee id or task description"})
-			return
-		}
-
-		//создаю задачу
-		err := requests.CreateTask(db, task)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(201, gin.H{"message": "Task created successfully!"})
-	}
-}
-
 func GetTasksByUserIdHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//получаю айдишник из юрл
@@ -300,5 +275,81 @@ func GetTaskByUserIdHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 		c.JSON(200, tasks)
+	}
+}
+
+func AddToVadoritesHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized, userid is not found in cookie"})
+			return
+		}
+		userId, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid userid in cookie"})
+			return
+		}
+
+		articleIDStr := c.Param("id")
+		articleID, err := strconv.Atoi(articleIDStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid article ID"})
+			return
+		}
+		err = requests.AddToVadoriteArticles(db, userId, articleID)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Failied to add article to favorite"})
+			return
+		}
+		c.JSON(201, gin.H{"message": "Article added to favorite successfully"})
+	}
+}
+
+func getArticleByAuthorIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		authorId, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid author id"})
+			return
+		}
+
+		articles, err := requests.GetArticlesByAuthorID(db, authorId)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Failed to get articles"})
+			return
+		}
+
+		if len(articles) == 0 {
+			c.JSON(404, gin.H{"error": "No articles found for this author"})
+			return
+		}
+
+		c.JSON(200, articles)
+	}
+}
+
+func CreateTaskByUserIdHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var newTask requests.TaskByID
+		idStr := c.Param("id")
+		employeeId, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid employee ID"})
+			return
+		}
+
+		if err := c.ShouldBindJSON(&newTask); err != nil {
+			c.JSON(400, gin.H{"error": "Invalid input"})
+			return
+		}
+		err = requests.CreateTaskByEmployeeId(db, employeeId, newTask)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Failed to add task"})
+			return
+		}
+
+		c.JSON(201, gin.H{"message": "Task added successfully!"})
 	}
 }
