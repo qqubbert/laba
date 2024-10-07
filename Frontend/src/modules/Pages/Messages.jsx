@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react'
 
-import './Admin.css';
+import './Messages.css';
 
 import UserCard from '../Cards/UserCard.jsx';
 import UserAdminPane from '../Cards/UserAdminPane.jsx';
 
 function Messages({ }) {
-    // const [chats, setChats] = useState([]);
+    const [chats, setChats] = useState([]);
     // const [userPane, setUserPane] = useState();
 
-    // const LoadChats = async () => {
-    //     try {  
-    //         const response = await fetch("http://localhost:3000/rest-api-service/users", {
-    //         method: 'GET',
-    //         credentials: 'include',
-    //         withCredentials: true,
-    //         });
+    const LoadChats = async () => {
+        try {  
+            const response = await fetch("http://localhost:3000/js-service/sanya/chats", {
+            method: 'GET',
+            credentials: 'include',
+            withCredentials: true,
+            });
         
-    //         const responseData = await response.json();
+            const responseData = await response.json();
 
-    //         setUsers(responseData);
+            setChats(responseData);
 
-    //         // console.log(responseData);
-    //     } catch (error) {
-    //         // console.error("Ошибка:", error);
-    //     }
-    // }
+            console.log(responseData);
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
 
     // const LoadUserPane = async (usrId) => {
     //     try {  
@@ -54,30 +54,95 @@ function Messages({ }) {
     //     selectedPerson.classList.add('selectedPersonAdmin');
     // }
 
-    // useEffect(() => {
-    //     LoadUsers();
-    // }, []);
+    useEffect(() => {
+        LoadChats();
+    }, []);
 
   return (
     <>
-        {/* <div id="adminPane">
-            <div id="usersListPane">
+        <div id="messages">
+            <div id="chatListPane">
                 <input type="text" placeholder='Поиск' />
-                <div id="usersList">
-                    {users.map((user, i)=>{
+                <div id="chatList">
+                    {chats.map((chat, i)=>{
                         // console.log(user);
                         return (
-                            <div key={user.id} className='UserCard' id={'userCard' + i} onClick={(e)=>{LoadUserPane(user.id); selectPersonFunc(e, i)}}>
-                                <UserCard userData={users[i]} />
+                            <div key={chat.id} className='chatCard' id={'chatCard' + i} >
+                                <h1>{chat.title}</h1>
                             </div>
                         )
                     })}
                 </div>
             </div>
-            <div id="userAdminPane">
-                <UserAdminPane userData={userPane || undefined} permission={permission}/>
+            <div id="chatPane">
+                <div id="chatInfo">
+                    <h1>Title</h1>
+                    {true && 
+                    <div id="chatInfoBtns">
+                        <button>Options</button>
+                    </div>}
+                </div>
+                {true && 
+                <>
+                <div id="messagesList">
+                    <div className="message">message001</div>
+                    <div className="message">message002</div>
+                    <div className="message">message003</div>
+                    <div className="message">message004</div>
+                    <div className="message">message005</div>
+                    <div className="message">message006</div>
+                    <div className="message">message007</div>
+                    <div className="message">message008</div>
+                    <div className="message">message009</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    {/* <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div>
+                    <div className="message">message010</div> */}
+                </div>
+                <div id="sendingPane">
+                    {/* <div id="inputdiv"> */}
+                        <input type="text" placeholder='Введите сообщение'/>
+                    {/* </div> */}
+                    <div id="sendingBtns">
+                        <button>Файл</button>
+                        <button>Отправить</button>
+                    </div>
+                </div>
+                </>}
             </div>
-        </div> */}
+        </div>
     </>
   )
 }

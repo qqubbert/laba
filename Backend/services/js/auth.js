@@ -37,7 +37,12 @@ authApp.get('/cookieclear', async (req, res) => {
         httpOnly: true,       
         secure: false,        
         sameSite: 'Lax',
-    })
+    });
+    res.cookie('admin', null, {
+        httpOnly: true,       
+        secure: false,        
+        sameSite: 'Lax',
+    });
     res.json({ message: 'cookie с токеном очищен' })
 })
 

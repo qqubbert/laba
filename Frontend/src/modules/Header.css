@@ -137,6 +137,12 @@ header #userHeadInfo img#Photo:hover {
     margin-top: 5px;
 
     user-select: none;
+
+    transition: all .15s ease-in-out;
+}
+
+#Name:hover {
+    filter: brightness(1.15);
 }
 
 #JobTitle {

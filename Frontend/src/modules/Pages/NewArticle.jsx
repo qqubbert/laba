@@ -217,6 +217,8 @@ function NewArticle({ hideArticleEditor }) {
               justify-content: space-between;
 
               position: relative;
+
+              word-break: break-all;
           }
 
           p {
@@ -232,7 +234,7 @@ function NewArticle({ hideArticleEditor }) {
               align-items: center;
               justify-content: space-between;
 
-              
+              word-break: break-all;
           }
 
           div img {
