@@ -11,16 +11,6 @@ type Task struct {
 	Progress   int    `json:"progress"`
 }
 
-func CreateTask(db *sql.DB, task Task) error {
-	query := `INSERT INTO tasks (Id_Employee, Task, Progress) VALUES (?, ?, 0)`
-	_, err := db.Exec(query, task.IdEmployee, task.Task)
-	if err != nil {
-		return nil
-	}
-
-	return nil
-}
-
 func GetTaskByID(db *sql.DB, userID int) ([]Task, error) {
 	query := `SELECT Task, Progress 
 			  FROM tasks 

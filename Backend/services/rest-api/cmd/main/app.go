@@ -12,21 +12,22 @@ import (
 )
 
 const (
-	allUsers          = "/users"
-	userById          = "/users/:id"
-	article           = "/articles"
-	articleById       = "/articles/:id"
-	commentsByID      = "/articles/:id/comments"
-	addComm           = "/articles/:id/comments"
-	CreateTasks       = "/tasks"
-	tasksByUserId     = "/users/:id/tasks"
-	CreateDepartments = "/departments"
-	CreateProject     = "/projects"
-	uploadFilePath    = "/upload"
-	staticUploadFile  = "/uploads"
-	uploadHtmlPath    = "/upload-html"
-	getUserByIDCookie = "/self"
-	getTaskByID       = "/tasks/selftasks"
+	allUsers           = "/users"
+	userById           = "/users/:id"
+	article            = "/articles"
+	articleById        = "/articles/:id"
+	commentsByID       = "/articles/:id/comments"
+	addComm            = "/articles/:id/comments"
+	addToFavorite      = "/articles/:id/favorites"
+	articlesByAuthorId = "/articles/author/:id"
+	tasksByUserId      = "/users/:id/tasks"
+	CreateDepartments  = "/departments"
+	CreateProject      = "/projects"
+	uploadFilePath     = "/upload"
+	staticUploadFile   = "/uploads"
+	uploadHtmlPath     = "/upload-html"
+	getUserByIDCookie  = "/self"
+	getTaskByID        = "/tasks/selftasks"
 )
 
 func main() {
@@ -55,11 +56,13 @@ func main() {
 	r.GET(commentsByID, http.GetCommentByIdHandler(db))
 	r.GET(getUserByIDCookie, http.GetUserBySelfHandler(db))
 	r.GET(getTaskByID, http.GetTaskByUserIdHandler(db))
-
-	r.POST(CreateTasks, http.CreateTaskHandler(db))
+	r.GET(articlesByAuthorId, http.GetArticlesByIdHandler(db))
+	
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))
 	r.POST(CreateProject, http.CreateProjectHandler(db))
 	r.POST(addComm, http.CreateComHandler(db))
+	r.POST(addToFavorite, http.AddToVadoritesHandler(db))
+	r.POST(tasksByUserId, http.CreateTaskByUserIdHandler(db))
 
 	r.PATCH(userById, http.UserUpdateHandler(db))
 
