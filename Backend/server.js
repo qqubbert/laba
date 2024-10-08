@@ -1,12 +1,19 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
+const clientApp = express();
 const cors = require('cors');
+const path = require('path');
 
-app.use(cors({
-    origin: 'http://localhost:5173', // Укажите фронтенд адрес (React-приложение)
-    credentials: true,               // Разрешить передачу куки
-}));
+// Настройка CORS
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
+clientApp.use(cors(corsOptions));
+clientApp.use(express.static('../frontend/dist'));
 
 // URL для микросервисов
 const JS_SERVICE_URL = 'http://localhost:3001';  // Микросервис на JS
@@ -35,3 +42,12 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`API Gateway запущен на порту ${PORT}`);
 });
+
+clientApp.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Возвращает index.html для всех маршрутов
+});
+
+// const CLIENT_PORT = 5500;
+// clientApp.listen(CLIENT_PORT, () => {
+//     console.log(`API Gateway запущен на порту ${CLIENT_PORT}`);
+// });

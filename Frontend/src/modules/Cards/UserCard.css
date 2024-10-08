@@ -2,7 +2,7 @@
     width: auto;
     height: auto;
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--card-color);
     
     border-radius: 15px;
     
@@ -39,7 +39,7 @@
 .UserCard:hover {
     cursor: pointer;
     
-    background-color: rgb(71, 26, 104);
+    background-color: var(--card-brighter-color);
     /* outline: 1px solid rgb(211, 159, 248); */
 }
 

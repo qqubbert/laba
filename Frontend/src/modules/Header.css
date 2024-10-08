@@ -36,7 +36,7 @@ header ul {
 header #userHeadInfo {
     /* margin: 15px; */
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--windows-brighter-color);
 
     border-radius: 0px 0px 0px 90px;
 
@@ -113,7 +113,7 @@ header #userHeadInfo img#Photo {
     /* grid-area: Photo; */
 
     border-radius: 30px;
-    border: solid 2px rgb(211, 159, 248);
+    border: solid 2px var(--border-color);
 
     transition: all .1s ease-in-out;
 
@@ -137,6 +137,12 @@ header #userHeadInfo img#Photo:hover {
     margin-top: 5px;
 
     user-select: none;
+
+    transition: all .15s ease-in-out;
+}
+
+#Name:hover {
+    filter: brightness(1.15);
 }
 
 #JobTitle {
@@ -167,7 +173,7 @@ header button {
     border: none;
     outline: none;
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--buttons-brighter-color);
 
     transition: all .15s ease-in-out;
 
@@ -187,7 +193,7 @@ header button img {
 header button:hover {
     cursor: pointer;
     
-    background-color: rgb(51, 17, 75);
+    background-color: var(--buttons-brighter-another-color);
 }
 
 header ul li a{
@@ -214,7 +220,7 @@ header ul li .selected {
 header ul li img {
     padding: 0px 5px;
 
-    fill: rgb(211, 159, 248);
+    fill: var(--text-color);
 }
 
 header ul li a:hover {
@@ -228,9 +234,9 @@ header ul li a:hover {
 }
 
 .selected {
-    outline: solid 2px rgb(211, 159, 248);
+    outline: solid 2px var(--border-color);
 }
 
 #newArticleBtn:hover {
-    background-color: rgb(90, 35, 129);
+    background-color: var(--buttons-brighter-another-color);
 }

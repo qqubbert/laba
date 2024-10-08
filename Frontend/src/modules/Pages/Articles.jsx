@@ -32,10 +32,15 @@ function Articles() {
             if (isArticlesLoaded) {
                 const articleExists = articles.some(article => article.id === parseInt(articleId));
                 if (!articleExists) {
+                    // const singleColumns = Array.from(document.getElementsByClassName('singleColumn'));
+                    // singleColumns.forEach(el=>{
+                    //     el.classList.remove('singleColumn');
+                    // })
                     navigate('/articles'); 
                     return;
                     // console.log('пользователь не существует');
                 }
+                setSingleColumn(true);
                 const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleId}`, {
                     method: 'GET',
                     credentials: 'include',
@@ -71,7 +76,6 @@ function Articles() {
     useEffect(() => {
         if (articleId) {
             LoadSelectedArticle(articleId);
-            setSingleColumn(true);
         }
     }, [isArticlesLoaded, articleId]);
 

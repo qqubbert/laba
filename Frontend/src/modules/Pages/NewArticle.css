@@ -5,7 +5,7 @@
     max-width: 1800px;
     height: 750px;
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--windows-color);
 
     border-radius: 30px;
 
@@ -39,7 +39,7 @@
     
     flex: 1;
 
-    background-color: rgb(50, 17, 73);
+    background-color: var(--windows-darker-color);
 
     overflow: scroll;
 
@@ -56,7 +56,7 @@
 
     min-height: 500px;
 
-    background-color: rgb(57, 18, 85);
+    background-color: var(--windows-little-darker-color);
 
     border-radius: 15px;
 
@@ -79,6 +79,8 @@
     justify-content: space-between;
 
     position: relative;
+
+    word-break: break-all;
 }
 
 #ArticleEditor p {
@@ -94,7 +96,7 @@
     align-items: center;
     justify-content: space-between;
 
-    
+    word-break: break-all;
 }
 
 #ArticleEditor div img {
@@ -188,7 +190,7 @@
     display: flex;
     flex-direction: row;
 
-    border: solid 1px rgb(211, 159, 248);
+    border: solid 1px var(--border-color);
 
     border-radius: 15px;
     
@@ -242,7 +244,7 @@
 }
 
 #emptyTitle {
-    color: rgba(211, 159, 248, 0.137);
+    color: var(--text-hidden-color);
 }
 
 #newArticleWin div#newArticleBottom {
@@ -271,7 +273,7 @@
     border: none;
     outline: none;
 
-    background-color: rgb(86, 31, 126);
+    background-color: var(--buttons-brighter-color);
 
     transition: all .15s ease-in-out;
 
@@ -285,7 +287,7 @@
 #newArticleWin button:hover {
     cursor: pointer;
     
-    background-color: rgb(100, 37, 146);
+    background-color: var(--buttons-brighter-another-color);
 }
 
 #newArticleWin button:hover[disabled] {
@@ -299,5 +301,5 @@
 }
 
 .edError {
-    border: 1px solid rgb(216, 86, 103) !important;
+    border: 1px solid var(--error-color) !important;
 }

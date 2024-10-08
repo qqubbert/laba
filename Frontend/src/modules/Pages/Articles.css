@@ -46,7 +46,7 @@
     padding: 10px 25px;
     margin: 5px 0;
     border-radius: 15px;
-    background-color: rgb(79, 30, 114);
+    background-color: var(--input-color);
     border: none;
     outline: none;
     box-sizing: border-box;
@@ -129,7 +129,7 @@
 
     border-radius: 15px;
 
-    background-color: rgb(79, 30, 114);
+    background-color: var(--card-color);
 
     text-decoration: none;
 
@@ -159,9 +159,9 @@
 }
 
 .ArticleCard:hover {
-    background-color: rgb(95, 38, 136);
+    background-color: var(--card-brighter-color);
 }
 
 .ArticleCard.active {
-    outline: 2px solid pink;
+    outline: 2px solid var(--border-color);
 }

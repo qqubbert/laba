@@ -25,7 +25,7 @@ ul#profileWinList li:last-child {
 }
 
 ul#profileWinList li {
-    background-color: rgb(63, 22, 92);
+    background-color: var(--windows-brighter-color);
 
     padding: 15px 25px;
 
@@ -51,7 +51,7 @@ ul#profileWinList li a {
 }
 
 ul#profileWinList li:hover {
-    background-color: rgb(90, 35, 129);
+    background-color: var(--windows-brighter-another-color);
 
     padding: 15px 25px;
 
