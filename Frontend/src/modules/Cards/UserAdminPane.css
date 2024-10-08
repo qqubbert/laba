@@ -10,7 +10,7 @@
 
     border-radius: 15px;
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--windows-color);
 
     display: flex;
     flex-direction: column;
@@ -60,7 +60,7 @@
     width: 100%;
     height: 100px;
 
-    background-color: rgb(73, 23, 109);
+    background-color: var(--windows-brighter-color);
 
     padding: 10px 25px;
 
@@ -80,7 +80,7 @@
     outline: none;
     border: none;
 
-    background-color: rgb(86, 31, 126);
+    background-color: var(--buttons-brighter-color);
 
     display: flex;
     justify-content: center;
@@ -92,7 +92,7 @@
 }
 
 #adminBtns button:hover {
-    background-color: rgb(102, 39, 148);
+    background-color: var(--buttons-brighter-another-color);
 
     cursor: pointer;
 }
@@ -104,7 +104,7 @@
     padding: 15px;
     margin: 15px;
 
-    background-color: rgb(86, 31, 126);
+    background-color: var(--card-brighter-color);
 
     border-radius: 15px;
 }
@@ -148,15 +148,15 @@ ul#progressbar li {
 
     /* outline: 1px solid black; */
 
-    background-color: rgb(46, 12, 44);
+    background-color: var(--task-progress-dark-color);
 }
 
 .progressFilled {
-    background-color: lime !important;
+    background-color: var(--task-progress-color) !important;
 }
 
 .selectedPersonAdmin {
-    outline: 2px solid rgb(211, 159, 248);
+    outline: 2px solid var(--border-color);
 }
 
 #taskList {
@@ -182,14 +182,14 @@ ul#progressbar li {
 
     border: none;
 
-    background-color: rgb(86, 31, 126);
+    background-color: var(--buttons-brighter-color);
 
     transition: all .15s ease-in-out;
 }
 
 #addTaskBtn:hover {
     cursor: pointer;
-    background-color: rgb(102, 39, 148);
+    background-color: var(--buttons-brighter-another-color);
 }
 
 .textdiv {
@@ -206,7 +206,7 @@ ul#progressbar li {
 
     border: none;
 
-    background-color: rgb(86, 31, 126);
+    background-color: var(--buttons-brighter-color);
 
     transition: all .15s ease-in-out;
 
@@ -218,6 +218,6 @@ ul#progressbar li {
 }
 
 .textdiv button:hover {
-    background-color: rgb(102, 39, 148);
+    background-color: var(--buttons-brighter-another-color);
     cursor: pointer;
 }

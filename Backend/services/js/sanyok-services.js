@@ -6,10 +6,11 @@ const cookieParser = require('cookie-parser');
 const sanyaApp = express();
 sanyaApp.use(express.json());
 sanyaApp.use(cookieParser());
-sanyaApp.use(cors({
-    origin: 'http://localhost:5173', 
-    credentials: true,               
-}));
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+    credentials: true,
+};
+sanyaApp.use(cors(corsOptions));
 
 const db = mysql.createConnection({
     host: "localhost",

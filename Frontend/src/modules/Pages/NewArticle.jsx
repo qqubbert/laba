@@ -185,7 +185,7 @@ function NewArticle({ hideArticleEditor }) {
 
                 font-family: "Roboto", sans-serif;
 
-                color: rgb(211, 159, 248);
+                color: white;
           }
           body {
               max-width: 100%;
@@ -193,8 +193,6 @@ function NewArticle({ hideArticleEditor }) {
               height: fit-content;
 
               min-height: 500px;
-
-              background-color: rgb(57, 18, 85);
 
               border-radius: 15px;
 
@@ -219,6 +217,8 @@ function NewArticle({ hideArticleEditor }) {
               position: relative;
 
               word-break: break-all;
+
+              mix-blend-mode: difference;
           }
 
           p {
@@ -235,6 +235,7 @@ function NewArticle({ hideArticleEditor }) {
               justify-content: space-between;
 
               word-break: break-all;
+              mix-blend-mode: difference;
           }
 
           div img {

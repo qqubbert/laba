@@ -41,7 +41,7 @@
 
     border: none;
 
-    background-color: rgb(90, 35, 129);
+    background-color: var(--input-color);
 }
 
 #chatListPane input:focus {
@@ -60,7 +60,7 @@
     width: auto;
     height: auto;
 
-    background-color: rgb(63, 22, 92);
+    background-color: var(--card-color);
     
     border-radius: 15px;
     
@@ -97,7 +97,7 @@
 .chatCard:hover {
     cursor: pointer;
     
-    background-color: rgb(71, 26, 104);
+    background-color: var(--card-brighter-color);
     /* outline: 1px solid rgb(211, 159, 248); */
 }
 
@@ -117,7 +117,7 @@
 
     border-radius: 15px;
 
-    background-color: rgb(53, 18, 78);
+    background-color: var(--windows-color);
 
     display: flex;
     flex-direction: column;
@@ -126,7 +126,7 @@
 
 #sendingPane {
     max-width: 100%;
-    background-color: rgb(61, 21, 90);
+    /* background-color: var(--windows-brighter-color); */
 
     padding: 15px 20px;
 
@@ -140,6 +140,7 @@
 
     padding: 5px 15px;
 
+    background-color: var(--input-color);
     border: none;
 }
 
@@ -153,8 +154,12 @@
 }
 
 #sendingBtns button {
-    padding: 5px;
+    padding: 10px 15px;
     margin: 5px;
+
+    background-color: var(--buttons-brighter-color);
+    border: none;
+    border-radius: 15px;
 }
 
 #chatInfo {
@@ -164,13 +169,20 @@
     max-width: 100%;
 
     padding: 20px;
-    background-color: rgb(61, 21, 90);
+    /* background-color: var(--window   s-brighter-color); */
 }
 
 #chatInfo #chatInfoBtns {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#chatInfo #chatInfoBtns button {
+    background-color: var(--buttons-brighter-color);
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
 }
 
 #messagesList {
@@ -181,11 +193,12 @@
     padding: 0px 35px;
     display: flex;
     flex-direction: column;
+    background-color: var(--windows-darker-color);
 }
 
 .message {
     width: fit-content;
-    background-color: rgb(84, 33, 121);
+    background-color: var(--card-brighter-color);
     padding: 15px 20px;
     margin: 5px 15px;
     border-radius: 15px;

@@ -9,10 +9,13 @@ app.use('/auth', authApp);
 app.use('/sanya', sanyaApp);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: 'http://localhost:5173', 
-    credentials: true,               
-}));
+
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const PORT = 3001;
 

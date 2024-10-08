@@ -11,10 +11,11 @@ const authApp = express();
 
 authApp.use(express.json());
 authApp.use(cookieParser());
-authApp.use(cors({
-    origin: 'http://localhost:5173', 
-    credentials: true,               
-}));
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+    credentials: true,
+};
+authApp.use(cors(corsOptions));
 
 const db = mysql.createConnection({
     host: "localhost",

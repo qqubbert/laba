@@ -1,11 +1,242 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+#root {
+  --buttons-color: rgb(45, 45, 78); 
+  --buttons-brighter-color: rgb(70, 70, 120); 
+  --buttons-brighter-another-color: rgb(80, 80, 135);
+  --buttons-another-color: rgb(39, 39, 68); 
+  --buttons-another-brighter-color: rgb(56, 56, 99); 
+  
+  --windows-color: #1a1b2e; 
+  --windows-brighter-color: #232442; 
+  --windows-brighter-another-color: rgb(45, 46, 78); 
+  --windows-darker-color: #141522;
+  --windows-little-darker-color: #1c1d32; 
+  
+  --card-color: rgb(34, 35, 64); 
+  --card-brighter-color: rgb(47, 48, 87);
+  
+  --input-color: rgb(53, 53, 92); 
+  --input-select-color: rgb(80, 80, 130);
+  
+  --text-color: rgb(220, 220, 240); 
+  --text-hidden-color: rgba(220, 220, 240, 0.13);
+  --border-color: rgb(170, 170, 220);
+  
+  --error-color: rgb(194, 64, 64); 
+  --error-another-color: rgb(110, 37, 37);
+  
+  --background-color: rgb(20, 20, 40);
+  --bright-color: rgb(255, 255, 255); 
+  
+  --task-progress-color: #3dc99d; 
+  --task-progress-dark-color: #122821; 
+}
+
+#root.purple {
+  --buttons-color: rgb(72, 32, 110);
+  --buttons-brighter-color: rgb(90, 42, 135);
+  --buttons-brighter-another-color: rgb(103, 47, 153); 
+  --buttons-another-color: rgb(84, 28, 121); 
+  --buttons-another-brighter-color: rgb(98, 37, 145); 
+  
+  --windows-color: #412367;
+  --windows-brighter-color: #492a76; 
+  --windows-brighter-another-color: rgb(102, 52, 146); 
+  --windows-darker-color: #381c5e;
+  --windows-little-darker-color: #3c2167; 
+  
+  --card-color: rgb(73, 31, 103); 
+  --card-brighter-color: rgb(88, 38, 123); 
+  
+  --input-color: rgb(95, 28, 140); 
+  --input-select-color: rgb(126, 47, 179); 
+  
+  --text-color: rgb(220, 173, 255); 
+  --text-hidden-color: rgba(220, 173, 255, 0.13);
+  --border-color: rgb(205, 155, 255); 
+  
+  --error-color: rgb(197, 74, 144);
+  --error-another-color: rgb(110, 35, 80); 
+  
+  --background-color: rgb(36, 12, 54); 
+  --bright-color: rgb(255, 245, 255); 
+  
+  --task-progress-color: #10ff60; 
+  --task-progress-dark-color: #36123a;
+}
+
+#root.sunset {
+  --buttons-color: rgb(214, 90, 49);
+  --buttons-brighter-color: rgb(235, 104, 56); 
+  --buttons-brighter-another-color: rgb(245, 132, 76); 
+  --buttons-another-color: rgb(192, 79, 43); 
+  --buttons-another-brighter-color: rgb(219, 101, 59); 
+  
+  --windows-color: #4a1d33;
+  --windows-brighter-color: #5a1e38; 
+  --windows-brighter-another-color: rgb(128, 52, 73); 
+  --windows-darker-color: #42172d; 
+  --windows-little-darker-color: #471a30; 
+  
+  --card-color: rgb(134, 60, 75); 
+  --card-brighter-color: rgb(153, 71, 87); 
+  
+  --input-color: rgb(173, 73, 100); 
+  --input-select-color: rgb(214, 101, 120); 
+  
+  --text-color: rgb(255, 218, 188); 
+  --text-hidden-color: rgba(255, 218, 188, 0.13); 
+  --border-color: rgb(255, 191, 164); 
+  
+  --error-color: rgb(235, 66, 35); 
+  --error-another-color: rgb(143, 33, 20); 
+  
+  --background-color: rgb(65, 25, 32); 
+  --bright-color: rgb(255, 245, 238);
+  
+  --task-progress-color: #ffba49; 
+  --task-progress-dark-color: #522832; 
+}
+
+#root.ocean {
+  --buttons-color: rgb(33, 94, 115); 
+  --buttons-brighter-color: rgb(43, 121, 148); 
+  --buttons-brighter-another-color: rgb(53, 142, 173);
+  --buttons-another-color: rgb(29, 79, 97);
+  --buttons-another-brighter-color: rgb(36, 103, 125); 
+  
+  --windows-color: #1d4a58;
+  --windows-brighter-color: #236171;
+  --windows-brighter-another-color: rgb(60, 138, 152);
+  --windows-darker-color: #19414e;
+  --windows-little-darker-color: #1b4754; 
+  
+  --card-color: rgb(44, 112, 124); 
+  --card-brighter-color: rgb(51, 130, 145); 
+  
+  --input-color: rgb(64, 149, 159); 
+  --input-select-color: rgb(92, 182, 190); 
+  
+  --text-color: rgb(215, 240, 245); 
+  --text-hidden-color: rgba(215, 240, 245, 0.13); 
+  --border-color: rgb(188, 230, 235); 
+  
+  --error-color: rgb(214, 71, 93); 
+  --error-another-color: rgb(138, 37, 57); 
+  
+  --background-color: rgb(22, 55, 62); 
+  --bright-color: rgb(230, 255, 255); 
+  
+  --task-progress-color: #6cdbdb; 
+  --task-progress-dark-color: #133e44; 
+}
+
+#root.forest {
+  --buttons-color: rgb(34, 139, 34); 
+  --buttons-brighter-color: rgb(60, 179, 113); 
+  --buttons-brighter-another-color: rgb(85, 204, 153); 
+  --buttons-another-color: rgb(25, 100, 25); 
+  --buttons-another-brighter-color: rgb(46, 137, 46); 
+
+  --windows-color: #2e3a24; 
+  --windows-brighter-color: #3e4a34; 
+  --windows-brighter-another-color: rgb(60, 76, 50); 
+  --windows-darker-color: #1a1f14;
+  --windows-little-darker-color: #242d1f; 
+
+  --card-color: rgb(34, 44, 28); 
+  --card-brighter-color: rgb(47, 57, 39); 
+
+  --input-color: rgb(53, 71, 53); 
+  --input-select-color: rgb(80, 100, 80); 
+
+  --text-color: rgb(220, 240, 220); 
+  --text-hidden-color: rgba(220, 240, 220, 0.13);
+  --border-color: rgb(170, 220, 170); 
+
+  --error-color: rgb(194, 64, 64); 
+  --error-another-color: rgb(110, 37, 37); 
+
+  --background-color: rgb(20, 30, 20);
+  --bright-color: rgb(255, 255, 255); 
+
+  --task-progress-color: #4caf50; 
+  --task-progress-dark-color: #1c3e1c; 
+}
+
+#root.evening {
+  --buttons-color: rgb(64, 49, 105);
+  --buttons-brighter-color: rgb(85, 63, 135);
+  --buttons-brighter-another-color: rgb(102, 76, 165);
+  --buttons-another-color: rgb(56, 44, 90);
+  --buttons-another-brighter-color: rgb(73, 58, 115);
+  
+  --windows-color: #34245e;
+  --windows-brighter-color: #403078;
+  --windows-brighter-another-color: rgb(78, 62, 140);
+  --windows-darker-color: #2c1d54;
+  --windows-little-darker-color: #311e5d;
+  
+  --card-color: rgb(54, 44, 90);
+  --card-brighter-color: rgb(64, 54, 110);
+  
+  --input-color: rgb(83, 66, 135);
+  --input-select-color: rgb(108, 86, 170);
+  
+  --text-color: rgb(230, 215, 250);
+  --text-hidden-color: rgba(230, 215, 250, 0.13);
+  --border-color: rgb(210, 190, 240);
+  
+  --error-color: rgb(184, 58, 105);
+  --error-another-color: rgb(130, 40, 70);
+  
+  --background-color: rgb(44, 33, 70);
+  --bright-color: rgb(250, 240, 255);
+  
+  --task-progress-color: #da7fb1;
+  --task-progress-dark-color: #451f39;
+}
+
+#root.berry {
+  --buttons-color: rgb(124, 20, 60);
+  --buttons-brighter-color: rgb(145, 30, 75);
+  --buttons-brighter-another-color: rgb(170, 40, 90);
+  --buttons-another-color: rgb(108, 18, 52);
+  --buttons-another-brighter-color: rgb(130, 25, 65);
+  
+  --windows-color: #5b0f32;
+  --windows-brighter-color: #6d1239;
+  --windows-brighter-another-color: rgb(150, 50, 95);
+  --windows-darker-color: #500e2c;
+  --windows-little-darker-color: #570f31;
+  
+  --card-color: rgb(114, 20, 55);
+  --card-brighter-color: rgb(135, 30, 70);
+  
+  --input-color: rgb(160, 40, 85);
+  --input-select-color: rgb(190, 50, 105);
+  
+  --text-color: rgb(245, 215, 225);
+  --text-hidden-color: rgba(245, 215, 225, 0.13);
+  --border-color: rgb(220, 180, 195);
+  
+  --error-color: rgb(200, 64, 100);
+  --error-another-color: rgb(130, 35, 60);
+  
+  --background-color: rgb(80, 15, 45);
+  --bright-color: rgb(255, 240, 245);
+  
+  --task-progress-color: #ff6384;
+  --task-progress-dark-color: #4c0c26;
+}
+
 * {
   margin: 0;
 
   font-family: "Roboto", sans-serif;
 
-  color: rgb(211, 159, 248);
+  color: var(--text-color);
 
   /* box-sizing: border-box; */
 }
@@ -24,7 +255,7 @@ body #root {
   align-items: center;
   justify-content: center; */
 
-  background-color: rgb(32, 9, 48);
+  background-color: var(--background-color);
 
   overflow: hidden;
 }
