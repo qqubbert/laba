@@ -120,6 +120,15 @@ sanyaApp.post("/chatcreate", (req, res) => {
     });
 });
 
+sanyaApp.post("/privatechat", (req, res) => {
+    const ID = req.cookies.userid;
+    const{user_id} = req.body;
+    console.log(ID + " " + user_id);
+    const chatCreated = `
+    SELECT * FROM chat_users cu LEFT JOIN chats c ON cu.chat_id = c.id WHERE c.private = true AND COUNT(cu.id) = 2 AND cu.user_id IN (SELECT * FROM chat_users WHERE user_id = ? or user_id = ?);
+    `
+});
+
 sanyaApp.post("/chatadduser", (req, res) => {
     const{chat_id, self} = req.body;
     let user_id;
