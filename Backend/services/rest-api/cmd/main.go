@@ -47,7 +47,7 @@ func main() {
 
 	r := gin.Default()
 
-	//запросы ебанутого уровня кондиций
+	//запросы уровня кондиций
 	r.GET(allUsers, http.GetAllUsersHandler(db))
 	r.GET(userById, http.GetUserByIdHandler(db))
 	r.GET(article, http.GetAllArticlesHandler(db))
@@ -57,7 +57,7 @@ func main() {
 	r.GET(getUserByIDCookie, http.GetUserBySelfHandler(db))
 	r.GET(getTaskByID, http.GetTaskByUserIdHandler(db))
 	r.GET(articlesByAuthorId, http.GetArticlesByIdHandler(db))
-	
+
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))
 	r.POST(CreateProject, http.CreateProjectHandler(db))
 	r.POST(addComm, http.CreateComHandler(db))
