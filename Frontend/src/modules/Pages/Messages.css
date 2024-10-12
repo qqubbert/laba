@@ -3,6 +3,7 @@
     /* top: 70px; */
 
     width: 100vw;
+    min-height: calc(100% - 70px);
     max-height: calc(100% - 70px);
 
     position: relative;
@@ -73,6 +74,14 @@
     user-select: none;
 
     text-decoration: none;
+
+    outline: 2px solid transparent;
+
+    transition: all .15s ease-in-out;
+}
+
+.chatCard.selectedChat {
+    outline: 2px solid var(--border-color);
 }
 
 .chatCard img {
@@ -126,22 +135,34 @@
 
 #sendingPane {
     max-width: 100%;
+    height: fit-content;
     /* background-color: var(--windows-brighter-color); */
 
     padding: 15px 20px;
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-#sendingPane input {
+#sendingPane textarea {
     width: 100%;
+    /* max-height: 30px; */
     border-radius: 15px;
-
+    resize: none;
     padding: 5px 15px;
 
     background-color: var(--input-color);
     border: none;
+}
+
+#sendingPane textarea::selection {
+    background-color: var(--input-select-color);
+}
+
+#sendingPane textarea:focus {
+    border: none;
+    outline: none;
 }
 
 #sendingBtns {
@@ -154,12 +175,31 @@
 }
 
 #sendingBtns button {
+    max-width: 50px;
+    max-height: 40px;
     padding: 10px 15px;
     margin: 5px;
 
     background-color: var(--buttons-brighter-color);
     border: none;
     border-radius: 15px;
+
+    transition: all .1s ease-in-out;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sendingBtns button:hover {
+    cursor: pointer;
+    background-color: var(--buttons-brighter-another-color);
+}
+
+#sendingBtns button[disabled]:hover {
+    cursor:not-allowed;
+    background-color: var(--buttons-brighter-color);
+    filter: brightness(.5);
 }
 
 #chatInfo {
@@ -183,6 +223,12 @@
     border: none;
     border-radius: 15px;
     padding: 10px 15px;
+    transition: all .1s ease-in-out;
+}
+
+#chatInfo #chatInfoBtns button:hover {
+    cursor: pointer;
+    background-color: var(--buttons-brighter-another-color);
 }
 
 #messagesList {
@@ -198,12 +244,13 @@
 
 .message {
     width: fit-content;
+    max-width: 70%;
     background-color: var(--card-brighter-color);
     padding: 15px 20px;
     margin: 5px 15px;
     border-radius: 15px;
     border-bottom-left-radius: 0;
-
+    word-break: break-word ;
     align-self: start;
 }
 

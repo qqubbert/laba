@@ -86,6 +86,8 @@ function App() {
     if (firstLogin) {
       AuthTry();
     }
+    const root = document.getElementById('root');
+    root.classList.add(localStorage.getItem('theme') || 'dark');
   }, []);
 
   useEffect(() => {

@@ -2,19 +2,54 @@ import { useEffect, useState } from 'react'
 
 import './Messages.css';
 
-import UserCard from '../Cards/UserCard.jsx';
-import UserAdminPane from '../Cards/UserAdminPane.jsx';
+// import UserCard from '../Cards/UserCard.jsx';
+// import UserAdminPane from '../Cards/UserAdminPane.jsx';
+
+import fileIcon from '../../assets/FileIcon.svg';
+import sendIcon from '../../assets/SendIcon.svg';
+import settingsIcon from '../../assets/SettingsIcon.svg';
 
 function Messages({ }) {
     const [chats, setChats] = useState([]);
-    // const [userPane, setUserPane] = useState();
+    const [messages, setMessages] = useState([]);
+    const [chatLoaded, setChatLoaded] = useState(false);
+    const [selectedChat, setSelectedChat] = useState(0);
+    const [sendingMsg, setSendingMsg] = useState('');
+    const [user, setUser] = useState(0);
+
+    const msgSend = async () => {
+        try {  
+            const textInput = document.getElementById('sendingMsgInput');
+            textInput.value = '';
+            console.log('sendingMsg:' + sendingMsg);
+            console.log('selectedChat:' + selectedChat);
+            setSendingMsg(prev => '')
+            const response = await fetch("http://localhost:3000/js-service/sanya/msgsend", {
+                method: 'POST',
+                credentials: 'include',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: selectedChat,
+                    msg: sendingMsg,
+                })
+            });
+            if (response.ok) {
+                LoadChatMessages(selectedChat);
+            }
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
 
     const LoadChats = async () => {
         try {  
             const response = await fetch("http://localhost:3000/js-service/sanya/chats", {
-            method: 'GET',
-            credentials: 'include',
-            withCredentials: true,
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
             });
         
             const responseData = await response.json();
@@ -27,32 +62,36 @@ function Messages({ }) {
         }
     }
 
-    // const LoadUserPane = async (usrId) => {
-    //     try {  
-    //         const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
-    //         method: 'GET',
-    //         credentials: 'include',
-    //         withCredentials: true,
-    //         });
+    const LoadChatMessages = async (chatid) => {
+        try {  
+            const response = await fetch(`http://localhost:3000/js-service/sanya/chatmsgs/${chatid}`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
         
-    //         const adminUserData = await response.json();
+            const responseData = (await response.json());
+            const messagesData = responseData.rs;
+            console.log(messagesData);
+            setUser(responseData.user_id);
+            console.log(responseData.user_id);
+            setChatLoaded(true);
+            setMessages(messagesData);
 
-    //         setUserPane(adminUserData);
+            console.log(messagesData);
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    }
 
-    //         console.log(adminUserData);
-    //     } catch (error) {
-    //         console.error("Ошибка:", error);
-    //     }
-    // }
-
-    // const selectPersonFunc = (e, i) => {
-    //     const userCards = Array.from(document.getElementsByClassName('UserCard'));
-    //     userCards.forEach((el)=>{
-    //         el.classList.remove('selectedPersonAdmin');
-    //     });
-    //     const selectedPerson = document.getElementById('userCard'+i);
-    //     selectedPerson.classList.add('selectedPersonAdmin');
-    // }
+    const selectChatFunc = (i) => {
+        const chatCards = Array.from(document.getElementsByClassName('chatCard'));
+        chatCards.forEach((el)=>{
+            el.classList.remove('selectedChat');
+        });
+        const selectedChat = document.getElementById('chatCard' + i);
+        selectedChat.classList.add('selectedChat');
+    }
 
     useEffect(() => {
         LoadChats();
@@ -64,10 +103,11 @@ function Messages({ }) {
             <div id="chatListPane">
                 <input type="text" placeholder='Поиск' />
                 <div id="chatList">
-                    {chats.map((chat, i)=>{
+                    {chats && 
+                    chats.map((chat, i)=>{
                         // console.log(user);
                         return (
-                            <div key={chat.id} className='chatCard' id={'chatCard' + i} >
+                            <div key={chat.chat_id} className='chatCard' id={'chatCard' + i} onClick={()=>{LoadChatMessages(chat.chat_id); selectChatFunc(i); setSelectedChat(chat.chat_id)}}>
                                 <h1>{chat.title}</h1>
                             </div>
                         )
@@ -76,70 +116,37 @@ function Messages({ }) {
             </div>
             <div id="chatPane">
                 <div id="chatInfo">
-                    <h1>Title</h1>
-                    {true && 
+                    <h1>{'Выберите чат'}</h1>
+                    {chatLoaded && 
                     <div id="chatInfoBtns">
-                        <button>Options</button>
+                        <button><img src={settingsIcon} alt="" /> </button>
                     </div>}
                 </div>
-                {true && 
+                {chatLoaded && 
                 <>
-                <div id="messagesList">
-                    <div className="message">message001</div>
-                    <div className="message">message002</div>
-                    <div className="message">message003</div>
-                    <div className="message">message004</div>
-                    <div className="message">message005</div>
-                    <div className="message">message006</div>
-                    <div className="message">message007</div>
-                    <div className="message">message008</div>
-                    <div className="message">message009</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    {/* <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div>
-                    <div className="message">message010</div> */}
-                </div>
-                <div id="sendingPane">
-                    {/* <div id="inputdiv"> */}
-                        <input type="text" placeholder='Введите сообщение'/>
-                    {/* </div> */}
-                    <div id="sendingBtns">
-                        <button>Файл</button>
-                        <button>Отправить</button>
+                    <div id="messagesList">
+                        {messages.map((message, i)=>{
+                            return (
+                                <div 
+                                    key={message.id} 
+                                    className={`message ${user == message.sender_id ? 'self' : ''}`}>
+                                    {/* {console.log('message:' + message)}
+                                    {console.log('user:' + user)}
+                                    {console.log('-------')} */}
+                                    {message.msg}
+                                </div>
+                            )
+                        })}
                     </div>
-                </div>
+                    <div id="sendingPane">
+                        {/* <div id="inputdiv"> */}
+                        <textarea id="sendingMsgInput" type="text" placeholder='Введите сообщение' onChange={(e)=>{setSendingMsg(prev => e.target.value)}}/>
+                        {/* </div> */}
+                        <div id="sendingBtns">
+                            <button disabled><img src={fileIcon} alt="" /> </button>
+                            <button onClick={()=>{msgSend();}} disabled={!sendingMsg}><img src={sendIcon} alt="" /> </button>
+                        </div>
+                    </div>
                 </>}
             </div>
         </div>
