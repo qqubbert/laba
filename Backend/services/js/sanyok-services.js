@@ -125,8 +125,50 @@ sanyaApp.post("/privatechat", (req, res) => {
     const{user_id} = req.body;
     console.log(ID + " " + user_id);
     const chatCreated = `
-    SELECT * FROM chat_users cu LEFT JOIN chats c ON cu.chat_id = c.id WHERE c.private = true AND COUNT(cu.id) = 2 AND cu.user_id IN (SELECT * FROM chat_users WHERE user_id = ? or user_id = ?);
+    SELECT c.id,
+    	   cu1.user_id,
+           cu2.user_id
+    FROM chats c
+    JOIN chat_users cu1 ON cu1.chat_id = c.id
+    JOIN chat_users cu2 ON cu2.chat_id = c.id
+    WHERE c.private = true
+      AND cu1.user_id = ?
+      AND cu2.user_id = ?
+    GROUP BY c.id
     `
+    db.query(chatCreated, [ID, user_id], (err, rsChat) => {
+        console.log(rsChat);
+        if (err) {
+            console.log(err);
+        } else if (rsChat >= 1) {
+            console.log(rsChat);
+            res.status(200).json(rsChat);
+        } else {
+            const createChat = `
+            INSERT INTO chats (private) VAUES (true);
+            `
+            db.query(createChat, [], (err, rsCreate) => {
+                console.log(rsCreate);
+                if (err) {
+                    console.log(err);
+                } else {
+                    const chat_id = rsCreate.insertId;
+                    const addUsers = `
+                    INSERT INTO chat_users (user_id, chat_id) VALUES (?, ?), (?, ?);
+                    `
+                    db.query(addUsers, [ID, chat_id, user_id, chat_id], (err, rsAdd) => {
+                        console.log(rsAdd);
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("New private chat created!");
+                            res.status(200).json(rsAdd);
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 sanyaApp.post("/chatadduser", (req, res) => {
