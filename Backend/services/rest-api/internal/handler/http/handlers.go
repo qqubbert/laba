@@ -2,9 +2,13 @@ package http
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"path/filepath"
 	"rest-api/pkg/requests"
 	"strconv"
+	"time"
 )
 
 func GetAllUsersHandler(db *sql.DB) gin.HandlerFunc {
@@ -351,5 +355,50 @@ func CreateTaskByUserIdHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		c.JSON(201, gin.H{"message": "Task added successfully!"})
+	}
+}
+
+func CreatePFPHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Получаем ID пользователя из параметров URL
+		userIDStr := c.Param("id")
+		userID, err := strconv.Atoi(userIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+			return
+		}
+
+		// Получаем файл из запроса
+		file, err := c.FormFile("avatar")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to upload avatar"})
+			return
+		}
+
+		// Генерируем уникальное имя файла на основе таймстемпа UNIX
+		uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
+
+		// Сохраняем файл в папку uploads/pics
+		path := filepath.Join("uploads", "pics", uniqueFilename)
+		if err := c.SaveUploadedFile(file, path); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save avatar"})
+			return
+		}
+
+		// Формируем URL для файла
+		avatarURL := fmt.Sprintf("http://localhost:3002/uploads/pics/%s", uniqueFilename)
+
+		// Обновляем ссылку на аватар в базе данных
+		err = requests.CreatePFP(db, userID, avatarURL)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update avatar in database"})
+			return
+		}
+
+		// Возвращаем успешный ответ с URL аватарки
+		c.JSON(http.StatusOK, gin.H{
+			"message":    "Avatar updated successfully",
+			"avatar_url": avatarURL,
+		})
 	}
 }

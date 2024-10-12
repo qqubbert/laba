@@ -28,6 +28,7 @@ const (
 	uploadHtmlPath     = "/upload-html"
 	getUserByIDCookie  = "/self"
 	getTaskByID        = "/tasks/selftasks"
+	createPFP          = "/users/:id/avatar"
 )
 
 func main() {
@@ -65,6 +66,7 @@ func main() {
 	r.POST(tasksByUserId, http.CreateTaskByUserIdHandler(db))
 
 	r.PATCH(userById, http.UserUpdateHandler(db))
+	r.PATCH(createPFP, http.CreatePFPHandler(db))
 
 	r.POST(uploadFilePath, requests.UploadFile)
 	r.Static(staticUploadFile, "./uploads")
