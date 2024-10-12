@@ -123,7 +123,7 @@
 	-moz-box-orient: vertical;
 }
 
-ul#progressbar {
+ul.progressbar {
     list-style: none;
 
     display: flex;
@@ -134,16 +134,16 @@ ul#progressbar {
     margin: 15px 0px;
 }
 
-ul#progressbar li:first-of-type {
+ul.progressbar li:first-of-type {
     border-radius: 15px 0px 0px 15px;
 }
 
-ul#progressbar li:last-of-type {
+ul.progressbar li:last-of-type {
     border-radius: 0px 15px 15px 0px;
 }
 
-ul#progressbar li {
-    width: 10px;
+ul.progressbar li {
+    width: 1%;
     height: 10px;
 
     /* outline: 1px solid black; */
