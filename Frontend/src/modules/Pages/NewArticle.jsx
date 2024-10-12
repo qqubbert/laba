@@ -216,7 +216,7 @@ function NewArticle({ hideArticleEditor }) {
 
               position: relative;
 
-              word-break: break-all;
+              word-break: break-word;
 
               mix-blend-mode: difference;
           }
@@ -234,7 +234,7 @@ function NewArticle({ hideArticleEditor }) {
               align-items: center;
               justify-content: space-between;
 
-              word-break: break-all;
+              word-break: break-word;
               mix-blend-mode: difference;
           }
 

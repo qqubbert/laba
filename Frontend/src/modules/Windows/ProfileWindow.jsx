@@ -19,22 +19,29 @@ function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
     if (root.classList.contains('ocean')) {
       root.classList.remove('ocean');
       root.classList.add('sunset');
+      localStorage.setItem('theme', 'sunset');
     } else if (root.classList.contains('sunset')) {
       root.classList.remove('sunset');
       root.classList.add('purple');
+      localStorage.setItem('theme', 'purple');
     } else if (root.classList.contains('purple')) {
       root.classList.remove('purple');
       root.classList.add('forest');
+      localStorage.setItem('theme', 'forest');
     } else if (root.classList.contains('forest')) {
       root.classList.remove('forest');
       root.classList.add('evening');
+      localStorage.setItem('theme', 'evening');
     } else if (root.classList.contains('evening')) {
       root.classList.add('berry');
       root.classList.remove('evening');
+      localStorage.setItem('theme', 'berry');
     } else if (root.classList.contains('berry')) {
       root.classList.remove('berry');
+      localStorage.setItem('theme', '');
     } else {
       root.classList.add('ocean');
+      localStorage.setItem('theme', 'ocean');
     }
   }
 

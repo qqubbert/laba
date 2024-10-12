@@ -60,7 +60,7 @@ sanyaApp.get("/chatmsgs/:chatid", (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.status(200).json(rs)
+                    res.status(200).json({rs, user_id})
                 }
             });
         } else {
@@ -160,7 +160,8 @@ sanyaApp.post("/chatadduser", (req, res) => {
 sanyaApp.post("/msgsend", (req, res) => {
     const{chat_id, msg} = req.body;
     let sender_id = req.cookies.userid;
-    console.log(sender_id);
+    console.log("sender_id: "+sender_id);
+    console.log("chat_id: "+chat_id);
     const inChat = `
     SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
     `
