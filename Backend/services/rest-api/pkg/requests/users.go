@@ -53,3 +53,9 @@ func GetUser(db *sql.DB, id int) (*User, error) {
 	return &user, nil
 
 }
+
+func FireUser(db *sql.DB, userID int) error {
+	query := `UPDATE Users SET Isblocked = true WHERE ID = ?`
+	_, err := db.Exec(query, userID)
+	return err
+}
