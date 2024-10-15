@@ -89,7 +89,8 @@ create table article_comms (
 
 create table chats (
 	id int auto_increment unique not null primary key,
-	title varchar(100)
+	title varchar(100),
+    private boolean
 );
 
 create table chat_users (
