@@ -7,7 +7,7 @@ import editIcon from '../../assets/EditIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData, permission }) {
+function UserAdminPane({ userData, permission, usrUpd }) {
   const [userTasks, setUserTasks] = useState([]);
 
   function progressUpd(userTasks) {
@@ -27,6 +27,18 @@ function UserAdminPane({ userData, permission }) {
     });
   }
   
+  const fireUser = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/fired`, {
+      method: 'PATCH',
+      credentials: 'include',
+      withCredentials: true,
+    })
+    if (response.ok) {
+      usrUpd();
+    } else {
+      console.log('Ошибка');
+    }
+  }
 
   const taskLoad = async () => {
     try {
@@ -51,6 +63,23 @@ function UserAdminPane({ userData, permission }) {
       setUserTasks([]); 
     }
   };
+
+  const taskAdd = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/tasks`,{
+      method: 'POST',
+      credentials: 'include',
+      withCredentials: true,
+      body: JSON.stringify({
+          task: "taskTxt"
+      })
+    });
+    if (response.ok) {
+      taskLoad();
+    } else {
+        console.log('Ошибка при добавлении задачи');
+    }
+    
+  }
   
 
   useEffect(() => {
@@ -67,6 +96,7 @@ function UserAdminPane({ userData, permission }) {
 
   return (
     <>
+        
         {userData && 
         <>
             <div id="divInfo">
@@ -224,14 +254,14 @@ function UserAdminPane({ userData, permission }) {
                       </div>
                     )
                   })}
-                  {permission == 'admin' && <button id="addTaskBtn"><img src={plusIcon} alt="" /></button>}
+                  {permission == 'admin' && <button id="addTaskBtn" onClick={()=>{taskAdd()}}><img src={plusIcon} alt="" /></button>}
                 </>
                 }
               </div>
             </div>
             <div id="adminBtns">
                 <button><img src={msgIcon} alt="" />Сообщение</button>
-                {permission == 'admin' && <button><img src={closeIcon} alt="" />Уволить</button>}
+                {permission == 'admin' && <button onClick={()=>{fireUser()}}><img src={closeIcon} alt="" />Уволить</button>}
             </div>
         </>}
     </>

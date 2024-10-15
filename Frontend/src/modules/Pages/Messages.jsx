@@ -91,6 +91,7 @@ function Messages({ }) {
         });
         const selectedChat = document.getElementById('chatCard' + i);
         selectedChat.classList.add('selectedChat');
+        setSelectedChat(i - 1);
     }
 
     useEffect(() => {
@@ -116,7 +117,7 @@ function Messages({ }) {
             </div>
             <div id="chatPane">
                 <div id="chatInfo">
-                    <h1>{'Выберите чат'}</h1>
+                        <h1>{selectedChat !== 0 && chats.find(chat => chat.chat_id === selectedChat)?.title || 'Выберите чат'}</h1>
                     {chatLoaded && 
                     <div id="chatInfoBtns">
                         <button><img src={settingsIcon} alt="" /> </button>

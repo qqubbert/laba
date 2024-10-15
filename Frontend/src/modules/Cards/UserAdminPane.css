@@ -98,7 +98,7 @@
 }
 
 .task {
-    width: 35%;
+    min-width: 35%;
     height: 80px;
 
     padding: 15px;
