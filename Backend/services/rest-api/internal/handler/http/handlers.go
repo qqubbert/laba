@@ -402,3 +402,20 @@ func CreatePFPHandler(db *sql.DB) gin.HandlerFunc {
 		})
 	}
 }
+
+func BlockUserHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		userID, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid user ID"})
+			return
+		}
+		err = requests.FireUser(db, userID)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Failed to block user"})
+			return
+		}
+		c.JSON(204, gin.H{"message": "User blocked successfully!"})
+	}
+}

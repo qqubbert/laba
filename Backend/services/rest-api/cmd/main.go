@@ -29,6 +29,7 @@ const (
 	getUserByIDCookie  = "/self"
 	getTaskByID        = "/tasks/selftasks"
 	createPFP          = "/users/:id/avatar"
+	userFired          = "/users/:id/fired"
 )
 
 func main() {
@@ -67,6 +68,7 @@ func main() {
 
 	r.PATCH(userById, http.UserUpdateHandler(db))
 	r.PATCH(createPFP, http.CreatePFPHandler(db))
+	r.PATCH(userFired, http.BlockUserHandler(db))
 
 	r.POST(uploadFilePath, requests.UploadFile)
 	r.Static(staticUploadFile, "./uploads")
