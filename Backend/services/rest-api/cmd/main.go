@@ -6,17 +6,10 @@ import (
 	"rest-api/internal/handler/http"
 	connect "rest-api/pkg/db"
 	"rest-api/pkg/requests"
-	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"log"
-	"rest-api/internal/handler/http"
-	"rest-api/pkg/db"
-	"rest-api/pkg/requests"
-	"time"
 )
 
 const (
@@ -47,22 +40,14 @@ func main() {
 	}
 	// Подключение к БД
 	db, err := connect.ConToDatabase()
-	//if err != nil {
-	//	log.Fatalf("Ошибка при подключении к базе данных: %v", err)
-	//}
+	if err != nil {
+		log.Fatalf("Ошибка при подключении к базе данных: %v", err)
+	}
 	defer db.Close()
 
 	fmt.Println("Подключение к базе данных успешно установлено")
 
 	r := gin.Default()
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},                            // Разрешенные источники
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}, // Разрешенные методы
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},          // Разрешенные заголовки
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
 
 	//запросы уровня кондиций
 	r.GET(allUsers, http.GetAllUsersHandler(db))
