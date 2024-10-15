@@ -2,6 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"rest-api/internal/handler/http"
+	connect "rest-api/pkg/db"
+	"rest-api/pkg/requests"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
