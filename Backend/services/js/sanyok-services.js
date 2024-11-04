@@ -19,10 +19,6 @@ const db = mysql.createConnection({
     database: "lab",
 });
 
-// sanyaApp.get('/pensil', (req, res) => {
-//     res.send('penis');
-// }); xuy
-
 sanyaApp.get("/chats", (req, res) => {
     const user_id = req.cookies.userid;
     console.log(user_id);
