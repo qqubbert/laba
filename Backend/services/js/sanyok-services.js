@@ -242,4 +242,21 @@ sanyaApp.post("/msgsend", (req, res) => {
     });
 });
 
+sanyaApp.patch("/taskupdate", (req, res) => {
+    const{Progress, task_id} = req.body;
+    console.log(Progress + " " + task_id);
+    const taskUpdate = `
+    UPDATE tasks SET Progress = ? WHERE ID = ?;
+    `;
+    db.query(taskUpdate, [Progress, task_id], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Task updated!");
+            res.status(200).json(rs);
+        };
+    });
+});
+
 module.exports = sanyaApp;
