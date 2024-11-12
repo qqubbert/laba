@@ -89,21 +89,22 @@ INSERT INTO tasks (Id_Employee, Task, Progress) VALUES
 
 -- Заполнение таблицы article
 INSERT INTO article (title, HtmlLink, completed, author_id) VALUES
-('Основы молекулярной биологии', 'http://localhost:3002/uploads/articles/1728241983_article.html', TRUE, 3),
-('Экологические исследования в России', 'http://localhost:3002/uploads/articles/1728241984_article.html', TRUE, 5);
+('Основы молекулярной биологии', 'http://localhost:3002/uploads/articles/1728371269_article.html', TRUE, 3),
+('Пример статьи', 'http://localhost:3002/uploads/articles/1728375121_article.html', TRUE, 3),
+('Экологические исследования в России', 'http://localhost:3002/uploads/articles/1728374400_article.html', TRUE, 5);
 
 -- Заполнение таблицы article_tags
-INSERT INTO article_tags (article_id, biology, chemistry, it, physics) VALUES
-(1, TRUE, FALSE, FALSE, TRUE),
-(2, TRUE, TRUE, FALSE, FALSE);
+-- INSERT INTO article_tags (article_id, biology, chemistry, it, physics) VALUES
+-- (1, TRUE, FALSE, FALSE, TRUE),
+-- (2, TRUE, TRUE, FALSE, FALSE);
 
 -- Заполнение таблицы article_comms
-INSERT INTO article_comms (article_id, author_id, comm) VALUES
-(1, 2, 'Отличная статья!'),
-(1, 1, 'Нужны дополнительные исследования.'),
-(1, 4, 'Хорошая работа, но требуется больше данных.'),
-(2, 5, 'Интересная тема, хотелось бы узнать больше.'),
-(2, 3, 'Хорошие идеи для дальнейших исследований.');
+-- INSERT INTO article_comms (article_id, author_id, comm) VALUES
+-- (1, 2, 'Отличная статья!'),
+-- (1, 1, 'Нужны дополнительные исследования.'),
+-- (1, 4, 'Хорошая работа, но требуется больше данных.'),
+-- (2, 5, 'Интересная тема, хотелось бы узнать больше.'),
+-- (2, 3, 'Хорошие идеи для дальнейших исследований.');
 
 -- Заполнение таблицы chats
 INSERT INTO chats (title) VALUES
@@ -140,12 +141,12 @@ INSERT INTO msg_media (msg_id, file_link) VALUES
 (3, 'http://example.com/media3');
 
 -- Заполнение таблицы fav_articles
-INSERT INTO fav_articles (art_id, user_id) VALUES
-(1, 1),
-(1, 3),
-(2, 4),
-(2, 5),
-(2, 1);
+-- INSERT INTO fav_articles (art_id, user_id) VALUES
+-- (1, 1),
+-- (1, 3),
+-- (2, 4),
+-- (2, 5),
+-- (2, 1);
 
 SET SQL_SAFE_UPDATES = 0;
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 
 import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
@@ -7,8 +8,9 @@ import editIcon from '../../assets/EditIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData, permission, usrUpd }) {
+function UserAdminPane({ userData, permission, fireUserFunc }) {
   const [userTasks, setUserTasks] = useState([]);
+  const navigate = useNavigate();
 
   function progressUpd(userTasks) {
     userTasks.forEach((task, index) => {
@@ -33,8 +35,9 @@ function UserAdminPane({ userData, permission, usrUpd }) {
       credentials: 'include',
       withCredentials: true,
     })
+    
     if (response.ok) {
-      usrUpd();
+      fireUserFunc();
     } else {
       console.log('Ошибка');
     }
@@ -96,7 +99,7 @@ function UserAdminPane({ userData, permission, usrUpd }) {
 
   return (
     <>
-        
+
         {userData && 
         <>
             <div id="divInfo">

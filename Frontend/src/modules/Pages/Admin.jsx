@@ -9,6 +9,7 @@ import UserAdminPane from '../Cards/UserAdminPane.jsx';
 function Admin({ permission }) {
     const [users, setUsers] = useState([]);
     const [userPane, setUserPane] = useState();
+    const [usrCard, setUsrCard] = useState(false);
     const { userid } = useParams();
     const navigate = useNavigate();
     const [isUsersLoaded, setIsUsersLoaded] = useState(false);
@@ -33,29 +34,34 @@ function Admin({ permission }) {
     }
 
     const LoadUserPane = async (usrId) => {
-        try {  
-            if (isUsersLoaded) {
-                const userExists = users.some(user => user.id === parseInt(usrId));
-                if (!userExists) {
-                    navigate('/employee'); 
-                    return;
-                    // console.log('пользователь не существует');
+        if (usrId != -1) {
+            try {  
+                setUsrCard(true);
+                if (isUsersLoaded) {
+                    const userExists = users.some(user => user.id === parseInt(usrId));
+                    if (!userExists) {
+                        navigate('/employee'); 
+                        return;
+                        // console.log('пользователь не существует');
+                    }
+                    const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    withCredentials: true,
+                    });
+                
+                    const adminUserData = await response.json();
+    
+                    setUserPane(adminUserData);
+                    selectPersonFunc(usrId);
+    
+                    console.log(adminUserData);
                 }
-                const response = await fetch(`http://localhost:3000/rest-api-service/users/${usrId}`, {
-                method: 'GET',
-                credentials: 'include',
-                withCredentials: true,
-                });
-            
-                const adminUserData = await response.json();
-
-                setUserPane(adminUserData);
-                selectPersonFunc(usrId);
-
-                console.log(adminUserData);
+            } catch (error) {
+                console.error("Ошибка:", error);
             }
-        } catch (error) {
-            console.error("Ошибка:", error);
+        } else {
+            setUsrCard(false);
         }
     }
 
@@ -64,7 +70,7 @@ function Admin({ permission }) {
         userCards.forEach((el)=>{
             el.classList.remove('selectedPersonAdmin');
         });
-        const selectedPerson = document.getElementById('userCard'+(i - 1));
+        const selectedPerson = document.getElementById('userCard'+ i);
         selectedPerson.classList.add('selectedPersonAdmin');
     }
 
@@ -88,7 +94,7 @@ function Admin({ permission }) {
                         // console.log(user);
                         const userLink = `/employee/${user.id}`;
                         return (
-                            <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + i}>
+                            <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + user.id}>
                                 <UserCard userData={users[i]} />
                             </NavLink>
                         )
@@ -96,7 +102,7 @@ function Admin({ permission }) {
                 </div>
             </div>
             <div id="userAdminPane">
-                <UserAdminPane userData={userPane || undefined} permission={permission}/>
+                {usrCard && <UserAdminPane userData={userPane || undefined} permission={permission} fireUserFunc={()=>{setUsrCard(false); navigate('/employee'); LoadUsers(); LoadUserPane(-1);}}/>}
             </div>
         </div>
     </>
