@@ -5,12 +5,29 @@ import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
 import plusIcon from '../../assets/PlusIcon.svg';
 import editIcon from '../../assets/EditIcon.svg';
+import saveIcon from '../../assets/SaveIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData, permission, fireUserFunc }) {
+function UserAdminPane({ userData, permission, fireUserFunc, showAddTaskWin, addTaskInfo }) {
   const [userTasks, setUserTasks] = useState([]);
+  const [changes, setChanges] = useState(false);
   const navigate = useNavigate();
+  const [changesData, setChangesData] = useState({
+    first_name: "",
+    last_name: "",
+    surname: "",
+    birthday: "",
+    family_status: "",
+    kids_count: "",
+    job_title: "",
+    academic_degree: "",
+    work_exp: "",
+    salary: "",
+    phone_number: "",
+    email: "",
+    depid: "",
+  })
 
   function progressUpd(userTasks) {
     userTasks.forEach((task, index) => {
@@ -73,7 +90,7 @@ function UserAdminPane({ userData, permission, fireUserFunc }) {
       credentials: 'include',
       withCredentials: true,
       body: JSON.stringify({
-          task: "taskTxt"
+          task: addTaskInfo.taskTitle
       })
     });
     if (response.ok) {
@@ -97,9 +114,14 @@ function UserAdminPane({ userData, permission, fireUserFunc }) {
     }
   }, [userTasks]);
 
+  useEffect(()=>{
+    if (addTaskInfo.added) {
+      taskAdd();
+    }
+  }, [addTaskInfo])
+
   return (
     <>
-
         {userData && 
         <>
             <div id="divInfo">
@@ -257,14 +279,19 @@ function UserAdminPane({ userData, permission, fireUserFunc }) {
                       </div>
                     )
                   })}
-                  {permission == 'admin' && <button id="addTaskBtn" onClick={()=>{taskAdd()}}><img src={plusIcon} alt="" /></button>}
                 </>
                 }
+                {permission == 'admin' && <button id="addTaskBtn" onClick={()=>{showAddTaskWin()}}><img src={plusIcon} alt="" /></button>}
               </div>
             </div>
             <div id="adminBtns">
-                <button><img src={msgIcon} alt="" />Сообщение</button>
-                {permission == 'admin' && <button onClick={()=>{fireUser()}}><img src={closeIcon} alt="" />Уволить</button>}
+                <div id="adminBtnsLeft">
+                  <button><img src={msgIcon} alt="" />Сообщение</button>
+                  {permission == 'admin' && <button onClick={()=>{fireUser()}}><img src={closeIcon} alt="" />Уволить</button>}
+                </div>
+                <div id="adminBtnsRight">
+                  {permission == 'admin' && changes && <button onClick={()=>{console.log('button save pressed')}}><img src={saveIcon} alt="" />Сохранить изменения</button>}
+                </div>
             </div>
         </>}
     </>

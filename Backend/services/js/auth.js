@@ -11,12 +11,12 @@ const authApp = express();
 
 authApp.use(express.json());
 authApp.use(cookieParser());
-// const corsOptions = {
-//     origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:3000','http://localhost:3001', 'http://localhost:3002'], // Массив разрешенных источников
-//     credentials: true,
-// };
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:3000','http://localhost:3001', 'http://localhost:3002'], // Массив разрешенных источников
+    credentials: true,
+};
 
-// authApp.use(cors(corsOptions));
+authApp.use(cors(corsOptions));
 
 authApp.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', req.headers.origin || corsOptions.origin);
@@ -75,7 +75,7 @@ authApp.post('/register', async (req, res) => {
             return res.status(200).json({ message: "Пользователь уже зарегистрирован" });
         } else {
             const queryReg = `
-            INSERT INTO Users (Login, Pass, Permission) VALUES (?, ?, 'user')
+            INSERT INTO Users (Login, Pass, Permission, DepID, Gender, Birthday) VALUES (?, ?, 'user', 1, "М", Current_date())
             `;
 
             try {

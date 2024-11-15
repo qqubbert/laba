@@ -30,7 +30,7 @@ CREATE TABLE Users (
     WorkExperience INT DEFAULT(0),
     Salary INT DEFAULT(0),
     PhoneNumber VARCHAR(11) DEFAULT("88005553535"),
-    Email VARCHAR(50) UNIQUE DEFAULT("example@mail.com"),
+    Email VARCHAR(50) DEFAULT("example@mail.com"),
     Isblocked bool DEFAULT(false),
     ProfilePicLink VARCHAR(100) DEFAULT(""),
     FOREIGN KEY (DepID)
