@@ -150,6 +150,7 @@
     justify-content: space-evenly;
     align-items: center;
     flex: 1;
+    gap: 5px;
 }
 
 #addTaskPane #addTaskPaneForm input, #addUserPane #addUserPaneForm input {
@@ -189,3 +190,11 @@
     cursor: pointer;
     background-color: var(--input-select-color);
 }
+
+#addUserPaneForm select {
+    width: 95%;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+} 

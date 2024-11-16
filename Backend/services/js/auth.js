@@ -57,10 +57,14 @@ authApp.get('/cookieclear', async (req, res) => {
 })
 
 authApp.post('/register', async (req, res) => {
-    const { login, password } = req.body;
+    const { login, password, permission, 
+            email, phone, firstname, 
+            lastname, surname, jobttl, 
+            birthday, academdeg, salary, 
+            workexp, gender, childrencount,
+            familstat } = req.body;
 
-    console.log('login: ' + login);
-    console.log('password: ' + password);
+    console.log(req.body);
 
     const queryUser = `
     SELECT * FROM Users WHERE Login = ?;
@@ -75,12 +79,66 @@ authApp.post('/register', async (req, res) => {
             return res.status(200).json({ message: "Пользователь уже зарегистрирован" });
         } else {
             const queryReg = `
-            INSERT INTO Users (Login, Pass, Permission, DepID, Gender, Birthday) VALUES (?, ?, 'user', 1, "М", Current_date())
+            INSERT INTO Users 
+                (Login, 
+                Pass, 
+                Permission, 
+                DepID, 
+                Gender, 
+                Birthday,
+                Email, 
+                AcademicDegree,
+                JobTitle, 
+                HavingChildren,
+                WorkExperience, 
+                PhoneNumber,
+                FirstName, 
+                LastName, 
+                Surname,
+                FamilyStatus,
+                Salary) 
+            VALUES 
+                (?, 
+                ?, 
+                ?, 
+                1, 
+                ?, 
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?)
             `;
 
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                db.query(queryReg, [login, hashedPassword], (err, result) => {
+                db.query(queryReg, 
+                    [
+                        login,
+                        hashedPassword,
+                        permission,
+                        gender,
+                        birthday,
+                        email,
+                        academdeg,
+                        jobttl,
+                        req.body.havingChildren || 0, // Добавьте обработку для `HavingChildren`
+                        workexp,
+                        phone,
+                        firstname,
+                        lastname,
+                        surname,
+                        familstat,
+                        salary
+                    ],  
+                    (err, result) => {
                     if (err) {
                         console.error('Ошибка при регистрации:', err);
                         return res.status(500).json({ message: "Ошибка сервера" });

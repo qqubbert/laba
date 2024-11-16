@@ -28,6 +28,19 @@ function Admin({ permission }) {
         login: '',
         password: '',
         permission: 'user',
+        email: '',
+        phone: '',
+        firstname: '',
+        lastname: '',
+        surname: '',
+        jobttl: '',
+        birthday: '',
+        academdeg: '',
+        salary: '',
+        workexp: '',
+        gender: 'М',
+        childrencount: '',
+        familstat: ''
     });
 
     const LoadUsers = async () => {
@@ -130,7 +143,21 @@ function Admin({ permission }) {
                 withCredentials: true,
                 body: JSON.stringify({
                     login: addUserData.login,
-                    password: addUserData.password
+                    password: addUserData.password,
+                    permission: addUserData.permission || "user",
+                    email: addUserData.email,
+                    phone: addUserData.phone,
+                    firstname: addUserData.firstname,
+                    lastname: addUserData.lastname,
+                    surname: addUserData.surname,
+                    birthday: addUserData.birthday,
+                    academdeg: addUserData.academdeg,
+                    salary: addUserData.salary,
+                    workexp: addUserData.workexp,
+                    gender: addUserData.gender || "М",
+                    childrencount: addUserData.childrencount,
+                    jobttl: addUserData.jobttl,
+                    familstat: addUserData.familstat || "Холост"
                 })
             })
             if (response.ok) {
@@ -177,10 +204,43 @@ function Admin({ permission }) {
             </div>
             <div id="addUserPaneForm" action="">
                 <input id="userLoginInput" type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
+                <input id="userEmail" type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
+                <input id="userPhone" type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
                 <input id="userPasswordInput" type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
-                <select name="permission" id="" onChange={(e)=>{setAddUserData({ ...addUserData, permission: e.target.value}); console.log(addUserData)}}>
+                <input id="userFirstName" type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userLastName" type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, lastname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userSurName" type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, surname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userAcadem" type="text" placeholder='Введите учёную степень для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, academdeg: e.target.value}); console.log(addUserData)}}/>
+                <input id="userJobTitle" type="text" placeholder='Введите должность для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, jobttl: e.target.value}); console.log(addUserData)}}/>
+                <input id="userChildrenCount" type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, childrencount: e.target.value}); console.log(addUserData)}}/>
+                <input id="userSalary" type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, salary: e.target.value}); console.log(addUserData)}}/>
+                <input id="userWorkExp" type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, workexp: e.target.value}); console.log(addUserData)}}/>
+                <input id="userBirthday" type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
+                <select
+                    name="permission"
+                    value={addUserData.permission}
+                    onChange={(e) => {setAddUserData({ ...addUserData, permission: e.target.value }); console.log(addUserData)}}
+                    >
                     <option value="user">Сотрудник</option>
                     <option value="admin">Администратор</option>
+                </select>
+                <select
+                    name="gender"
+                    value={addUserData.gender}
+                    onChange={(e) => {setAddUserData({ ...addUserData, gender: e.target.value }); console.log(addUserData)}}
+                >
+                    <option value="М">Мужской</option>
+                    <option value="Ж">Женский</option>
+                </select>
+                <select
+                    name="familstat"
+                    value={addUserData.familstat}
+                    onChange={(e) => {setAddUserData({ ...addUserData, familstat: e.target.value }); console.log(addUserData)}}
+                >
+                    <option value="Холост">Холост</option>
+                    <option value="Женат">Женат</option>
+                    <option value="Вдова(ец)">Вдова(ец)</option>
+                    <option value="Разведён">Разведён</option>
                 </select>
                 <button onClick={()=>{
                     if (addUserData.login.length > 0 && addUserData.password.length > 0) {

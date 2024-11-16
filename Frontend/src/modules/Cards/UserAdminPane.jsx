@@ -136,6 +136,9 @@ function UserAdminPane({ userData, permission, fireUserFunc, showAddTaskWin, add
                   <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
                     {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
                   </div>
+                  <div className="textdiv"><h3>Пол: {userData.gender}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
                   <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>
                     {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
                   </div>
