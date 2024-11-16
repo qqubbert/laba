@@ -419,3 +419,14 @@ func BlockUserHandler(db *sql.DB) gin.HandlerFunc {
 		c.JSON(204, gin.H{"message": "User blocked successfully!"})
 	}
 }
+
+func GetAllDepartaments(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		departments, err := requests.GetAllDepartments(db)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, departments)
+	}
+}

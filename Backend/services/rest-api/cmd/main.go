@@ -59,6 +59,7 @@ func main() {
 	r.GET(getUserByIDCookie, http.GetUserBySelfHandler(db))
 	r.GET(getTaskByID, http.GetTaskByUserIdHandler(db))
 	r.GET(articlesByAuthorId, http.GetArticlesByIdHandler(db))
+	r.GET(CreateDepartments, http.GetAllDepartaments(db))
 
 	r.POST(CreateDepartments, http.CreateDepartmentHandler(db))
 	r.POST(CreateProject, http.CreateProjectHandler(db))
