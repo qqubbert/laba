@@ -1,14 +1,33 @@
 import { useState, useEffect } from 'react'
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 
 import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
 import plusIcon from '../../assets/PlusIcon.svg';
 import editIcon from '../../assets/EditIcon.svg';
+import saveIcon from '../../assets/SaveIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData, permission }) {
+function UserAdminPane({ userData, permission, fireUserFunc, showAddTaskWin, addTaskInfo }) {
   const [userTasks, setUserTasks] = useState([]);
+  const [changes, setChanges] = useState(false);
+  const navigate = useNavigate();
+  const [changesData, setChangesData] = useState({
+    first_name: "",
+    last_name: "",
+    surname: "",
+    birthday: "",
+    family_status: "",
+    kids_count: "",
+    job_title: "",
+    academic_degree: "",
+    work_exp: "",
+    salary: "",
+    phone_number: "",
+    email: "",
+    depid: "",
+  })
 
   function progressUpd(userTasks) {
     userTasks.forEach((task, index) => {
@@ -27,6 +46,19 @@ function UserAdminPane({ userData, permission }) {
     });
   }
   
+  const fireUser = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/fired`, {
+      method: 'PATCH',
+      credentials: 'include',
+      withCredentials: true,
+    })
+    
+    if (response.ok) {
+      fireUserFunc();
+    } else {
+      console.log('Ошибка');
+    }
+  }
 
   const taskLoad = async () => {
     try {
@@ -51,6 +83,23 @@ function UserAdminPane({ userData, permission }) {
       setUserTasks([]); 
     }
   };
+
+  const taskAdd = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/tasks`,{
+      method: 'POST',
+      credentials: 'include',
+      withCredentials: true,
+      body: JSON.stringify({
+          task: addTaskInfo.taskTitle
+      })
+    });
+    if (response.ok) {
+      taskLoad();
+    } else {
+        console.log('Ошибка при добавлении задачи');
+    }
+    
+  }
   
 
   useEffect(() => {
@@ -64,6 +113,12 @@ function UserAdminPane({ userData, permission }) {
       progressUpd(userTasks);
     }
   }, [userTasks]);
+
+  useEffect(()=>{
+    if (addTaskInfo.added) {
+      taskAdd();
+    }
+  }, [addTaskInfo])
 
   return (
     <>
@@ -79,6 +134,9 @@ function UserAdminPane({ userData, permission }) {
                     {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
+                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Пол: {userData.gender}</h3>
                     {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>
@@ -224,14 +282,19 @@ function UserAdminPane({ userData, permission }) {
                       </div>
                     )
                   })}
-                  {permission == 'admin' && <button id="addTaskBtn"><img src={plusIcon} alt="" /></button>}
                 </>
                 }
+                {permission == 'admin' && <button id="addTaskBtn" onClick={()=>{showAddTaskWin()}}><img src={plusIcon} alt="" /></button>}
               </div>
             </div>
             <div id="adminBtns">
-                <button><img src={msgIcon} alt="" />Сообщение</button>
-                {permission == 'admin' && <button><img src={closeIcon} alt="" />Уволить</button>}
+                <div id="adminBtnsLeft">
+                  <button><img src={msgIcon} alt="" />Сообщение</button>
+                  {permission == 'admin' && <button onClick={()=>{fireUser()}}><img src={closeIcon} alt="" />Уволить</button>}
+                </div>
+                <div id="adminBtnsRight">
+                  {permission == 'admin' && changes && <button onClick={()=>{console.log('button save pressed')}}><img src={saveIcon} alt="" />Сохранить изменения</button>}
+                </div>
             </div>
         </>}
     </>

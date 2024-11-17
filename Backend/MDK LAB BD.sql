@@ -30,7 +30,7 @@ CREATE TABLE Users (
     WorkExperience INT DEFAULT(0),
     Salary INT DEFAULT(0),
     PhoneNumber VARCHAR(11) DEFAULT("88005553535"),
-    Email VARCHAR(50) UNIQUE DEFAULT("example@mail.com"),
+    Email VARCHAR(50) DEFAULT("example@mail.com"),
     Isblocked bool DEFAULT(false),
     ProfilePicLink VARCHAR(100) DEFAULT(""),
     FOREIGN KEY (DepID)
@@ -89,7 +89,8 @@ create table article_comms (
 
 create table chats (
 	id int auto_increment unique not null primary key,
-	title varchar(100)
+	title varchar(100),
+    private boolean
 );
 
 create table chat_users (
