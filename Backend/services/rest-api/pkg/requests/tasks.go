@@ -6,13 +6,14 @@ import (
 )
 
 type Task struct {
-	IdEmployee int    `json:"id_employee"`
-	Task       string `json:"task"`
-	Progress   int    `json:"progress"`
+	ID         int    `json:"id,omitempty"`
+	IdEmployee int    `json:"id_employee,omitempty"`
+	Task       string `json:"task,omitempty"`
+	Progress   int    `json:"progress,omitempty"`
 }
 
 func GetTaskByID(db *sql.DB, userID int) ([]Task, error) {
-	query := `SELECT Task, Progress 
+	query := `SELECT ID, Task, Progress 
 			  FROM tasks 
 			  WHERE Id_Employee = ?
 `
@@ -25,7 +26,7 @@ func GetTaskByID(db *sql.DB, userID int) ([]Task, error) {
 	var tasks []Task
 	for rows.Next() {
 		var task Task
-		if err := rows.Scan(&task.Task, &task.Progress); err != nil {
+		if err := rows.Scan(&task.ID, &task.Task, &task.Progress); err != nil {
 			return nil, err
 		}
 		tasks = append(tasks, task)
