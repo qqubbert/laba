@@ -49,9 +49,12 @@ function EditArticleElWin({ hide, save }) {
 
   const checkSave = () => {
     const ttlInput = document.getElementById('newArticleTtl');
+    const AddArticleErr = document.getElementById('AddArticleErr');
     if (newArticleData.articleTtl == '') {
       ttlInput.classList.add('err');
+      AddArticleErr.style.visibility = 'visible';
       setTimeout(() => {
+        AddArticleErr.style.visibility = 'hidden';
         ttlInput.classList.remove('err');
       }, 1000);
     } else {
@@ -66,6 +69,7 @@ function EditArticleElWin({ hide, save }) {
         <button onClick={hide}><img src={closeIcon} alt="" /> </button>
       </div>
       <div id="form">
+        <h3 id='AddArticleErr' className='AddErr'>Введите заголовок</h3>
         <input id="newArticleTtl" type="text" placeholder='Название статьи' onChange={(e)=>{toggleTtl(e.target.value)}}/>
         <select name="" id="">
           <option value="">Без задачи</option>

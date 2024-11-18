@@ -124,7 +124,7 @@ function Admin({ permission }) {
     const showTaskWinFunc = () => {
         setShowWindowBG(!showWindowBG);
         setShowTaskWin(!showTaskWin);
-        setAddTaskData({ ...addTaskData, added: false })
+        setAddTaskData({ taskTitle: '', added: false })
     }
 
     const showUserWinFunc = () => {
@@ -178,6 +178,7 @@ function Admin({ permission }) {
                 <button onClick={showTaskWinFunc}>X</button>
             </div>
             <div id="addTaskPaneForm" action="">
+                <h3 id="AddTaskErr" className='AddErr'>Введите текст задачи</h3>
                 <input id="taskTitleInput" type="text" placeholder='Введите название задачи' onChange={(e)=>setAddTaskData({ ...addTaskData, taskTitle: e.target.value})}/>
                 <button onClick={()=>{
                     if (addTaskData.taskTitle.length > 0) {
@@ -185,10 +186,13 @@ function Admin({ permission }) {
                         setAddTaskData({ ...addTaskData, added: true});
                     } else {
                         const taskTitleInput = document.getElementById('taskTitleInput');
+                        const AddTaskErr = document.getElementById('AddTaskErr');
+                        AddTaskErr.style.visibility = "visible";
                         taskTitleInput.classList.add('err');
                         setTimeout(() => {
+                            AddTaskErr.style.visibility = "hidden";
                             taskTitleInput.classList.remove('err');
-                        }, 1000);
+                        }, 1500);
                     }
                 }}>
                     Добавить задачу
@@ -203,19 +207,20 @@ function Admin({ permission }) {
                 <button onClick={showUserWinFunc}>X</button>
             </div>
             <div id="addUserPaneForm" action="">
-                <input id="userLoginInput" type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
-                <input id="userEmail" type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
-                <input id="userPhone" type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
-                <input id="userPasswordInput" type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
-                <input id="userFirstName" type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
-                <input id="userLastName" type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, lastname: e.target.value}); console.log(addUserData)}}/>
-                <input id="userSurName" type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, surname: e.target.value}); console.log(addUserData)}}/>
-                <input id="userAcadem" type="text" placeholder='Введите учёную степень для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, academdeg: e.target.value}); console.log(addUserData)}}/>
-                <input id="userJobTitle" type="text" placeholder='Введите должность для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, jobttl: e.target.value}); console.log(addUserData)}}/>
-                <input id="userChildrenCount" type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, childrencount: e.target.value}); console.log(addUserData)}}/>
-                <input id="userSalary" type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, salary: e.target.value}); console.log(addUserData)}}/>
-                <input id="userWorkExp" type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, workexp: e.target.value}); console.log(addUserData)}}/>
-                <input id="userBirthday" type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
+                <h3 id='AddUserErr' className='AddErr'>Заполните все данные</h3>
+                <input id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
+                <input id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
+                <input id="userPhone" className='addUserInput' type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
+                <input id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
+                <input id="userFirstName" className='addUserInput' type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userLastName" className='addUserInput' type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, lastname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userSurName" className='addUserInput' type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, surname: e.target.value}); console.log(addUserData)}}/>
+                <input id="userAcadem" className='addUserInput' type="text" placeholder='Введите учёную степень для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, academdeg: e.target.value}); console.log(addUserData)}}/>
+                <input id="userJobTitle" className='addUserInput' type="text" placeholder='Введите должность для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, jobttl: e.target.value}); console.log(addUserData)}}/>
+                <input id="userChildrenCount" className='addUserInput' type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, childrencount: e.target.value}); console.log(addUserData)}}/>
+                <input id="userSalary" className='addUserInput' type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, salary: e.target.value}); console.log(addUserData)}}/>
+                <input id="userWorkExp" className='addUserInput' type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, workexp: e.target.value}); console.log(addUserData)}}/>
+                <input id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
                 <select
                     name="permission"
                     value={addUserData.permission}
