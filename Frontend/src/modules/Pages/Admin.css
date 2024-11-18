@@ -35,7 +35,7 @@
     width: 90%;
     align-self: center;
 
-    border-radius: 20px;
+    border-radius: 15px;
 
     /* padding: 10px 25px; */
 
@@ -61,15 +61,17 @@
     padding: 5px 20px;
     background-color: transparent;
     border: none;
-    outline: none
+    outline: none;
+    display: flex;
+    align-items: center;
 }
 
 #usersListPane #adminInputAndAdd button:last-of-type {
-    border-radius: 0 50% 50% 0;
+    border-radius: 0 15px 15px 0;
 }
 
 #usersListPane #adminInputAndAdd button:first-of-type {
-    border-radius: 50% 0 0 50%;
+    border-radius: 15px 0 0 15px;
 }
 
 #usersListPane #adminInputAndAdd button:hover {
@@ -198,3 +200,10 @@
     padding: 5px 10px;
     border-radius: 15px;
 } 
+
+.AddErr {
+    visibility: hidden; 
+    /* opacity: 0; */
+    color: var(--error-color);
+    /* transition: all .15s ease-in-out; */
+}

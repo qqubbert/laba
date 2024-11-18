@@ -4,18 +4,33 @@ import './Messages.css';
 
 // import UserCard from '../Cards/UserCard.jsx';
 // import UserAdminPane from '../Cards/UserAdminPane.jsx';
+import WindowBG from '../Windows/WindowBackground.jsx';
 
 import fileIcon from '../../assets/FileIcon.svg';
 import sendIcon from '../../assets/SendIcon.svg';
 import settingsIcon from '../../assets/SettingsIcon.svg';
+import plusIcon from '../../assets/PlusIcon.svg';
+import searchIcon from '../../assets/SearchIcon.svg';
 
 function Messages({ }) {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
     const [chatLoaded, setChatLoaded] = useState(false);
+    const [showWindowBG, setShowWindowBG] = useState(false);
+    const [showWindowBGSecond, setShowWindowBGSecond] = useState(false);
+    const [showChatWin, setShowChatWin] = useState(false);
+    const [showChatSettingsWin, setShowChatSettingsWin] = useState(false);
     const [selectedChat, setSelectedChat] = useState(0);
     const [sendingMsg, setSendingMsg] = useState('');
     const [user, setUser] = useState(0);
+    const [chatUsersList, setChatUsersList] = useState([]);
+    const [chatUsersLoaded, setChatUsersLoaded] = useState(false);
+    const [chatUsersAddErr, setChatUsersArrErr] = useState(false);
+    const [addChatData, setAddChatData] = useState({
+        added: false,
+        chatTitle: ''
+    });
+    const noImage = 'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg'
 
     const msgSend = async () => {
         try {  
@@ -98,11 +113,173 @@ function Messages({ }) {
         LoadChats();
     }, []);
 
+    const showBG = () => {
+        setShowWindowBG(false);
+        setShowChatWin(false);
+        setShowChatSettingsWin(false);
+        setChatUsersLoaded(false);
+        setAddChatData({ added: false, chatTitle: '' });
+    }
+
+    const showChatWinFunc = () => {
+        setShowWindowBG(!showWindowBG);
+        setShowChatWin(!showChatWin);
+        setAddChatData({ added: false, chatTitle: '' });
+    }
+
+    const showChatSettingsWinFunc = () => {
+        setShowWindowBG(!showWindowBG);
+        loadChatUsers();
+        setShowChatSettingsWin(!showChatSettingsWin);
+    }
+
+    const chatAdd = async () => {
+        try {  
+            const response = await fetch("http://localhost:3000/js-service/sanya/chatcreate", {
+                method: 'POST',
+                credentials: 'include',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: addChatData.chatTitle
+                })
+            });
+            if (response.ok) {
+                LoadChats();
+                console.log('Чат создан')
+            }
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
+
+    const loadChatUsers = async () => {
+        try {  
+            const response = await fetch(`http://localhost:3000/js-service/sanya/chatusers/${selectedChat}`, {
+                method: 'GET',
+                credentials: 'include',
+                withCredentials: true,
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log(responseData);
+                setChatUsersList(responseData);
+                setChatUsersLoaded(true);
+            }
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
+
+    const addChatUser = async () => {
+        const addUserInput = document.getElementById('addUserInput');
+        if (addUserInput.value.length >= 1) {
+            try {  
+                const response = await fetch("http://localhost:3000/js-service/sanya/chatadduser", {
+                    method: 'POST',
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: addUserInput.value,
+                        chat_id: selectedChat
+                    })
+                });
+                if (response.ok) {
+                    loadChatUsers();
+                    console.log('Участник добавлен создан');
+                    addUserInput.value = '';
+                } else {
+                    const AddUserErrMsg = document.getElementById('AddUserErrMsg');
+                    AddUserErrMsg.style.visibility = "visible";
+                    setTimeout(() => {
+                        AddUserErrMsg.style.visibility = "hidden";
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error("Ошибка:", error);
+            }
+        } else {
+            addUserInput.parentElement.classList.add('err');
+            setTimeout(() => {
+                addUserInput.parentElement.classList.remove('err');
+            }, 1000);
+        }
+    }
+
   return (
     <>
+        {showWindowBG && <WindowBG hide={showBG}/>}
+        {showWindowBGSecond && <WindowBG hide={showBGSecond}/>}
+        {showChatWin &&
+        <div id="addChatPane">
+            <div id="chatTtlAndClose">
+                <h2>Добавление чата</h2>
+                <button onClick={showBG}>X</button>
+            </div>
+            <div id="addChatPaneForm" action="">
+                <h3 id="AddChatErr" className='AddErr'>Введите заголовок</h3>
+                <input id="chatTitleInput" type="text" placeholder='Введите название чата' onChange={(e)=>setAddChatData({ ...addChatData, chatTitle: e.target.value})}/>
+                <button onClick={()=>{
+                    if (addChatData.chatTitle.length > 0) {
+                        showChatWinFunc();
+                        setAddChatData({ ...addChatData, added: true});
+                        chatAdd();
+                    } else {
+                        const AddChatErr = document.getElementById('AddChatErr');
+                        AddChatErr.style.visibility = "visible"
+                        const chatTitleInput = document.getElementById('chatTitleInput');
+                        chatTitleInput.classList.add('err');
+                        setTimeout(() => {
+                            AddChatErr.style.visibility = "hidden"
+                            chatTitleInput.classList.remove('err');
+                        }, 1000);
+                    }
+                }}>
+                    Добавить чат
+                </button>
+            </div>
+        </div>
+        }
+        {showChatSettingsWin &&
+        <div id="ChatSettingsPane">
+            <div id="chatSettingsTtlAndClose">
+                <h2>Настройки чата</h2>
+                <button onClick={showBG}>X</button>
+            </div>
+            <div id="Settings">
+                <h2>Участники</h2>
+                <div id="UserList">
+                    {chatUsersLoaded && chatUsersList.length >= 1 &&
+                        chatUsersList.map((user, i)=>{
+                            return (
+                                <div className="chatUser">
+                                    <img src={user.ProfilePicLink || noImage} alt="" />
+                                    <h3>{user.FirstName} {user.LastName}</h3>
+                                </div>
+                            )
+                        })
+                    }
+                    <h3 id="AddUserErrMsg" className='AddErr'>Пользователь уже в чате</h3>
+                    <div id="addChatUserPane">
+                        <input id="addUserInput" type="text" placeholder='Введите id сотрудника'/>
+                        <button onClick={addChatUser}><img src={plusIcon} alt="" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
         <div id="messages">
             <div id="chatListPane">
-                <input type="text" placeholder='Поиск' />
+                <div id="inputDiv">
+                    <button onClick={showChatWinFunc}><img src={plusIcon} alt="" /></button>
+                    <input type="text" placeholder='Поиск' />
+                    <button><img src={searchIcon} alt="" /></button>
+                </div>
                 <div id="chatList">
                     {chats && 
                     chats.map((chat, i)=>{
@@ -117,10 +294,10 @@ function Messages({ }) {
             </div>
             <div id="chatPane">
                 <div id="chatInfo">
-                        <h1>{selectedChat !== 0 && chats.find(chat => chat.chat_id === selectedChat)?.title || 'Выберите чат'}</h1>
+                    <h1>{selectedChat !== 0 && chats.find(chat => chat.chat_id === selectedChat)?.title || 'Выберите чат'}</h1>
                     {chatLoaded && 
                     <div id="chatInfoBtns">
-                        <button><img src={settingsIcon} alt="" /> </button>
+                        <button onClick={showChatSettingsWinFunc}><img src={settingsIcon} alt="" /> </button>
                     </div>}
                 </div>
                 {chatLoaded && 
@@ -130,11 +307,19 @@ function Messages({ }) {
                             return (
                                 <div 
                                     key={message.id} 
-                                    className={`message ${user == message.sender_id ? 'self' : ''}`}>
+                                    className={`message ${user == message.sender_id ? 'self' : ''}`}
+                                >
+                                    {user != message.sender_id &&
+                                    <>
+                                        <img src={message.ProfilePicLink || noImage} alt="" />
+                                        <h4 className="messageAuthor">{message.FirstName} {message.LastName}</h4>
+                                    </>
+                                    }
                                     {/* {console.log('message:' + message)}
                                     {console.log('user:' + user)}
                                     {console.log('-------')} */}
-                                    {message.msg}
+                                    <span>{message.msg}</span>
+                                    <h6>{message.msg_date}</h6>
                                 </div>
                             )
                         })}

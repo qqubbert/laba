@@ -133,3 +133,10 @@
 
     background-color: var(--input-color);
 }
+
+.AddErr {
+    visibility: hidden; 
+    /* opacity: 0; */
+    color: var(--error-color);
+    /* transition: all .15s ease-in-out; */
+}
