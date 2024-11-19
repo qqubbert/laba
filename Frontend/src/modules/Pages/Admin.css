@@ -95,13 +95,13 @@
     margin-top: 15px;
 }
 
-#addTaskPane, #addUserPane {
+#addTaskPane, #addUserPane, #editUserDataPane {
     z-index: 1000;
     position: absolute;
 
-    top: 45%;
+    top: 70%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -45%);
 
     min-width: 500px;
     min-height: 200px;
@@ -121,7 +121,7 @@
     padding-top: 15px;
 }
 
-#addTaskPane.saveWinClosing {
+#addTaskPane.saveWinClosing, #addUserPane.saveWinClosing, #editUserDataPane.saveWinClosing {
     animation: .3s ease-in-out forwards saveWinClose;
 }
 
@@ -144,7 +144,7 @@
 }
 
 
-#addTaskPane #addTaskPaneForm, #addUserPane #addUserPaneForm {
+#addTaskPane #addTaskPaneForm, #addUserPane #addUserPaneForm, #editUserDataPane #editUserDataPaneForm {
     width: 100%;
     /* height: 170px; */
     display: flex;
@@ -155,7 +155,7 @@
     gap: 5px;
 }
 
-#addTaskPane #addTaskPaneForm input, #addUserPane #addUserPaneForm input {
+#addTaskPane #addTaskPaneForm input, #addUserPane #addUserPaneForm input, #editUserDataPane #editUserDataPaneForm input {
     width: 90%;
     padding: 10px;
     border-radius: 15px;
@@ -166,18 +166,18 @@
     transition: all .3s ease-in-out;
 }
 
-#addTaskPane #addTaskPaneForm input.err, #addUserPane #addUserPaneForm input.err {
+#addTaskPane #addTaskPaneForm input.err, #addUserPane #addUserPaneForm input.err, #editUserDataPane #editUserDataPaneForm input.err {
     border: 2px solid var(--error-color);
 }
 
-#addTaskPane #taskTtlAndClose, #addUserPane #userTtlAndClose {
+#addTaskPane #taskTtlAndClose, #addUserPane #userTtlAndClose, #editUserDataPane #editUserDataTtlAndClose {
     width: 95%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#addTaskPane button, #addUserPane button {
+#addTaskPane button, #addUserPane button, #editUserDataPane button {
     margin: 0 5px;
     background-color: var(--input-color);
     border-radius: 15px;
@@ -188,12 +188,12 @@
     min-width: 36px;
 }
 
-#addTaskPane button:hover, #addUserPane button:hover {
+#addTaskPane button:hover, #addUserPane button:hover, #editUserDataPane button:hover {
     cursor: pointer;
     background-color: var(--input-select-color);
 }
 
-#addUserPaneForm select {
+#addUserPaneForm select, #editUserDataPaneForm select {
     width: 95%;
     background-color: var(--input-color);
     border: 2px solid var(--border-color);
@@ -206,4 +206,25 @@
     /* opacity: 0; */
     color: var(--error-color);
     /* transition: all .15s ease-in-out; */
+}
+
+#addDep {
+    width: 95%;
+    display: flex;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+}
+
+#addDep input {
+    border: none !important;
+    flex: 1;
+    outline: none;
+    background-color: transparent !important;
+}
+
+#addDep button {
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+    margin: 0;
 }

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+
 	"github.com/go-sql-driver/mysql"
 )
 
@@ -22,19 +23,20 @@ type UserUdpate struct {
 	PhoneNumber    string `json:"phone_number"`
 	Email          string `json:"email"`
 	IsBlocked      bool   `json:"is_blocked"`
+	PhotoLink      string `json:"profile_pic_link"`
 }
 
 func UserUpdate(db *sql.DB, userID int, user UserUdpate) error {
 	query := `UPDATE Users
-	SET Permission = ?, FirstName = ?, LastName = ?, Surname = ?,
+	SET FirstName = ?, LastName = ?, Surname = ?,
 	FamilyStatus = ?, HavingChildren = ?, JobTitle = ?, AcademicDegree = ?,
-	DepID = ?, WorkExperience = ?, Salary = ?, PhoneNumber = ?, Email = ?, Isblocked = ?
+	DepID = ?, WorkExperience = ?, Salary = ?, PhoneNumber = ?, Email = ?, Isblocked = ?, ProfilePicLink = ?
 	WHERE ID = ?
 	`
 
-	_, err := db.Exec(query, user.Permission, user.FirstName, user.LastName, user.Surname,
+	_, err := db.Exec(query, user.FirstName, user.LastName, user.Surname,
 		user.FamilyStatus, user.HavingChildren, user.JobTitle, user.AcademicDegree,
-		user.DepID, user.WorkExperience, user.Salary, user.PhoneNumber, user.Email, user.IsBlocked, userID)
+		user.DepID, user.WorkExperience, user.Salary, user.PhoneNumber, user.Email, user.IsBlocked, user.PhotoLink, userID)
 	if err != nil {
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
 			return errors.New("email already exists")
