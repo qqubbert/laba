@@ -250,6 +250,7 @@ sanyaApp.post("/msgsend", (req, res) => {
     let sender_id = req.cookies.userid;
     console.log("sender_id: "+sender_id);
     console.log("chat_id: "+chat_id);
+    console.log("file_link: "+file_link);
     const inChat = `
     SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
     `;

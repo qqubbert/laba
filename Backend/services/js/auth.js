@@ -62,7 +62,7 @@ authApp.post('/register', async (req, res) => {
             lastname, surname, jobttl, 
             birthday, academdeg, salary, 
             workexp, gender, childrencount,
-            familstat } = req.body;
+            familstat, dep_id } = req.body;
 
     console.log(req.body);
 
@@ -101,7 +101,7 @@ authApp.post('/register', async (req, res) => {
                 (?, 
                 ?, 
                 ?, 
-                1, 
+                ?, 
                 ?, 
                 ?,
                 ?,
@@ -124,6 +124,7 @@ authApp.post('/register', async (req, res) => {
                         login,
                         hashedPassword,
                         permission,
+                        dep_id,
                         gender,
                         birthday,
                         email,

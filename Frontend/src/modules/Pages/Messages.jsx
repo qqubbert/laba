@@ -20,10 +20,12 @@ function Messages({ }) {
     const [showWindowBGSecond, setShowWindowBGSecond] = useState(false);
     const [showChatWin, setShowChatWin] = useState(false);
     const [showChatSettingsWin, setShowChatSettingsWin] = useState(false);
+    const [messageFilesLoaded, setMessageFilesLoaded] = useState(false);
     const [selectedChat, setSelectedChat] = useState(0);
     const [sendingMsg, setSendingMsg] = useState('');
     const [user, setUser] = useState(0);
     const [chatUsersList, setChatUsersList] = useState([]);
+    const [sendingMsgFiles, setSendingMsgFiles] = useState([]);
     const [chatUsersLoaded, setChatUsersLoaded] = useState(false);
     const [chatUsersAddErr, setChatUsersArrErr] = useState(false);
     const [addChatData, setAddChatData] = useState({
@@ -38,6 +40,7 @@ function Messages({ }) {
             textInput.value = '';
             console.log('sendingMsg:' + sendingMsg);
             console.log('selectedChat:' + selectedChat);
+            console.log('sendingMsgFiles:' + sendingMsgFiles);
             setSendingMsg(prev => '')
             const response = await fetch("http://localhost:3000/js-service/sanya/msgsend", {
                 method: 'POST',
@@ -49,10 +52,12 @@ function Messages({ }) {
                 body: JSON.stringify({
                     chat_id: selectedChat,
                     msg: sendingMsg,
+                    file_link: sendingMsgFiles,
                 })
             });
             if (response.ok) {
                 LoadChatMessages(selectedChat);
+                setSendingMsgFiles([]);
             }
         } catch (error) {
             // console.error("Ошибка:", error);
@@ -92,7 +97,7 @@ function Messages({ }) {
             console.log(responseData.user_id);
             setChatLoaded(true);
             setMessages(messagesData);
-
+            setMessageFilesLoaded(true);
             console.log(messagesData);
         } catch (error) {
             console.error("Ошибка:", error);
@@ -211,6 +216,51 @@ function Messages({ }) {
         }
     }
 
+    const addFileToServerAndArr = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+    
+        try {
+            const response = await fetch('http://localhost:3000/rest-api-service/upload', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',  // если нужно отправлять куки или другие креды
+            });
+    
+            const fileUrl = await response.json();  // сервер возвращает ссылку на загруженный файл
+            setSendingMsgFiles([ ...sendingMsgFiles, fileUrl.file_url ]);
+            console.log(sendingMsgFiles);
+          } catch (error) {
+              console.error('Ошибка загрузки файла:', error);
+          }
+      };
+
+    const uploadFile = () => {
+        if (sendingMsgFiles.length < 5) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+
+            fileInput.addEventListener('change', (event) => addFileToServerAndArr(event));
+            document.body.appendChild(fileInput);
+            fileInput.click();
+
+            fileInput.addEventListener('click', () => {
+            setTimeout(() => {
+                fileInput.remove();
+            }, 100);
+            });
+        } else {
+            const FileError = document.getElementById('FileError');
+            FileError.style.visibility = "visible";
+            setTimeout(() => {
+                FileError.style.visibility = "hidden"
+            }, 2000);
+        }
+    }
+
   return (
     <>
         {showWindowBG && <WindowBG hide={showBG}/>}
@@ -304,6 +354,7 @@ function Messages({ }) {
                 <>
                     <div id="messagesList">
                         {messages.map((message, i)=>{
+                            const msgFiles = message.files ? (message.files).split(',') : [];
                             return (
                                 <div 
                                     key={message.id} 
@@ -320,16 +371,35 @@ function Messages({ }) {
                                     {console.log('-------')} */}
                                     <span>{message.msg}</span>
                                     <h6>{message.msg_date}</h6>
+                                    {message.files && typeof message.files === 'string' && messageFilesLoaded && (
+                                    <div className="msgFiles">
+                                        {msgFiles.map((fileUrl, i) => (
+                                            <img src={fileUrl} alt="" key={i} />
+                                        ))}
+                                    </div>
+                                    )}
                                 </div>
                             )
                         })}
                     </div>
                     <div id="sendingPane">
                         {/* <div id="inputdiv"> */}
+                        {sendingMsgFiles.length >= 1 &&
+                        <div id="sendingFiles">
+                            <h3>Файлы сообщения: <span id="FileError">Нельзя добавлять больше 5 фотографий</span></h3>
+                            <div id="images">
+                            {sendingMsgFiles.map((fileUrl, i)=> {
+                                return (
+                                    <img src={fileUrl} alt="" />
+                                )
+                            })}
+                            </div>
+                        </div>
+                        }
                         <textarea id="sendingMsgInput" type="text" placeholder='Введите сообщение' onChange={(e)=>{setSendingMsg(prev => e.target.value)}}/>
                         {/* </div> */}
                         <div id="sendingBtns">
-                            <button disabled><img src={fileIcon} alt="" /> </button>
+                            <button onClick={uploadFile}><img src={fileIcon} alt="" /> </button>
                             <button onClick={()=>{msgSend();}} disabled={!sendingMsg}><img src={sendIcon} alt="" /> </button>
                         </div>
                     </div>

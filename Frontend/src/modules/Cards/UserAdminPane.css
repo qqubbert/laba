@@ -18,7 +18,7 @@
 }
 
 #userAdminPane h1 {
-    margin: 20px;
+    margin: 0 20px 20px 20px;
 
     font-size: 40px;
 }
@@ -46,12 +46,31 @@
     max-width: 220px;
     max-height: 220px;
     min-height: 220px;
-
-    position: relative;
-
-    margin: 55px 55px 55px auto;
-
     border-radius: 25px;
+    object-fit: cover;
+}
+
+#userPhotoDiv {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 55px 55px 55px auto;
+}
+
+#userPhotoDiv button {
+    margin: 10px;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--buttons-brighter-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+#userPhotoDiv button:hover {
+    background-color: var(--buttons-brighter-another-color);
+    cursor: pointer;
 }
 
 #adminBtns {

@@ -12,14 +12,20 @@ import searchIcon from '../../assets/SearchIcon.svg';
 
 function Admin({ permission }) {
     const [users, setUsers] = useState([]);
+    const [deps, setDeps] = useState([]);
     const [userPane, setUserPane] = useState();
     const [usrCard, setUsrCard] = useState(false);
+    const [isDepsLoaded, setIsDepsLoaded] = useState(false);
     const [showWindowBG, setShowWindowBG] = useState(false);
+    const [isChanges, setIsChanges] = useState(false);
     const [showTaskWin, setShowTaskWin] = useState(false);
+    const [showEditWin, setShowEditWin] = useState(false);
     const [showAddUserWin, setShowAddUserWin] = useState(false);
     const { userid } = useParams();
     const navigate = useNavigate();
     const [isUsersLoaded, setIsUsersLoaded] = useState(false);
+    const [editingDataType, setEditingDataType] = useState("");
+    const [newDepTtl, setNewDepTtl] = useState("");
     const [addTaskData, setAddTaskData] = useState({
         added: false,
         taskTitle: ''
@@ -40,7 +46,8 @@ function Admin({ permission }) {
         workexp: '',
         gender: 'М',
         childrencount: '',
-        familstat: ''
+        familstat: '',
+        dep_id: '',
     });
 
     const LoadUsers = async () => {
@@ -95,6 +102,7 @@ function Admin({ permission }) {
     }
 
     const selectPersonFunc = (i) => {
+        setIsChanges(false);
         const userCards = Array.from(document.getElementsByClassName('UserCard'));
         userCards.forEach((el)=>{
             el.classList.remove('selectedPersonAdmin');
@@ -103,8 +111,28 @@ function Admin({ permission }) {
         selectedPerson.classList.add('selectedPersonAdmin');
     }
 
+    const getDeps = async () => {
+        try {  
+            const response = await fetch("http://localhost:3000/rest-api-service/departments", {
+            method: 'GET',
+            credentials: 'include',
+            withCredentials: true,
+            });
+        
+            const responseData = await response.json();
+
+            setDeps(responseData);
+            setIsDepsLoaded(true);
+
+            // console.log(responseData);
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
+
     useEffect(() => {
         LoadUsers();
+        getDeps();
     }, []);
 
     useEffect(() => {
@@ -117,6 +145,7 @@ function Admin({ permission }) {
         setShowWindowBG(!showWindowBG);
         setShowTaskWin(false);
         setShowAddUserWin(false);
+        setShowEditWin(false);
         setAddTaskData({ ...addTaskData, added: false })
         setAddUserData({ login: '', password: '' })
     }
@@ -133,6 +162,10 @@ function Admin({ permission }) {
         setAddUserData({ login: '', password: '' })
     }
 
+    const showEditWinFunc = () => {
+        setShowWindowBG(!showWindowBG);
+        setShowEditWin(!showEditWin);
+    }
     
     const addUserHttpFunc = async () => {
         try {
@@ -157,7 +190,8 @@ function Admin({ permission }) {
                     gender: addUserData.gender || "М",
                     childrencount: addUserData.childrencount,
                     jobttl: addUserData.jobttl,
-                    familstat: addUserData.familstat || "Холост"
+                    familstat: addUserData.familstat || "Холост",
+                    dep_id: addUserData.dep_id || 1
                 })
             })
             if (response.ok) {
@@ -166,6 +200,65 @@ function Admin({ permission }) {
         } catch (err) {
             console.log(err);
         }
+    }
+    
+    const addDepFunc = async () => {
+        try {
+            console.log('Отправляется название отдела: ' + newDepTtl)
+            const response = await fetch("http://localhost:3000/rest-api-service/departments", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                withCredentials: true,
+                body: JSON.stringify({
+                    dep_ttl: newDepTtl
+                })
+            })
+            if (response.ok) {
+                getDeps();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const imgFileUpload = () => {
+        const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+
+            fileInput.addEventListener('change', (event) => editUserImgFunc(event));
+            document.body.appendChild(fileInput);
+            fileInput.click();
+
+            fileInput.addEventListener('click', () => {
+            setTimeout(() => {
+                fileInput.remove();
+            }, 100);
+            });
+    }
+
+    const editUserImgFunc = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+    
+        try {
+            const response = await fetch('http://localhost:3000/rest-api-service/upload', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',  // если нужно отправлять куки или другие креды
+            });
+    
+            const fileUrl = await response.json();  // сервер возвращает ссылку на загруженный файл
+            setUserPane({ ...userPane, profile_pic_link: fileUrl.file_url});
+            setIsChanges(true);
+
+          } catch (error) {
+              console.error('Ошибка загрузки файла:', error);
+          }
+          
     }
 
   return (
@@ -199,6 +292,99 @@ function Admin({ permission }) {
                 </button>
             </div>
         </div>
+        }
+        {showEditWin &&
+        <>
+        <div id="editUserDataPane">
+            <div id="editUserDataTtlAndClose">
+                <h2>Изменение данных</h2>
+                <button onClick={showEditWinFunc}>X</button>
+            </div>
+            <div id="editUserDataPaneForm" action="">
+                {/* <h3 id="AddTaskErr" className='AddErr'>Введите изменённые данные</h3> */}
+                {editingDataType == 'name' &&
+                <>
+                    <input defaultValue={userPane.last_name} id="userLastName" className='addUserInput' type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, last_name: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                    <input defaultValue={userPane.first_name} id="userFirstName" className='addUserInput' type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, first_name: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                    <input defaultValue={userPane.surname} id="userSurName" className='addUserInput' type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, surname: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                </>
+                }
+                {editingDataType == "phone" &&
+                    <input defaultValue={userPane.phone_number} id="userPhone" className='addUserInput' type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setUserPane({ ...userPane, phone_number: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "email" &&
+                    <input defaultValue={userPane.email} id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setUserPane({ ...userPane, email: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "academDegree" &&
+                    <input defaultValue={userPane.academic_degree} id="userAcadem" className='addUserInput' type="text" placeholder='Введите учёную степень для пользователя' onChange={(e)=>{setUserPane({ ...userPane, academic_degree: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "jobTitle" &&
+                    <input defaultValue={userPane.job_title} id="userJobTitle" className='addUserInput' type="text" placeholder='Введите должность для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, job_title: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "children" &&
+                    <input defaultValue={userPane.having_children} id="userChildrenCount" className='addUserInput' type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, having_children: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "salary" &&
+                    <input defaultValue={userPane.salary} id="userSalary" className='addUserInput' type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, salary: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "workExp" &&
+                    <input defaultValue={userPane.work_experience} id="userWorkExp" className='addUserInput' type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, work_experience: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "birthday" &&
+                    <input defaultValue={userPane.birthday} id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setUserPane({ ...userPane, birthday: e.target.value}); console.log(addUserData); setIsChanges(true)}}/>
+                }
+                {editingDataType == "gender" &&
+                <select
+                name="gender"
+                value={userPane.gender}
+                onChange={(e) => {setUserPane({ ...userPane, gender: e.target.value }); console.log(addUserData); setIsChanges(true)}}
+                >
+                    <option value="М">Мужской</option>
+                    <option value="Ж">Женский</option>
+                </select>
+                }
+                {editingDataType == "familyStatus" &&
+                <select
+                    name="familstat"
+                    value={userPane.family_status}
+                    onChange={(e) => {setUserPane({ ...userPane, family_status: e.target.value }); console.log(addUserData); setIsChanges(true)}}
+                >
+                    <option value="Холост">Холост</option>
+                    <option value="Женат">Женат</option>
+                    <option value="Вдова(ец)">Вдова(ец)</option>
+                    <option value="Разведён">Разведён</option>
+                </select>
+                }
+                {editingDataType == "dep" &&
+                <>
+                <select
+                    name="dep"
+                    value={userPane.dep_id}
+                    onChange={(e) => {setUserPane({ ...userPane, familstat: e.target.value }); console.log(addUserData); setIsChanges(true)}}
+                >
+                    {deps.map((dep, i)=>{
+                        return (
+                            <option value={dep.dep_id} key={dep.dep_id}>{dep.dep_ttl}</option>
+                        )
+                    })}
+                </select>
+                <div id="addDep">
+                    <input 
+                        id="" 
+                        type="text" 
+                        name="" 
+                        placeholder='Введите название отдела' 
+                        onChange={(e)=>{
+                        setNewDepTtl(e.target.value);
+                        console.log(newDepTtl)}}
+                    />
+                    <button onClick={addDepFunc}>+</button>
+                </div>
+                </>
+                }
+            </div>
+        </div>
+        </>
         }
         {showAddUserWin &&
         <div id="addUserPane">
@@ -247,6 +433,29 @@ function Admin({ permission }) {
                     <option value="Вдова(ец)">Вдова(ец)</option>
                     <option value="Разведён">Разведён</option>
                 </select>
+                <select
+                    name="dep"
+                    value={addUserData.dep_id}
+                    onChange={(e) => {setAddUserData({ ...addUserData, dep_id: e.target.value }); console.log(addUserData)}}
+                >
+                    {deps.map((dep, i)=>{
+                        return (
+                            <option value={dep.dep_id} key={dep.dep_id}>{dep.dep_ttl}</option>
+                        )
+                    })}
+                </select>
+                <div id="addDep">
+                    <input 
+                        id="" 
+                        type="text" 
+                        name="" 
+                        placeholder='Введите название отдела' 
+                        onChange={(e)=>{
+                        setNewDepTtl(e.target.value);
+                        console.log(newDepTtl)}}
+                    />
+                    <button onClick={addDepFunc}>+</button>
+                </div>
                 <button onClick={()=>{
                     if (addUserData.login.length > 0 && addUserData.password.length > 0) {
                         addUserHttpFunc();
@@ -299,7 +508,21 @@ function Admin({ permission }) {
                 </div>
             </div>
             <div id="userAdminPane">
-                {usrCard && <UserAdminPane showAddTaskWin={showTaskWinFunc} addTaskInfo={addTaskData} userData={userPane || undefined} permission={permission} fireUserFunc={()=>{setUsrCard(false); navigate('/employee'); LoadUsers(); LoadUserPane(-1);}}/>}
+                {usrCard && 
+                <UserAdminPane 
+                editUserDataFunc={(type)=>{
+                    setEditingDataType(type);
+                    showEditWinFunc();
+                }} 
+                editUserImgFunc={imgFileUpload}
+                updUser={()=>{LoadUserPane(userid); LoadUsers()}}
+                isChanges={isChanges}
+                showAddTaskWin={showTaskWinFunc} 
+                addTaskInfo={addTaskData} 
+                userData={userPane || undefined} 
+                permission={permission} 
+                fireUserFunc={()=>{setUsrCard(false); navigate('/employee'); LoadUsers(); LoadUserPane(-1);}}
+                />}
             </div>
         </div>
     </>

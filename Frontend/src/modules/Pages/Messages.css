@@ -165,6 +165,7 @@
 }
 
 #sendingPane {
+    position: relative;
     max-width: 100%;
     height: fit-content;
     /* background-color: var(--windows-brighter-color); */
@@ -284,7 +285,7 @@
     word-break: break-word ;
     align-self: start;
     display: grid;
-    grid-template-areas: "img name" "img text" "img time";
+    grid-template-areas: "img name" "img text" "img files" "img time";
     align-items: center;
 }
 
@@ -296,6 +297,7 @@
     margin-right: 10px;
     position: relative;
     left: -60px;
+    object-fit: cover;
 }
 
 .message h4 {
@@ -321,7 +323,7 @@
     align-self: flex-end;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 0px;
-    grid-template-areas: "text" "time";
+    grid-template-areas: "text" "files" "time";
 }
 
 .message.self span {
@@ -329,6 +331,19 @@
     left: 0px;
 }
 
+.msgFiles {
+    width: 100%;
+    grid-area: files;
+    margin: 10px;
+}
+
+.msgFiles img {
+    width: auto;
+    height: 200px;
+    object-fit: cover;
+    position: relative;
+    left: 0px;
+}
 
 #addChatPane, #ChatSettingsPane {
     z-index: 1000;
@@ -459,6 +474,7 @@
     height: 50px;
     margin: 5px;
     border-radius: 15px;
+    object-fit: cover;
 }
 
 #addChatUserPane {
@@ -498,4 +514,30 @@
     /* opacity: 0; */
     color: var(--error-color);
     /* transition: all .15s ease-in-out; */
+}
+
+#sendingFiles {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    top: -100px;
+    left: 0;
+    background-color: var(--windows-color);
+}
+
+#sendingFiles h3 {
+    margin: 5px 10px 0px 15px;
+}
+
+#sendingFiles #FileError {
+    color: var(--error-color);
+    visibility: hidden;
+}
+
+#sendingFiles #images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 0px 0px 20px 20px;
 }

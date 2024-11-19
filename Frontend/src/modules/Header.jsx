@@ -100,7 +100,7 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                     <h2 id="Name" onClick={()=>navigate(`/employee/${userInfo.id}`)}>{userInfo.last_name} {userInfo.first_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>
                     <div id="photoBorder">
-                        <img onClick={showProfWin} id="Photo" src={userInfo.photoLink || "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"} alt="" />
+                        <img onClick={showProfWin} id="Photo" src={userInfo.profile_pic_link || "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"} alt="" />
                     </div>
                 </div>
             </div>
