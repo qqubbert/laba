@@ -57,8 +57,10 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	//// Генерируем уникальное имя файла, добавляя к имени оригинального файла timestamp
 	//uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), req.File.Filename)
 
+	fileName := req.File.Filename
+
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./uploads/articles/%s", file) //вернуть юникфайлнейм
+	filePath := fmt.Sprintf("./uploads/articles/%s", fileName) //вернуть юникфайлнейм
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -74,7 +76,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", filePath) //вернуть юникфайлнейм
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", fileName) //вернуть юникфайлнейм
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed) VALUES (?, ?, ?, TRUE)", req.Title, fileURL, userID)
