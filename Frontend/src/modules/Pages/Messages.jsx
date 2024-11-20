@@ -198,6 +198,9 @@ function Messages({ }) {
                     loadChatUsers();
                     console.log('Участник добавлен создан');
                     addUserInput.value = '';
+                    const AddUserSuccessMsg = document.getElementById('AddUserSuccessMsg');
+                    // AddUserSuccessMsg.style.visibility = "visible";
+                    // AddUserSuccessMsg.style.color = "white";
                 } else {
                     const AddUserErrMsg = document.getElementById('AddUserErrMsg');
                     AddUserErrMsg.style.visibility = "visible";
@@ -315,6 +318,7 @@ function Messages({ }) {
                         })
                     }
                     <h3 id="AddUserErrMsg" className='AddErr'>Пользователь уже в чате</h3>
+                    {/* <h3 id="AddUserSuccessMsg" className='AddErr'>Пользователь добавлен!</h3> */}
                     <div id="addChatUserPane">
                         <input id="addUserInput" type="text" placeholder='Введите id сотрудника'/>
                         <button onClick={addChatUser}><img src={plusIcon} alt="" /></button>

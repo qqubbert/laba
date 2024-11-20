@@ -236,6 +236,7 @@ sanyaApp.post("/chatadduser", (req, res) => {
                 console.log(rs);
                 if (err) {
                     console.log(err);
+                    // res.status(200).json({rs, message: "Новый участник добавлен"});
                 } else {
                     console.log("New user added to chat!");
                     res.status(200).json(rs)

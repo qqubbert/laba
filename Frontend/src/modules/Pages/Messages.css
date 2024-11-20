@@ -317,6 +317,7 @@
     top: 0px;
     grid-area: time;
     opacity: .3;
+    text-align: right;
 }
 
 .message.self {

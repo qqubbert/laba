@@ -88,7 +88,7 @@ function Articles() {
                 <div id="allArticles" className={singleColumn ? "singleColumn" : ''}>
                     <div id="searchArticle">
                         <div id="inputAndBtns">
-                            <button><img src={plusIcon} alt="" /></button>
+                            {/* <button><img src={plusIcon} alt="" /></button> */}
                             <input type="text" placeholder='Поиск' />
                             <button><img src={searchIcon} alt="" /></button>
                         </div>
