@@ -36,34 +36,68 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     box-sizing: border-box;
 }
 
-#searchArticle input[type="text"] {
-    width: 100%;
-    max-width: 100%; 
-    padding: 10px 25px;
+#searchArticle #inputAndBtns {
     margin: 5px 0;
     border-radius: 15px;
     background-color: var(--input-color);
+    width: 100%;
+    display: flex;
+    border-radius: 15px;
+}
+
+#searchArticle #inputAndBtns button {
+    /* margin: 5px 0; */
+    /* background-color: var(--input-color); */
+    background-color: transparent;
+    padding: 5px 15px;
+    height: 100%;
+    border: none;
+    display: flex;
+}
+
+#searchArticle #inputAndBtns button:first-of-type {
+    border-radius: 15px 0px 0px 15px;
+}
+
+#searchArticle #inputAndBtns button:last-of-type {
+    border-radius: 0px 15px 15px 0px;
+}
+
+#searchArticle #inputAndBtns button:hover {
+    background-color: var(--input-select-color);
+    cursor: pointer;
+}
+
+#searchArticle input[type="text"] {
+    /* width: 100%; */
+    /* max-width: 100%;  */
+    flex: 1;
+    /* padding: 10px 25px; */
     border: none;
     outline: none;
     box-sizing: border-box;
     transition: all .15s ease-in-out;
+    background-color: transparent;
 }
 
+#articleTagsLeft, #articleTagsRight {
+    display: flex;
+}
 
 #searchArticle input[type="checkbox"] {
-    margin: 0px 10px;
+    margin: 0px 10px 0px 0px;
 }
 
 #searchArticle #articleTags {
-    width: 96%;
+    width: 100%;
 
     display: flex;
     flex-direction: row;
-
+    justify-content: space-between;
     margin: 5px 10px;
 }
 
@@ -74,6 +108,13 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    user-select: none;
+
+    margin: 0px 0px 0px 10px;
+}
+
+#searchArticle #articleTags label:hover {
+    cursor: pointer;
 }
 
 #searchArticle #articleTags label input {
@@ -143,7 +184,9 @@
 } */
 
 .ArticleCard h1 {
-    line-height: 40px;
+    line-height: 30px;
+
+    margin: 0px 0px 5px 0px;
 
     overflow: hidden;
     text-overflow: ellipsis;

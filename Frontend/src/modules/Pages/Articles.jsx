@@ -4,6 +4,9 @@ import './Articles.css';
 import ArticleCard from '../Cards/ArticleCard.jsx';
 import SelectedArticle from '../Cards/SelectedArticle.jsx';
 
+import plusIcon from '../../assets/PlusIcon.svg';
+import searchIcon from '../../assets/SearchIcon.svg';
+
 function Articles() {
     const [articles, setArticles] = useState([]);
     const [singleColumn, setSingleColumn] = useState(false);
@@ -84,13 +87,23 @@ function Articles() {
             <div id="articles">
                 <div id="allArticles" className={singleColumn ? "singleColumn" : ''}>
                     <div id="searchArticle">
-                        <input type="text" placeholder='Поиск' />
-                        {/* <div id="articleTags">
-                            <label><input type="checkbox" />Биология</label>
-                            <label><input type="checkbox" />Химия</label>
-                            <label><input type="checkbox" />Физика</label>
-                            <label><input type="checkbox" />IT</label>
-                        </div> */}
+                        <div id="inputAndBtns">
+                            <button><img src={plusIcon} alt="" /></button>
+                            <input type="text" placeholder='Поиск' />
+                            <button><img src={searchIcon} alt="" /></button>
+                        </div>
+                        <div id="articleTags">
+                            <div id="articleTagsLeft">
+                                <label><input type="checkbox" />Биология</label>
+                                <label><input type="checkbox" />Химия</label>
+                                <label><input type="checkbox" />Физика</label>
+                                <label><input type="checkbox" />IT</label>
+                            </div>
+                            <div id="articleTagsRight">
+                                <label><input type="checkbox" />Избранные</label>
+                                <label><input type="checkbox" />Мои статьи</label>
+                            </div>
+                        </div>
                     </div>
                     <div id="articlesList" className={singleColumn ? "singleColumn" : ''}>
                         {articles && articles.map((article, i) => {

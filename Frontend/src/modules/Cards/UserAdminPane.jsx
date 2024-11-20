@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react'
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 
 import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
 import plusIcon from '../../assets/PlusIcon.svg';
 import editIcon from '../../assets/EditIcon.svg';
+import saveIcon from '../../assets/SaveIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ userData, permission }) {
+function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddTaskWin, addTaskInfo, editUserDataFunc, updUser, editUserImgFunc }) {
   const [userTasks, setUserTasks] = useState([]);
+  const navigate = useNavigate();
 
   function progressUpd(userTasks) {
     userTasks.forEach((task, index) => {
@@ -27,6 +30,48 @@ function UserAdminPane({ userData, permission }) {
     });
   }
   
+  const fireUser = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/fired`, {
+      method: 'PATCH',
+      credentials: 'include',
+      withCredentials: true,
+    })
+    
+    if (response.ok) {
+      fireUserFunc();
+    } else {
+      console.log('Ошибка');
+    }
+  }
+
+  const changePersonDataFunc = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}`,{
+      method: 'PATCH',
+      credentials: 'include',
+      withCredentials: true,
+      body: JSON.stringify({
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        surname: userData.surname,
+        family_status: userData.family_status,
+        having_children: userData.having_children,
+        job_title: userData.job_title,
+        academic_degree: userData.academic_degree,
+        dep_id: userData.dep_id,
+        work_experience: userData.work_experience,
+        salary: userData.salary,
+        phone_number: userData.phone_number,
+        email: userData.email,
+        is_blocked: false,
+        profile_pic_link: userData.profile_pic_link
+      })
+    });
+    if (response.ok) {
+      updUser();
+    } else {
+        console.log('Ошибка при добавлении задачи');
+    }
+  }
 
   const taskLoad = async () => {
     try {
@@ -51,6 +96,22 @@ function UserAdminPane({ userData, permission }) {
       setUserTasks([]); 
     }
   };
+
+  const taskAdd = async () => {
+    const response = await fetch(`http://localhost:3000/rest-api-service/users/${userData.id}/tasks`,{
+      method: 'POST',
+      credentials: 'include',
+      withCredentials: true,
+      body: JSON.stringify({
+          task: addTaskInfo.taskTitle
+      })
+    });
+    if (response.ok) {
+      taskLoad();
+    } else {
+        console.log('Ошибка при добавлении задачи');
+    }
+  }
   
 
   useEffect(() => {
@@ -65,6 +126,12 @@ function UserAdminPane({ userData, permission }) {
     }
   }, [userTasks]);
 
+  useEffect(()=>{
+    if (addTaskInfo.added) {
+      taskAdd();
+    }
+  }, [addTaskInfo])
+
   return (
     <>
         {userData && 
@@ -72,43 +139,50 @@ function UserAdminPane({ userData, permission }) {
             <div id="divInfo">
               <div id="divInfoAll">
                 <div id="userInfoTxt">
+                  <div className="textdiv"><h3>ID: {userData.id} </h3></div>
                   <div className="textdiv"><h1>{userData.last_name} {userData.first_name} {userData.surname}</h1>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc("name")}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Дата рождения: {userData.birthday}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('birthday')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('familyStatus')}><img src={editIcon} alt="" /></button>}
+                  </div>
+                  <div className="textdiv"><h3>Пол: {userData.gender}</h3>
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('gender')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('children')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Должность: {userData.job_title}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('jobTitle')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Учёная степень: {userData.academic_degree}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('academDegree')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Опыт работы: {userData.work_experience}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('workExp')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Зарплата: {new Intl.NumberFormat('ru-IN', { maximumSignificantDigits: 3 }).format( userData.salary )} ₽</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc("salary")}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Номер телефона: {userData.phone_number}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('phone')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Электронная почта: {userData.email}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('email')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Отдел: {userData.department}</h3>
-                    {permission == 'admin' && <button><img src={editIcon} alt="" /></button>}
+                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('dep')}><img src={editIcon} alt="" /></button>}
                   </div>
                 </div>
-                <img className='userPic' src={userData.photoLink ||
-                  "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
-                } alt="" />
+                <div id="userPhotoDiv">
+                  <img className='userPic' src={userData.profile_pic_link ||
+                    "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
+                  } alt="" />
+                  {permission == 'admin' && <button onClick={()=>editUserImgFunc()}><img src={editIcon} alt="" />Изменить фото</button>}
+                </div>
               </div>
               <h3>{userTasks.length == 1 && 'Текущая задача:'} {userTasks.length > 1 && 'Текущие задачи:'}{userTasks.length <= 0 && 'Текущих задач нет'}</h3>
               <div id="taskList">
@@ -224,14 +298,23 @@ function UserAdminPane({ userData, permission }) {
                       </div>
                     )
                   })}
-                  {permission == 'admin' && <button id="addTaskBtn"><img src={plusIcon} alt="" /></button>}
                 </>
                 }
+                {permission == 'admin' && <button id="addTaskBtn" onClick={()=>{showAddTaskWin()}}><img src={plusIcon} alt="" /></button>}
               </div>
             </div>
             <div id="adminBtns">
-                <button><img src={msgIcon} alt="" />Сообщение</button>
-                {permission == 'admin' && <button><img src={closeIcon} alt="" />Уволить</button>}
+                <div id="adminBtnsLeft">
+                  <button><img src={msgIcon} alt="" />Сообщение</button>
+                  {permission == 'admin' && <button onClick={()=>{
+                    if (confirm("Вы точно хотите уволить сотрудника?")) {
+                      fireUser();
+                    }
+                  }}><img src={closeIcon} alt="" />Уволить</button>}
+                </div>
+                <div id="adminBtnsRight">
+                  {permission == 'admin' && isChanges && <button onClick={()=>{ changePersonDataFunc(); console.log('button save pressed')}}><img src={saveIcon} alt="" />Сохранить изменения</button>}
+                </div>
             </div>
         </>}
     </>

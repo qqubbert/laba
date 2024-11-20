@@ -5,12 +5,12 @@ const cookieParser = require('cookie-parser');
 
 const sanyaApp = express();
 sanyaApp.use(express.json());
-sanyaApp.use(cookieParser());
-const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
-    credentials: true,
-};
-sanyaApp.use(cors(corsOptions));
+// sanyaApp.use(cookieParser());
+// const corsOptions = {
+//     origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+//     credentials: true,
+// };
+// sanyaApp.use(cors(corsOptions));
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -53,7 +53,29 @@ sanyaApp.get("/chatmsgs/:chatid", (req, res) => {
             console.log(err);
         } else if (rsIn.length >= 1) {
             const MsgView = `
-            SELECT * FROM chat_msgs WHERE chat_id = ?;
+            SELECT 
+                cm.id,
+                cm.sender_id,
+                cm.msg,
+                cm.msg_date,
+                cm.pinned,
+                u.FirstName,
+                u.LastName,
+                u.Surname,
+                u.ProfilePicLink,
+                GROUP_CONCAT(mm.file_link) AS files
+            FROM 
+                chat_msgs AS cm 
+            JOIN 
+                Users AS u ON cm.sender_id = u.ID
+            LEFT JOIN 
+                msg_media AS mm ON cm.id = mm.msg_id
+            WHERE 
+                cm.chat_id = ?
+            GROUP BY
+                cm.id, cm.sender_id, cm.msg, cm.msg_date, cm.pinned, u.FirstName, u.LastName, u.Surname, u.ProfilePicLink
+            ORDER BY
+                cm.msg_date ASC;
             `;
             db.query(MsgView, [chatid], (err, rs) => {
                 console.log(rs);
@@ -73,7 +95,22 @@ sanyaApp.get("/chatusers/:chat_id", (req, res) => {
     const chat_id = req.params.chat_id;
     console.log(chat_id);
     const ChatUserView = `
-    SELECT cu.chat_id, c.title AS chat_title, u.ID AS user_id, u.Login, u.FirstName, u.LastName FROM chat_users cu JOIN  Users u ON cu.user_id = u.ID JOIN chats c ON cu.chat_id = c.id WHERE cu.chat_id = ?;
+    SELECT 
+        cu.chat_id, 
+        c.title AS chat_title, 
+        u.ID AS user_id,  
+        u.FirstName, 
+        u.LastName,
+        u.Surname,
+        u.ProfilePicLink
+    FROM 
+        chat_users cu 
+    JOIN 
+        Users u ON cu.user_id = u.ID 
+    JOIN 
+        chats c ON cu.chat_id = c.id 
+    WHERE 
+        cu.chat_id = ?;
     `;
     db.query(ChatUserView, [chat_id], (err, rs) => {
         console.log(rs);
@@ -209,13 +246,14 @@ sanyaApp.post("/chatadduser", (req, res) => {
 });
 
 sanyaApp.post("/msgsend", (req, res) => {
-    const{chat_id, msg} = req.body;
+    const{chat_id, msg, file_link} = req.body;
     let sender_id = req.cookies.userid;
     console.log("sender_id: "+sender_id);
     console.log("chat_id: "+chat_id);
+    console.log("file_link: "+file_link);
     const inChat = `
     SELECT * FROM chat_users WHERE chat_id = ? AND user_id = ?;
-    `
+    `;
     db.query(inChat, [chat_id, sender_id], (err, rsIn) => {
         console.log(rsIn);
         if (err) {
@@ -226,19 +264,56 @@ sanyaApp.post("/msgsend", (req, res) => {
             INSERT INTO chat_msgs (chat_id, sender_id, msg)
             VALUES
                 (?, ?, ?);
-            `
+            `;
             db.query(sendMsg, [chat_id, sender_id, msg], (err, rs) => {
                 console.log(rs);
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("Message sended!");
-                    res.status(200).json(rs);
-                }
+                    const msg_id = rs.insertId;
+                    if (file_link && file_link.length > 0) {
+                        for (let i = 0; i < file_link.length; i++) {
+                            const addFile = `
+                            INSERT INTO msg_media (msg_id, file_link)
+                            VALUES
+                                (?, ?);
+                            `;
+                            db.query(addFile, [msg_id, file_link[i]], (err, rsAdd) => {
+                                console.log(rsAdd);
+                                if (err) {
+                                    console.log(err);
+                                } else if (i === file_link.length - 1) {
+                                    console.log("Files linked!");
+                                    res.status(200).json({rs, message: "Files linked!"});
+                                };
+                            });
+                        };
+                    } else {
+                        console.log("Message sended!");
+                        res.status(200).json(rs);
+                    };
+                };
             });
         } else {
             res.status(401).json({message: "User is not in this chat!"});
-        }
+        };
+    });
+});
+
+sanyaApp.patch("/taskupdate", (req, res) => {
+    const{Progress, task_id} = req.body;
+    console.log(Progress + " " + task_id);
+    const taskUpdate = `
+    UPDATE tasks SET Progress = ? WHERE ID = ?;
+    `;
+    db.query(taskUpdate, [Progress, task_id], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Task updated!");
+            res.status(200).json(rs);
+        };
     });
 });
 

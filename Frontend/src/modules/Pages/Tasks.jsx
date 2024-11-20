@@ -5,9 +5,15 @@ import './Tasks.css';
 import articleIcon from '../../assets/ArticleIcon.svg';
 import progressIcon from '../../assets/ProgressIcon.svg';
 
+import WindowBG from '../Windows/WindowBackground.jsx';
+
 function Tasks({  }) {
     const [tasks, setTasks] = useState([]);
     const [tasksLoaded, setTasksLoaded] = useState(false);
+    const [showWindowBG, setShowWindowBG] = useState(false);
+    const [showTaskWin, setShowTaskWin] = useState(false);
+    const [taskProgress, setTaskProgress] = useState();
+    const [taskId, setTaskId] = useState(-1);
 
     const progressUpd = () => {
         const tasksArr = Array.from(document.getElementsByClassName('task')); 
@@ -40,6 +46,7 @@ function Tasks({  }) {
             
             setTasks(responseData);
             setTasksLoaded(true);
+            console.log("responseData.length: " + responseData.length)
 
             console.log(responseData);
         } catch (error) {
@@ -57,11 +64,67 @@ function Tasks({  }) {
         }
       }, [tasks, tasksLoaded]);
 
+    const showTaskWinFunc = () => {
+      setShowWindowBG(!showWindowBG);
+      setShowTaskWin(!showTaskWin);
+    }
+
+    const changeTaskProgress = async () => {
+      if (taskProgress <= 100 && taskProgress > 0) {
+        try {  
+          const response = await fetch("http://localhost:3000/js-service/sanya/taskupdate", {
+              method: 'PATCH',
+              credentials: 'include',
+              withCredentials: true,
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  Progress: taskProgress,
+                  task_id: taskId
+              })
+          });
+          if (response.ok) {
+              LoadUserTasks();
+              showTaskWinFunc();
+          }
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+      } else {
+        const changeProgressErr = document.getElementById('changeProgressErr');
+        const taskProgressInput = document.getElementById('taskProgressInput');
+        changeProgressErr.style.visibility = "visible";
+        taskProgressInput.classList.add('err');
+        setTimeout(() => {
+          changeProgressErr.style.visibility = "hidden";
+          taskProgressInput.classList.remove('err');
+        }, 1500);
+      }
+    }
+
   return (
     <>
+        {showWindowBG && <WindowBG hide={showTaskWinFunc}/>}
+        {showTaskWin &&
+        <div id="editTaskPane">
+            <div id="taskEditTtlAndClose">
+                <h2>Изменение прогресса</h2>
+                <button onClick={showTaskWinFunc}>X</button>
+            </div>
+            <div id="editTaskPaneForm" action="">
+                <h3 id="changeProgressErr" className='AddErr'>Введите допустимое значение</h3>
+                <input id="taskProgressInput" type="number" placeholder='Введите прогресс задачи' onChange={(e)=>setTaskProgress(e.target.value)}/>
+                <button onClick={()=>{changeTaskProgress();}}>
+                    Сохранить
+                </button>
+            </div>
+        </div>
+        }
         <div id="tasksPane">
             {/* <input type="text" placeholder='Поиск' /> */}
             <div id="taskList">
+                {(!tasksLoaded || tasks.length < 1 || tasks.length == undefined) && <h2 id="noTasksHeader">Задач нет</h2>}
                 {tasksLoaded && tasks.length >= 1 && 
                 tasks.map((task, i)=>{
                     // console.log(user);
@@ -69,7 +132,7 @@ function Tasks({  }) {
                         <div className='task' id={`${i}taskInfo`} key={task.id}>
                         <div className="selfTaskBtns">
                             <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button>
-                            <button className='taskBtn'><img src={progressIcon} alt="" /> Изменить прогресс</button>
+                            <button className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc();}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
                         </div>
                         <h2 title={task.task}>{task.task}</h2>
                         <h4>Прогресс: {task.progress}%</h4>

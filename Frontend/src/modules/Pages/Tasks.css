@@ -3,7 +3,9 @@
     /* top: 75px; */
 
     width: 100vw;
-    height: 100%;
+    max-height: calc(100% - 100px);
+
+    overflow: hidden;
 
     position: relative;
 
@@ -36,6 +38,10 @@
     display: flex;
     flex-direction: column;
     max-width: 80%;
+    max-height: 100%;
+    /* height: 100%; */
+    overflow-y: scroll;
+
 }
 
 #tasksPane #taskList .task {
@@ -85,4 +91,115 @@
 
 #tasksPane #taskList .task .selfTaskBtns button img {
     margin: 0 5px;
+}
+
+#noTasksHeader {
+    text-align: center;
+}
+
+
+#editTaskPane {
+    z-index: 1000;
+    position: absolute;
+
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    min-width: 500px;
+    min-height: 200px;
+    max-width: 700px;
+    max-height: 800px;
+    
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    background-color: var(--windows-brighter-color);
+
+    border-radius: 15px;
+
+    animation: .3s ease-in-out forwards saveWinOpen;
+
+    padding-top: 15px;
+}
+
+#editTaskPane.saveWinClosing {
+    animation: .3s ease-in-out forwards saveWinClose;
+}
+
+@keyframes saveWinClose {
+    0% {
+        top: 45%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+@keyframes saveWinOpen {
+    0% {
+        top: 50%;
+    }
+    100% {
+        top: 45%;
+    }
+}
+
+#editTaskPaneForm {
+    width: 100%;
+    /* height: 170px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1;
+    gap: 5px;
+}
+
+#editTaskPaneForm input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    transition: all .3s ease-in-out;
+}
+
+#editTaskPaneForm input.err {
+    border: 2px solid var(--error-color);
+}
+
+#taskEditTtlAndClose {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#editTaskPane button {
+    margin: 0 5px;
+    background-color: var(--input-color);
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    min-width: 36px;
+    min-width: 36px;
+}
+
+#editTaskPane button:hover {
+    cursor: pointer;
+    background-color: var(--input-select-color);
+}
+
+.AddErr {
+    visibility: hidden; 
+    /* opacity: 0; */
+    color: var(--error-color);
+    /* transition: all .15s ease-in-out; */
 }

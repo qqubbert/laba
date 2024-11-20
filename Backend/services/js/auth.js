@@ -12,10 +12,19 @@ const authApp = express();
 authApp.use(express.json());
 authApp.use(cookieParser());
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5500'], // Массив разрешенных источников
+    origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:3000','http://localhost:3001', 'http://localhost:3002'], // Массив разрешенных источников
     credentials: true,
 };
+
 authApp.use(cors(corsOptions));
+
+authApp.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || corsOptions.origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+});
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -48,10 +57,14 @@ authApp.get('/cookieclear', async (req, res) => {
 })
 
 authApp.post('/register', async (req, res) => {
-    const { login, password } = req.body;
+    const { login, password, permission, 
+            email, phone, firstname, 
+            lastname, surname, jobttl, 
+            birthday, academdeg, salary, 
+            workexp, gender, childrencount,
+            familstat, dep_id } = req.body;
 
-    console.log('login: ' + login);
-    console.log('password: ' + password);
+    console.log(req.body);
 
     const queryUser = `
     SELECT * FROM Users WHERE Login = ?;
@@ -66,12 +79,67 @@ authApp.post('/register', async (req, res) => {
             return res.status(200).json({ message: "Пользователь уже зарегистрирован" });
         } else {
             const queryReg = `
-            INSERT INTO Users (Login, Pass, Permission) VALUES (?, ?, 'user')
+            INSERT INTO Users 
+                (Login, 
+                Pass, 
+                Permission, 
+                DepID, 
+                Gender, 
+                Birthday,
+                Email, 
+                AcademicDegree,
+                JobTitle, 
+                HavingChildren,
+                WorkExperience, 
+                PhoneNumber,
+                FirstName, 
+                LastName, 
+                Surname,
+                FamilyStatus,
+                Salary) 
+            VALUES 
+                (?, 
+                ?, 
+                ?, 
+                ?, 
+                ?, 
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?)
             `;
 
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                db.query(queryReg, [login, hashedPassword], (err, result) => {
+                db.query(queryReg, 
+                    [
+                        login,
+                        hashedPassword,
+                        permission,
+                        dep_id,
+                        gender,
+                        birthday,
+                        email,
+                        academdeg,
+                        jobttl,
+                        req.body.havingChildren || 0, // Добавьте обработку для `HavingChildren`
+                        workexp,
+                        phone,
+                        firstname,
+                        lastname,
+                        surname,
+                        familstat,
+                        salary
+                    ],  
+                    (err, result) => {
                     if (err) {
                         console.error('Ошибка при регистрации:', err);
                         return res.status(500).json({ message: "Ошибка сервера" });
@@ -116,19 +184,22 @@ authApp.post('/login', (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,       
             secure: false,        
-            sameSite: 'Lax',       
+            sameSite: 'Lax',    
+            // maxAge: 100
             maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.cookie('userid', user.ID, {
             httpOnly: true,       
             secure: false,        
-            sameSite: 'Lax',       
+            sameSite: 'Lax',    
+            // maxAge: 100
             maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.cookie('admin', user.Permission, {
             httpOnly: true,       
             secure: false,        
             sameSite: 'Lax',       
+            // maxAge: 100
             maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.json({ token, message: 'Пользователь авторизован', userid: user.ID, permission: user.Permission });
@@ -146,8 +217,20 @@ authApp.post('/protected', (req, res) => {
     const userid = req.cookies.userid;
 
     if (!token) {
-        return res.status(401).json({ message: "Доступ запрещён" });
+        return res.status(401).json({ message: "Доступ запрещён" }).redirect('/');
     }
+
+    // const isBlocked = `
+    // SELECT * FROM Users WHERE ID = ? AND Isblocked = true 
+    // `
+
+    // db.query(isBlocked, [userid], (req, res)=>{
+    //     if (res.length >= 1) {
+    //         return res.status(401).json({ message: "Вы заблокированы" }).redirect('/');
+    //     } else {
+            
+    //     }
+    // })
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {

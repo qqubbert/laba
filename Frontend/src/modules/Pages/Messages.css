@@ -28,21 +28,52 @@
     border-radius: 15px;
 }
 
-#chatListPane input {
+#chatListPane #inputDiv {
     position: relative;
 
     top: 10px;
 
-    width: 80%;
+    width: 90%;
     align-self: center;
 
     border-radius: 20px;
 
-    padding: 10px 25px;
+    /* padding: 10px 25px; */
 
     border: none;
 
     background-color: var(--input-color);
+
+    display: flex;
+}
+
+#inputDiv input {
+    flex: 1;
+    padding: 10px 10px 10px 10px;
+    background-color: transparent;
+    border: none;
+}
+
+#inputDiv button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+#inputDiv button:first-of-type {
+    padding: 5px 10px 5px 15px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+#inputDiv button:last-of-type {
+    padding: 5px 15px 5px 10px;
+    border-radius: 0px 15px 15px 0px;
+}
+
+#inputDiv button:hover {
+    cursor: pointer;
+    background-color: var(--input-select-color);
 }
 
 #chatListPane input:focus {
@@ -134,6 +165,7 @@
 }
 
 #sendingPane {
+    position: relative;
     max-width: 100%;
     height: fit-content;
     /* background-color: var(--windows-brighter-color); */
@@ -252,10 +284,260 @@
     border-bottom-left-radius: 0;
     word-break: break-word ;
     align-self: start;
+    display: grid;
+    grid-template-areas: "img name" "img text" "img files" "img time";
+    align-items: center;
+}
+
+.message img {
+    grid-area: img;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    margin-right: 10px;
+    position: relative;
+    left: -60px;
+    object-fit: cover;
+}
+
+.message h4 {
+    position: relative;
+    left: -40px;
+    grid-area: name;
+}
+
+.message span {
+    position: relative;
+    left: -40px;
+    grid-area: text;
+}
+
+.message h6 {
+    position: relative;
+    top: 0px;
+    grid-area: time;
+    opacity: .3;
 }
 
 .message.self {
     align-self: flex-end;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 0px;
+    grid-template-areas: "text" "files" "time";
+}
+
+.message.self span {
+    position: relative;
+    left: 0px;
+}
+
+.msgFiles {
+    width: 100%;
+    grid-area: files;
+    margin: 10px;
+}
+
+.msgFiles img {
+    width: auto;
+    height: 200px;
+    object-fit: cover;
+    position: relative;
+    left: 0px;
+}
+
+#addChatPane, #ChatSettingsPane {
+    z-index: 1000;
+    position: absolute;
+
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    min-width: 500px;
+    min-height: 200px;
+    max-width: 700px;
+    max-height: 800px;
+    
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    background-color: var(--windows-brighter-color);
+
+    border-radius: 15px;
+
+    animation: .3s ease-in-out forwards saveWinOpen;
+
+    padding-top: 15px;
+}
+
+#chatTtlAndClose.saveWinClosing, #ChatSettingsPane.saveWinClosing {
+    animation: .3s ease-in-out forwards saveWinClose;
+}
+
+@keyframes saveWinClose {
+    0% {
+        top: 45%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+@keyframes saveWinOpen {
+    0% {
+        top: 50%;
+    }
+    100% {
+        top: 45%;
+    }
+}
+
+#addChatPaneForm {
+    width: 100%;
+    /* height: 170px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1;
+    gap: 5px;
+}
+
+#addChatPane input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    transition: all .3s ease-in-out;
+}
+
+#addChatPane input.err {
+    border: 2px solid var(--error-color);
+}
+
+#chatTtlAndClose, #chatSettingsTtlAndClose {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#addChatPane button, #chatSettingsTtlAndClose button {
+    margin: 0 5px;
+    background-color: var(--input-color);
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    min-width: 36px;
+    min-width: 36px;
+}
+
+#addChatPane button:hover, #ChatSettingsPane button:hover {
+    cursor: pointer;
+    background-color: var(--input-select-color);
+}
+
+#addChatPane select {
+    width: 95%;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+} 
+
+#Settings {
+    width: calc(100% - 40px);
+    margin: 10px 20px;
+}
+
+#UserList {
+    max-height: 500px;
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+#UserList div.chatUser {
+    display: flex;
+    margin: 5px;
+    align-items: center;
+}
+
+#UserList div.chatUser img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+#addChatUserPane {
+    max-width: 100%;
+    display: flex;
+    background-color: var(--input-color);
+    border-radius: 15px;
+    outline: solid 2px transparent;
+    transition: all .15s ease-in-out;
+}
+
+#addChatUserPane input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+}
+
+#addChatUserPane button {
+    min-height: 100%;
+    width: 40px;
+    background-color: transparent;
+    border-radius: 0 15px 15px 0;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#addChatUserPane.err {
+    outline: solid 2px var(--error-color);
+}
+
+.AddErr {
+    visibility: hidden; 
+    /* opacity: 0; */
+    color: var(--error-color);
+    /* transition: all .15s ease-in-out; */
+}
+
+#sendingFiles {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    top: -100px;
+    left: 0;
+    background-color: var(--windows-color);
+}
+
+#sendingFiles h3 {
+    margin: 5px 10px 0px 15px;
+}
+
+#sendingFiles #FileError {
+    color: var(--error-color);
+    visibility: hidden;
+}
+
+#sendingFiles #images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 0px 0px 20px 20px;
 }

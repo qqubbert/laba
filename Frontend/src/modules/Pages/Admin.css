@@ -27,21 +27,56 @@
     border-radius: 15px;
 }
 
-#usersListPane input {
+#usersListPane #adminInputAndAdd {
     position: relative;
 
     top: 10px;
 
-    width: 80%;
+    width: 90%;
     align-self: center;
 
-    border-radius: 20px;
+    border-radius: 15px;
 
-    padding: 10px 25px;
+    /* padding: 10px 25px; */
 
     border: none;
 
     background-color: var(--input-color);
+    display: flex;
+    justify-content: space-between;
+}
+
+#usersListPane #adminInputAndAdd input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+}
+
+#usersListPane #adminInputAndAdd button {
+    /* color: black; */
+    min-width: 30px;
+    min-height: 100%;
+    padding: 5px 20px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+}
+
+#usersListPane #adminInputAndAdd button:last-of-type {
+    border-radius: 0 15px 15px 0;
+}
+
+#usersListPane #adminInputAndAdd button:first-of-type {
+    border-radius: 15px 0 0 15px;
+}
+
+#usersListPane #adminInputAndAdd button:hover {
+    cursor: pointer;
+    background-color: var(--input-select-color);
 }
 
 #usersListPane input:focus {
@@ -58,4 +93,138 @@
     overflow-y: scroll;
 
     margin-top: 15px;
+}
+
+#addTaskPane, #addUserPane, #editUserDataPane {
+    z-index: 1000;
+    position: absolute;
+
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+
+    min-width: 500px;
+    min-height: 200px;
+    
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    background-color: var(--windows-brighter-color);
+
+    border-radius: 15px;
+
+    animation: .3s ease-in-out forwards saveWinOpen;
+
+    padding-top: 15px;
+}
+
+#addTaskPane.saveWinClosing, #addUserPane.saveWinClosing, #editUserDataPane.saveWinClosing {
+    animation: .3s ease-in-out forwards saveWinClose;
+}
+
+@keyframes saveWinClose {
+    0% {
+        top: 45%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+@keyframes saveWinOpen {
+    0% {
+        top: 50%;
+    }
+    100% {
+        top: 45%;
+    }
+}
+
+
+#addTaskPane #addTaskPaneForm, #addUserPane #addUserPaneForm, #editUserDataPane #editUserDataPaneForm {
+    width: 100%;
+    /* height: 170px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1;
+    gap: 5px;
+}
+
+#addTaskPane #addTaskPaneForm input, #addUserPane #addUserPaneForm input, #editUserDataPane #editUserDataPaneForm input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    transition: all .3s ease-in-out;
+}
+
+#addTaskPane #addTaskPaneForm input.err, #addUserPane #addUserPaneForm input.err, #editUserDataPane #editUserDataPaneForm input.err {
+    border: 2px solid var(--error-color);
+}
+
+#addTaskPane #taskTtlAndClose, #addUserPane #userTtlAndClose, #editUserDataPane #editUserDataTtlAndClose {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#addTaskPane button, #addUserPane button, #editUserDataPane button {
+    margin: 0 5px;
+    background-color: var(--input-color);
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    min-width: 36px;
+    min-width: 36px;
+}
+
+#addTaskPane button:hover, #addUserPane button:hover, #editUserDataPane button:hover {
+    cursor: pointer;
+    background-color: var(--input-select-color);
+}
+
+#addUserPaneForm select, #editUserDataPaneForm select {
+    width: 95%;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+} 
+
+.AddErr {
+    visibility: hidden; 
+    /* opacity: 0; */
+    color: var(--error-color);
+    /* transition: all .15s ease-in-out; */
+}
+
+#addDep {
+    width: 95%;
+    display: flex;
+    background-color: var(--input-color);
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+}
+
+#addDep input {
+    border: none !important;
+    flex: 1;
+    outline: none;
+    background-color: transparent !important;
+}
+
+#addDep button {
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+    margin: 0;
 }
