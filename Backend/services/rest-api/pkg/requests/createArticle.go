@@ -74,7 +74,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", file) //вернуть юникфайлнейм
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", filePath) //вернуть юникфайлнейм
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed) VALUES (?, ?, ?, TRUE)", req.Title, fileURL, userID)
