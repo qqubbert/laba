@@ -3,13 +3,11 @@ package requests
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"mime/multipart"
 	"os"
 	"strconv"
-	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 type CreateArticleRequest struct {
@@ -56,11 +54,11 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	}
 	defer file.Close()
 
-	// Генерируем уникальное имя файла, добавляя к имени оригинального файла timestamp
-	uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), req.File.Filename)
+	//// Генерируем уникальное имя файла, добавляя к имени оригинального файла timestamp
+	//uniqueFilename := fmt.Sprintf("%d_%s", time.Now().Unix(), req.File.Filename)
 
 	// Определяем путь для сохранения файла
-	filePath := fmt.Sprintf("./uploads/articles/%s", uniqueFilename)
+	filePath := fmt.Sprintf("./uploads/articles/%s", file) //вернуть юникфайлнейм
 
 	// Сохраняем файл
 	out, err := os.Create(filePath)
@@ -76,7 +74,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 		return
 	}
 
-	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", uniqueFilename)
+	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", file) //вернуть юникфайлнейм
 
 	// Вставляем данные в базу данных
 	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed) VALUES (?, ?, ?, TRUE)", req.Title, fileURL, userID)
