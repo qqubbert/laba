@@ -214,30 +214,18 @@ authApp.get('/cookiecheck', (req, res)=>{
 
 authApp.post('/protected', (req, res) => {
     const token = req.cookies.token;
-    const userid = req.cookies.userid;
 
     if (!token) {
-        return res.status(401).json({ message: "Доступ запрещён" }).redirect('/');
+        return res.status(401).json({ message: "Доступ запрещён" });
     }
-
-    // const isBlocked = `
-    // SELECT * FROM Users WHERE ID = ? AND Isblocked = true 
-    // `
-
-    // db.query(isBlocked, [userid], (req, res)=>{
-    //     if (res.length >= 1) {
-    //         return res.status(401).json({ message: "Вы заблокированы" }).redirect('/');
-    //     } else {
-            
-    //     }
-    // })
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            return res.status(403).json({ message: "Неправильный токен", access: false  });
+            return res.status(403).json({ message: "Неправильный токен", access: false });
         }
-        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true, userid: userid });
+        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
     });
 });
+
 
 module.exports = authApp;

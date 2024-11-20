@@ -144,13 +144,13 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc("name")}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Дата рождения: {userData.birthday}</h3>
-                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('birthday')}><img src={editIcon} alt="" /></button>}
+                    {/* {permission == 'admin' && <button onClick={()=>editUserDataFunc('birthday')}><img src={editIcon} alt="" /></button>} */}
                   </div>
                   <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('familyStatus')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Пол: {userData.gender}</h3>
-                    {permission == 'admin' && <button onClick={()=>editUserDataFunc('gender')}><img src={editIcon} alt="" /></button>}
+                    {/* {permission == 'admin' && <button onClick={()=>editUserDataFunc('gender')}><img src={editIcon} alt="" /></button>} */}
                   </div>
                   <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('children')}><img src={editIcon} alt="" /></button>}
@@ -164,7 +164,7 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   <div className="textdiv"><h3>Опыт работы: {userData.work_experience}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('workExp')}><img src={editIcon} alt="" /></button>}
                   </div>
-                  <div className="textdiv"><h3>Зарплата: {new Intl.NumberFormat('ru-IN', { maximumSignificantDigits: 3 }).format( userData.salary )} ₽</h3>
+                  <div className="textdiv"><h3>Зарплата: {new Intl.NumberFormat('ru-IN').format( userData.salary )} ₽</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc("salary")}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Номер телефона: {userData.phone_number}</h3>

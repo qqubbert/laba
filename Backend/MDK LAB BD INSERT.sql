@@ -90,7 +90,9 @@ INSERT INTO tasks (Id_Employee, Task, Progress) VALUES
 -- Заполнение таблицы article
 INSERT INTO article (title, HtmlLink, completed, author_id) VALUES
 ('Основы молекулярной биологии', 'http://localhost:3002/uploads/articles/1728371269_article.html', TRUE, 3),
-('Пример статьи', 'http://localhost:3002/uploads/articles/1728375121_article.html', TRUE, 3),
+('Пример статьи 1', 'http://localhost:3002/uploads/articles/1728375121_article.html', TRUE, 3),
+('Пример статьи 2', 'http://localhost:3002/uploads/articles/1728378982_article.html', TRUE, 1),
+-- ('Пример статьи 3', 'http://localhost:3002/uploads/articles/1728379116_article.html', TRUE, 3),
 ('Экологические исследования в России', 'http://localhost:3002/uploads/articles/1728374400_article.html', TRUE, 5);
 
 -- Заполнение таблицы article_tags
@@ -135,10 +137,10 @@ INSERT INTO chat_msgs (chat_id, sender_id, msg, pinned) VALUES
 (4, 5, 'Когда следующий семинар?', TRUE);
 
 -- Заполнение таблицы msg_media
-INSERT INTO msg_media (msg_id, file_link) VALUES
-(1, 'http://example.com/media1'),
-(2, 'http://example.com/media2'),
-(3, 'http://example.com/media3');
+-- INSERT INTO msg_media (msg_id, file_link) VALUES
+-- (1, 'http://example.com/media1'),
+-- (2, 'http://example.com/media2'),
+-- (3, 'http://example.com/media3');
 
 -- Заполнение таблицы fav_articles
 -- INSERT INTO fav_articles (art_id, user_id) VALUES
