@@ -9,6 +9,8 @@ import WindowBG from '../Windows/WindowBackground.jsx';
 
 import plusIcon from '../../assets/PlusIcon.svg';
 import searchIcon from '../../assets/SearchIcon.svg';
+import filterIcon from '../../assets/FilterIcon.svg';
+import tableIcon from '../../assets/TableIcon.svg';
 
 function Admin({ permission }) {
     const [users, setUsers] = useState([]);
@@ -494,6 +496,8 @@ function Admin({ permission }) {
                     <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
                     <input type="text" placeholder='Поиск' />
                     <button><img src={searchIcon} alt="" /></button>
+                    <button><img src={filterIcon} alt="" /></button>
+                    <button><img src={tableIcon} alt="" /></button>
                 </div>
                 <div id="usersList">
                     {users && users.map((user, i)=>{
