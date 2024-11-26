@@ -3,22 +3,23 @@ package requests
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"mime/multipart"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type CreateArticleRequest struct {
 	Title     string                `form:"title" binding:"required"`
-	Completed bool                  `json:"completed"`
+	Completed bool                  `form:"completed"`
 	File      *multipart.FileHeader `form:"file" binding:"required"`
-	Biology   bool                  `json:"biology"`
-	Chemistry bool                  `json:"chemistry"`
-	It        bool                  `json:"it"`
-	Physics   bool                  `json:"physics"`
+	Biology   *bool                 `form:"biology"`
+	Chemistry *bool                 `form:"chemistry"`
+	It        *bool                 `form:"it"`
+	Physics   *bool                 `form:"physics"`
 }
 
 func CreateArticle(c *gin.Context, db *sql.DB) {

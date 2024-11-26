@@ -110,7 +110,7 @@
           {(logged == true) &&
           <Header permission={permission} userInfo={usrInf} 
           showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} 
-          logout={ async () => { navigate("/", { replace: true }); await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
+          logout={ async () => { navigate("/login", { replace: true }); await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
           selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}
           />}
 

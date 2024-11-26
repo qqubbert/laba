@@ -290,7 +290,7 @@ function NewArticle({ hideArticleEditor }) {
     formData.append('chemistry', data.chemistry); 
     formData.append('physics', data.physics); 
     formData.append('it', data.it); 
-    formData.append('author_id', '5');  
+    // formData.append('author_id', '5');  
 
     try {
       // Отправляем данные на сервер

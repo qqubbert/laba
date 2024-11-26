@@ -495,6 +495,14 @@
     padding: 10px 15px;
 }
 
+#addChatUserPane select {
+    background-color: var(--input-color);
+    border: none;
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 15px 0 0 15px;
+}
+
 #addChatUserPane button {
     min-height: 100%;
     width: 40px;
