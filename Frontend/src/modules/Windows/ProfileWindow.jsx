@@ -52,7 +52,7 @@ function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
           <ul id="profileWinList">
               <li onClick={()=>profile()}><img src={profileIcon} alt="" />Профиль</li>
               <li onClick={()=>themeSwitch()}><img src={themeIcon} alt="" />Смена темы</li>
-              <li><img src={editIcon} alt="" />Мои статьи</li>
+              {/* <li><img src={editIcon} alt="" />Мои статьи</li> */}
               <li onClick={()=>{logout();}}>
                 <NavLink to="/login">
                     <img src={logoutIcon} alt="" /> Выйти

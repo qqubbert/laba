@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
+import * as XLSX from "xlsx";
 
 import './Admin.css';
 
@@ -19,6 +20,7 @@ function Admin({ permission }) {
     const [usrCard, setUsrCard] = useState(false);
     const [isDepsLoaded, setIsDepsLoaded] = useState(false);
     const [showWindowBG, setShowWindowBG] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
     const [isChanges, setIsChanges] = useState(false);
     const [showTaskWin, setShowTaskWin] = useState(false);
     const [showEditWin, setShowEditWin] = useState(false);
@@ -26,8 +28,21 @@ function Admin({ permission }) {
     const { userid } = useParams();
     const navigate = useNavigate();
     const [isUsersLoaded, setIsUsersLoaded] = useState(false);
+    const [isFilters, setIsFilters] = useState(false);
     const [editingDataType, setEditingDataType] = useState("");
     const [newDepTtl, setNewDepTtl] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [filters, setFilters] = useState({
+        name: "",
+        department: "",
+        gender: "",
+        familyStatus: "",
+        children: null,
+        experience: null,
+        salary: null,
+        degree: "",
+        jobTitle: "",
+    });
     const [addTaskData, setAddTaskData] = useState({
         added: false,
         taskTitle: ''
@@ -51,6 +66,39 @@ function Admin({ permission }) {
         familstat: '',
         dep_id: '',
     });
+
+    const exportToExcel = () => {
+        // Преобразование данных в формат, подходящий для Excel
+        let usersArray = [];
+        if (isFilters) {
+            usersArray = filteredUsers
+        } else {
+            usersArray = users;
+        }
+        const worksheetData = usersArray.map(user => ({
+            "Имя": user.first_name,
+            "Фамилия": user.last_name,
+            "Отдел": user.department,
+            "Должность": user.job_title,
+            "Пол": user.gender === "М" ? "Мужской" : "Женский",
+            "Дата рождения": user.birthday,
+            "Семейное положение": user.family_status,
+            "Количество детей": user.having_children,
+            "Учёная степень": user.academic_degree,
+            "Опыт работы (лет)": user.work_experience,
+            "Зарплата (руб.)": user.salary,
+            "Телефон": user.phone_number,
+            "Email": user.email,
+        }));
+
+        // Создаем новую книгу (workbook) и добавляем в нее лист (worksheet)
+        const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Сотрудники");
+
+        // Генерация файла и сохранение его пользователю
+        XLSX.writeFile(workbook, "filtered_users.xlsx");
+    };
 
     const LoadUsers = async () => {
         try {  
@@ -263,6 +311,38 @@ function Admin({ permission }) {
           
     }
 
+    const handleFilterChange = (key, value) => {
+        console.log(key, ': ', value);
+        setFilters(prev => ({
+            ...prev,
+            [key]: value,
+        }));
+    };
+    
+    useEffect(() => {
+        const filtered = users.filter(user => {
+            const searchParts = filters.name ? filters.name.trim().split(' ').filter(Boolean) : [];
+            const matchesName = searchParts.every(part => 
+                (user.first_name.toLocaleLowerCase()).includes(part.toLocaleLowerCase()) || (user.last_name.toLocaleLowerCase()).includes(part.toLocaleLowerCase())
+            );
+    
+            return (
+                (filters.name ? matchesName : true) &&
+                (filters.department ? user.department === filters.department : true) &&
+                (filters.gender ? user.gender === filters.gender : true) &&
+                (filters.familyStatus ? user.family_status === filters.familyStatus : true) &&
+                (filters.children != null ? user.having_children === Number(filters.children) : true) &&
+                (filters.experience !== null ? user.work_experience >= Number(filters.experience) : true) &&
+                (filters.salary !== null ? user.salary >= Number(filters.salary) : true) &&
+                (filters.degree ? user.academic_degree.includes(filters.degree) : true) &&
+                (filters.jobTitle ? user.job_title.includes(filters.jobTitle) : true)
+            );
+        });
+        setFilteredUsers(filtered);
+        setIsFilters(true);
+        console.log(filteredUsers);
+    }, [filters, users]); 
+
   return (
     <>
         {showWindowBG && <WindowBG hide={showBG}/>}
@@ -431,9 +511,11 @@ function Admin({ permission }) {
                     onChange={(e) => {setAddUserData({ ...addUserData, familstat: e.target.value }); console.log(addUserData)}}
                 >
                     <option value="Холост">Холост</option>
+                    <option value="Не замужем">Не замужем</option>
                     <option value="Женат">Женат</option>
-                    <option value="Вдова(ец)">Вдова(ец)</option>
-                    <option value="Разведён">Разведён</option>
+                    <option value="Замужем">Замужем</option>
+                    <option value="Вдовец">Вдовец</option>
+                    <option value="Вдова">Вдова</option>
                 </select>
                 <select
                     name="dep"
@@ -494,32 +576,94 @@ function Admin({ permission }) {
             <div id="usersListPane">
                 <div id="adminInputAndAdd">
                     <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
-                    <button><img src={tableIcon} alt="" /></button>
-                    <button><img src={filterIcon} alt="" /></button>
-                    <input type="text" placeholder='Поиск' />
+                    <button onClick={exportToExcel}><img src={tableIcon} alt="" /></button>
+                    <button onClick={()=>setShowFilters(!showFilters)}><img src={filterIcon} alt="" /></button>
+                    <input type="text" placeholder='Поиск' onChange={(e) => handleFilterChange('name', e.target.value)}/>
                     <button><img src={searchIcon} alt="" /></button>
                 </div>
+                {showFilters && 
                 <div id="filters">
-                    <select name="" id="depFilter"></select>
-                    <select name="" id="genderFilter">
+                    <select name="" id="depFilter" onChange={(e) => handleFilterChange('department', e.target.value)}>
+                        <option value="">Все</option>
+                        {deps.map((dep, i)=>{
+                            return (
+                                <option value={dep.dep_ttl} key={dep.dep_id}>{dep.dep_ttl}</option>
+                            )
+                        })}
+                    </select>
+                    <select name="" id="genderFilter" onChange={(e) => handleFilterChange('gender', e.target.value)}>
+                        <option value="">Все</option>
                         <option value="М">Мужской</option>
                         <option value="Ж">Женский</option>
                     </select>
-                    <select name="" id="familyStatusFilter">
-                        <option value="М">Холост</option>
-                        <option value="М">Женат/Замужем</option>
-                        <option value="М">Вдова/Вдовец</option>
+                    <select name="" id="familyStatusFilter" onChange={(e) => handleFilterChange('familyStatus', e.target.value)}>
+                        <option value="">Все</option>   
+                        <option value="Холост">Холост</option>
+                        <option value="Не замужем">Не замужем</option>
+                        <option value="Женат">Женат</option>
+                        <option value="Замужем">Замужем</option>
+                        <option value="Вдовец">Вдовец</option>
+                        <option value="Вдова">Вдова</option>
                     </select>
-                    <input type="number" placeholder='Количество детей'/>
-                    <input type="number" placeholder='Опыт работы'/>
-                </div>
+                    <div id="childrenDiv">
+                        <input type="text" placeholder='Количество детей' onChange={(e) => handleFilterChange('children', e.target.value)}/>
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    <div id="workExpDiv">
+                        <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value )}/>
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    <div id="salaryDiv">
+                        <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value )}/>
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    {/* <div id="birthcdayDiv">
+                        <input type="date" placeholder=''/>
+                        <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select>
+                    </div> */}
+                    <input type="text" placeholder='Учёная степень' onChange={(e) => handleFilterChange('degree', e.target.value)}/>
+                    <input type="text" placeholder='Должность' onChange={(e) => handleFilterChange('jobTitle', e.target.value)}/>
+                </div>}
                 <div id="usersList">
-                    {users && users.map((user, i)=>{
+                    {users && !isFilters && users.map((user, i)=>{
                         // console.log(user);
                         const userLink = `/employee/${user.id}`;
                         return (
                             <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + user.id}>
                                 <UserCard userData={users[i]} />
+                            </NavLink>
+                        )
+                    })}
+                    {isFilters && filteredUsers.map((user, i)=>{
+                        // console.log(user);
+                        const userLink = `/employee/${user.id}`;
+                        return (
+                            <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + user.id}>
+                                <UserCard userData={filteredUsers[i]} />
                             </NavLink>
                         )
                     })}

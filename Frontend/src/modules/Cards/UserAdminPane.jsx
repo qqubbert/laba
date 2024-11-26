@@ -149,7 +149,7 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   <div className="textdiv"><h3>Семейное положение: {userData.family_status}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('familyStatus')}><img src={editIcon} alt="" /></button>}
                   </div>
-                  <div className="textdiv"><h3>Пол: {userData.gender}</h3>
+                  <div className="textdiv"><h3>Пол: {userData.gender === 'М' ? "Мужской" : "Женский"}</h3>
                     {/* {permission == 'admin' && <button onClick={()=>editUserDataFunc('gender')}><img src={editIcon} alt="" /></button>} */}
                   </div>
                   <div className="textdiv"><h3>Количество детей: {userData.having_children}</h3>

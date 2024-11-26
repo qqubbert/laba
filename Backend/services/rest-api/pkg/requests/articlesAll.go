@@ -13,10 +13,10 @@ type ArticleAll struct {
 	AuthorId     int    `json:"author_id"`
 	AuthorName   string `json:"author_name"`
 	CreatingDate string `json:"creating_date"`
-	Biology      bool   `json:"biology"`
-	Chemistry    bool   `json:"chemistry"`
-	It           bool   `json:"it"`
-	Physics      bool   `json:"physics"`
+	Biology      *bool   `json:"biology"`
+	Chemistry    *bool   `json:"chemistry"`
+	It           *bool   `json:"it"`
+	Physics      *bool   `json:"physics"`
 }
 
 func GetAllArticles(db *sql.DB) ([]ArticleAll, error) {
