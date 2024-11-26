@@ -54,12 +54,12 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
         last_name: userData.last_name,
         surname: userData.surname,
         family_status: userData.family_status,
-        having_children: userData.having_children,
+        having_children: Number(userData.having_children),
         job_title: userData.job_title,
         academic_degree: userData.academic_degree,
         dep_id: userData.dep_id,
         work_experience: userData.work_experience,
-        salary: userData.salary,
+        salary: Number(userData.salary),
         phone_number: userData.phone_number,
         email: userData.email,
         is_blocked: false,
@@ -161,7 +161,7 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   <div className="textdiv"><h3>Учёная степень: {userData.academic_degree}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('academDegree')}><img src={editIcon} alt="" /></button>}
                   </div>
-                  <div className="textdiv"><h3>Опыт работы: {userData.work_experience}</h3>
+                  <div className="textdiv"><h3>Опыт работы (в годах): {userData.work_experience}</h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('workExp')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv"><h3>Зарплата: {new Intl.NumberFormat('ru-IN').format( userData.salary )} ₽</h3>
