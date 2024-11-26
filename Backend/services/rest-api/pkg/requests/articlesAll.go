@@ -5,21 +5,21 @@ import "database/sql"
 type ArticleAll struct {
 	ID           int      `json:"id"`
 	Title        string   `json:"title"`
+	HtmlLink     string   `json:"html_link"`
 	Completed    bool     `json:"completed"`
 	AuthorId     int      `json:"author_id"`
-	AuthorName   string   `json:"author_name"` // Полное имя автора
+	AuthorName   string   `json:"author_name"`
 	CreatingDate string   `json:"creating_date"`
-	HtmlLink     string   `json:"html_link"` // Поле для ссылки на статью
-	Tags         []string `json:"tags"`      // Список тегов
+	Tags         []string `json:"tags"`
 }
 
 func GetAllArticles(db *sql.DB) ([]ArticleAll, error) {
 	query := `
-		SELECT a.id, a.title, a.completed, a.author_id, CONCAT(u.FirstName, ' ', u.LastName) AS AuthorName, a.creating_date, a.HtmlLink,
-		       IFNULL(t.biology, false), IFNULL(t.chemistry, false), IFNULL(t.it, false), IFNULL(t.physics, false)
+		SELECT a.id, a.title, a.HtmlLink, a.completed, a.author_id, 
+		       CONCAT(u.FirstName, ' ', u.LastName) AS author_name, a.creating_date,
+		       a.biology, a.chemistry, a.it, a.physics
 		FROM article a
 		JOIN Users u ON a.author_id = u.ID
-		LEFT JOIN article_tags t ON a.id = t.article_id
 		WHERE a.completed = true
 	`
 
@@ -35,20 +35,24 @@ func GetAllArticles(db *sql.DB) ([]ArticleAll, error) {
 		var biology, chemistry, it, physics bool
 
 		// Сканируем результаты
-		if err := rows.Scan(&article.ID, &article.Title, &article.Completed, &article.AuthorId, &article.AuthorName, &article.CreatingDate, &article.HtmlLink, &biology, &chemistry, &it, &physics); err != nil {
+		if err := rows.Scan(&article.ID, &article.Title, &article.HtmlLink, &article.Completed,
+			&article.AuthorId, &article.AuthorName, &article.CreatingDate,
+			&biology, &chemistry, &it, &physics); err != nil {
 			return nil, err
 		}
 
-		// Собираем теги с помощью switch
+		// Формируем список тегов
 		var tags []string
-		switch {
-		case biology:
+		if biology {
 			tags = append(tags, "biology")
-		case chemistry:
+		}
+		if chemistry {
 			tags = append(tags, "chemistry")
-		case it:
+		}
+		if it {
 			tags = append(tags, "it")
-		case physics:
+		}
+		if physics {
 			tags = append(tags, "physics")
 		}
 

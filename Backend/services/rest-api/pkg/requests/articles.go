@@ -8,27 +8,31 @@ import (
 type Article struct {
 	ID           int      `json:"id"`
 	Title        string   `json:"title"`
+	HtmlLink     string   `json:"html_link"`
 	Completed    bool     `json:"completed"`
 	AuthorId     int      `json:"author_id"`
+	AuthorName   string   `json:"author_name"` // Полное имя автора
 	CreatingDate string   `json:"creating_date"`
-	HtmlLink     string   `json:"html_link"`
-	AuthorName   string   `json:"author_name"`
-	Tags         []string `json:"tags"`
+	Tags         []string `json:"tags"` // Список тегов
 }
 
 func GetArticleById(db *sql.DB, id int) (*Article, error) {
-
 	query := `
-		SELECT a.id, a.title, a.completed, a.author_id, a.creating_date, a.HtmlLink,
-		       CONCAT(u.FirstName, ' ', u.LastName, ' ', u.Surname) AS author_name
+		SELECT a.id, a.title, a.HtmlLink, a.completed, a.author_id, a.creating_date,
+		       CONCAT(u.FirstName, ' ', u.LastName) AS author_name,
+		       a.biology, a.chemistry, a.it, a.physics
 		FROM article a
 		JOIN Users u ON a.author_id = u.ID
 		WHERE a.id = ?
 	`
+
 	var article Article
+	var biology, chemistry, it, physics bool
+
 	err := db.QueryRow(query, id).Scan(
-		&article.ID, &article.Title, &article.Completed, &article.AuthorId,
-		&article.CreatingDate, &article.HtmlLink, &article.AuthorName,
+		&article.ID, &article.Title, &article.HtmlLink, &article.Completed,
+		&article.AuthorId, &article.CreatingDate, &article.AuthorName,
+		&biology, &chemistry, &it, &physics,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -37,26 +41,22 @@ func GetArticleById(db *sql.DB, id int) (*Article, error) {
 		return nil, err
 	}
 
-	tagsQuery := `
-		SELECT biology, chemistry, it, physics 
-		FROM article_tags 
-		WHERE article_id = ?
-	`
+	// Формируем список тегов
 	var tags []string
-	var biology, chemistry, it, physics bool
-	if err := db.QueryRow(tagsQuery, article.ID).Scan(&biology, &chemistry, &it, &physics); err == nil {
-		switch {
-		case biology:
-			tags = append(tags, "biology")
-		case chemistry:
-			tags = append(tags, "chemistry")
-		case it:
-			tags = append(tags, "it")
-		case physics:
-			tags = append(tags, "physics")
-		}
+	if biology {
+		tags = append(tags, "biology")
+	}
+	if chemistry {
+		tags = append(tags, "chemistry")
+	}
+	if it {
+		tags = append(tags, "it")
+	}
+	if physics {
+		tags = append(tags, "physics")
 	}
 	article.Tags = tags
+
 	return &article, nil
 }
 
