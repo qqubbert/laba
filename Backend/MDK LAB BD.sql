@@ -13,7 +13,7 @@ CREATE TABLE Departaments (
 );
 
 CREATE TABLE Users (
-	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+ ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
     Login VARCHAR(100),
     Pass VARCHAR(100),
     Permission VARCHAR(100),
@@ -38,7 +38,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE tasks (
-	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Id_Employee INT,
     Task TEXT,
     Progress INT,
@@ -47,7 +47,7 @@ CREATE TABLE tasks (
 );
 
 CREATE TABLE Projects (
-	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ProjTtl VARCHAR(100),
     Deadlines DATE,
     Budget INT,
@@ -59,51 +59,45 @@ CREATE TABLE Projects (
 );
 
 create Table article (
-	id int auto_increment unique not null primary key,
+ id int auto_increment unique not null primary key,
     title varchar(100) not null,
     HtmlLink varchar(100),
     completed boolean,
     author_id int,
     creating_date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()),
-    foreign key (author_id) references Users (ID)
-);
-
-create table article_tags (
-	id int auto_increment unique not null primary key,
-    article_id int,
     biology boolean,
     chemistry boolean,
     it boolean,
     physics boolean,
-    foreign key (article_id) references article (id)
+    foreign key (author_id) references Users (ID)
 );
 
 create table article_comms (
-	id int auto_increment unique not null primary key,
+ id int auto_increment unique not null primary key,
     article_id int,
     author_id int,
     comm text,
     foreign key (article_id) references article (id),
-	foreign key (author_id) references Users (ID)
+ foreign key (author_id) references Users (ID)
 );
 
 create table chats (
-	id int auto_increment unique not null primary key,
-	title varchar(100),
+ id int auto_increment unique not null primary key,
+ title varchar(100),
     private boolean
 );
 
 create table chat_users (
-	id int auto_increment unique not null primary key,
-	user_id int,
+ id int auto_increment unique not null primary key,
+ user_id int,
     chat_id int,
     foreign key (user_id) references Users (ID),
     foreign key (chat_id) references chats (id)
 );
 
 create table chat_msgs (
-	id int auto_increment unique not null primary key,
-	chat_id int,
+ id int auto_increment unique not null primary key,
+ chat_id int,
     sender_id int,
     msg text,
     msg_date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP()),
@@ -113,15 +107,15 @@ create table chat_msgs (
 );
 
 create table msg_media (
-	id int auto_increment unique not null primary key,
-	msg_id int,
+ id int auto_increment unique not null primary key,
+ msg_id int,
     file_link varchar(100),
     foreign key (msg_id) references chat_msgs (id)
 );
 
 create table fav_articles (
-	id int auto_increment unique not null primary key,
-	art_id int,
+ id int auto_increment unique not null primary key,
+ art_id int,
     user_id int,
     foreign key (user_id) references Users (ID),
     foreign key (art_id) references article (id)

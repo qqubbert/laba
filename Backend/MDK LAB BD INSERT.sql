@@ -88,12 +88,12 @@ INSERT INTO tasks (Id_Employee, Task, Progress) VALUES
 (10, 'Провести анализ физических свойств', 10);
 
 -- Заполнение таблицы article
-INSERT INTO article (title, HtmlLink, completed, author_id) VALUES
-('Основы молекулярной биологии', 'http://localhost:3002/uploads/articles/1728371269_article.html', TRUE, 3),
-('Пример статьи 1', 'http://localhost:3002/uploads/articles/1728375121_article.html', TRUE, 3),
-('Пример статьи 2', 'http://localhost:3002/uploads/articles/1728378982_article.html', TRUE, 1),
--- ('Пример статьи 3', 'http://localhost:3002/uploads/articles/1728379116_article.html', TRUE, 3),
-('Экологические исследования в России', 'http://localhost:3002/uploads/articles/1728374400_article.html', TRUE, 5);
+INSERT INTO article (title, HtmlLink, completed, author_id, it, physics, biology, chemistry) VALUES
+('Основы молекулярной биологии', 'http://localhost:3002/uploads/articles/1728371269_article.html', TRUE, 3, false, false, true, true),
+('Пример статьи 1', 'http://localhost:3002/uploads/articles/1728375121_article.html', TRUE, 3, true, false, false, true),
+('Пример статьи 2', 'http://localhost:3002/uploads/articles/1728378982_article.html', TRUE, 1, false, false, true, true),
+-- ('Пример статьи 3', 'http://localhost:3002/uploads/articles/1728379116_article.html', TRUE, 3, true, true, false, true),
+('Экологические исследования в России', 'http://localhost:3002/uploads/articles/1728374400_article.html', TRUE, 5, false, false, true, false);
 
 -- Заполнение таблицы article_tags
 -- INSERT INTO article_tags (article_id, biology, chemistry, it, physics) VALUES

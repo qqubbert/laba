@@ -476,10 +476,10 @@ function Admin({ permission }) {
             </div>
             <div id="addUserPaneForm" action="">
                 <h3 id='AddUserErr' className='AddErr'>Заполните все данные</h3>
-                <input id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
-                <input id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
                 <input id="userPhone" className='addUserInput' type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
-                <input id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
                 <input id="userFirstName" className='addUserInput' type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
                 <input id="userLastName" className='addUserInput' type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, lastname: e.target.value}); console.log(addUserData)}}/>
                 <input id="userSurName" className='addUserInput' type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, surname: e.target.value}); console.log(addUserData)}}/>
@@ -488,7 +488,7 @@ function Admin({ permission }) {
                 <input id="userChildrenCount" className='addUserInput' type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, childrencount: e.target.value}); console.log(addUserData)}}/>
                 <input id="userSalary" className='addUserInput' type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, salary: e.target.value}); console.log(addUserData)}}/>
                 <input id="userWorkExp" className='addUserInput' type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, workexp: e.target.value}); console.log(addUserData)}}/>
-                <input id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
                 <select
                     name="permission"
                     value={addUserData.permission}
@@ -541,30 +541,115 @@ function Admin({ permission }) {
                     <button onClick={addDepFunc}>+</button>
                 </div>
                 <button onClick={()=>{
-                    if (addUserData.login.length > 0 && addUserData.password.length > 0) {
+                    let err = false;
+                    if (addUserData.login.length <= 0) {
+                        const userLoginInput = document.getElementById('userLoginInput');
+                        userLoginInput.classList.add('err');
+                        setTimeout(() => {
+                            userLoginInput.classList.remove('err');
+                        }, 1000);
+                        err = true;
+                    }
+                    if (addUserData.password.length <= 0) {
+                        const userPasswordInput = document.getElementById('userPasswordInput');
+                        userPasswordInput.classList.add('err');
+                        setTimeout(() => {
+                            userPasswordInput.classList.remove('err');
+                        }, 1000);
+                        err = true;
+                    } 
+                    if (!addUserData.email || addUserData.email.length <= 0) {
+                        console.log('email is not filled')
+                        const userEmailInput = document.getElementById('userEmail');
+                        userEmailInput.classList.add('err');
+                        setTimeout(() => {
+                            userEmailInput.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.birthday || addUserData.birthday.length <= 0) {
+                        const userBirthdayInput = document.getElementById('userBirthday');
+                        userBirthdayInput.classList.add('err');
+                        setTimeout(() => {
+                            userBirthdayInput.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.firstname || addUserData.firstname.length <= 0) {
+                        const userFirstName = document.getElementById('userFirstName');
+                        userFirstName.classList.add('err');
+                        setTimeout(() => {
+                            userFirstName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.surname || addUserData.surname.length <= 0) {
+                        const userLastName = document.getElementById('userLastName');
+                        userLastName.classList.add('err');
+                        setTimeout(() => {
+                            userLastName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.surname || addUserData.surname.length <= 0) {
+                        const userSurName = document.getElementById('userSurName');
+                        userSurName.classList.add('err');
+                        setTimeout(() => {
+                            userSurName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.academdeg || addUserData.academdeg.length <= 0) {
+                        const userAcadem = document.getElementById('userAcadem');
+                        userAcadem.classList.add('err');
+                        setTimeout(() => {
+                            userAcadem.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.jobttl || addUserData.jobttl.length <= 0) {
+                        const userJobTitle = document.getElementById('userJobTitle');
+                        userJobTitle.classList.add('err');
+                        setTimeout(() => {
+                            userJobTitle.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.salary || addUserData.salary.length <= 0) {
+                        const userSalary = document.getElementById('userSalary');
+                        userSalary.classList.add('err');
+                        setTimeout(() => {
+                            userSalary.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.workexp || addUserData.workexp.length <= 0) {
+                        const userWorkExp = document.getElementById('userWorkExp');
+                        userWorkExp.classList.add('err');
+                        setTimeout(() => {
+                            userWorkExp.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.childrencount || addUserData.childrencount.length <= 0) {
+                        const userChildrenCount = document.getElementById('userChildrenCount');
+                        userChildrenCount.classList.add('err');
+                        setTimeout(() => {
+                            userChildrenCount.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.phone || addUserData.phone.length <= 0) {
+                        const userPhone = document.getElementById('userPhone');
+                        userPhone.classList.add('err');
+                        setTimeout(() => {
+                            userPhone.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!err) {
                         addUserHttpFunc();
                         showUserWinFunc();
-                    } else if (addUserData.login.length <= 0 && addUserData.password.length <= 0) {
-                        const userLoginInput = document.getElementById('userLoginInput');
-                        userLoginInput.classList.add('err');
-                        const userPasswordInput = document.getElementById('userPasswordInput');
-                        userPasswordInput.classList.add('err');
-                        setTimeout(() => {
-                            userLoginInput.classList.remove('err');
-                            userPasswordInput.classList.remove('err');
-                        }, 1000);
-                    } else if (addUserData.password.length <= 0 && addUserData.login.length > 0) {
-                        const userPasswordInput = document.getElementById('userPasswordInput');
-                        userPasswordInput.classList.add('err');
-                        setTimeout(() => {
-                            userPasswordInput.classList.remove('err');
-                        }, 1000);
-                    } else if (addUserData.login.length <= 0 && addUserData.password.length > 0) {
-                        const userLoginInput = document.getElementById('userLoginInput');
-                        userLoginInput.classList.add('err');
-                        setTimeout(() => {
-                            userLoginInput.classList.remove('err');
-                        }, 1000);   
                     }
                 }}>
                     Добавить сотрудника
