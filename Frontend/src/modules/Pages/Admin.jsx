@@ -691,7 +691,11 @@ function Admin({ permission }) {
                         <option value="Вдова">Вдова</option>
                     </select>
                     <div id="childrenDiv">
-                        <input type="text" placeholder='Количество детей' onChange={(e) => handleFilterChange('children', e.target.value)}/>
+                    <input 
+                        type="text" 
+                        placeholder="Количество детей" 
+                        onChange={(e) => handleFilterChange('children', e.target.value === "" ? null : e.target.value)} 
+                    />
                         {/* <select name="" id="">
                             <option value=">">&gt;</option>
                             <option value="<">&lt;</option>
@@ -701,7 +705,7 @@ function Admin({ permission }) {
                         </select> */}
                     </div>
                     <div id="workExpDiv">
-                        <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value )}/>
+                        <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value === "" ? null : e.target.value)}/>
                         {/* <select name="" id="">
                             <option value=">">&gt;</option>
                             <option value="<">&lt;</option>
@@ -711,7 +715,7 @@ function Admin({ permission }) {
                         </select> */}
                     </div>
                     <div id="salaryDiv">
-                        <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value )}/>
+                        <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value === "" ? null : e.target.value)}/>
                         {/* <select name="" id="">
                             <option value=">">&gt;</option>
                             <option value="<">&lt;</option>
