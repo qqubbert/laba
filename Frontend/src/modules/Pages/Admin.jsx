@@ -662,7 +662,24 @@ function Admin({ permission }) {
                 <div id="adminInputAndAdd">
                     <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
                     <button onClick={exportToExcel}><img src={tableIcon} alt="" /></button>
-                    <button onClick={()=>setShowFilters(!showFilters)}><img src={filterIcon} alt="" /></button>
+                    <button 
+                        onClick={()=>{
+                            setShowFilters(!showFilters); 
+                            setFilters({
+                                name: "",
+                                department: "",
+                                gender: "",
+                                familyStatus: "",
+                                children: null,
+                                experience: null,
+                                salary: null,
+                                degree: "",
+                                jobTitle: "",
+                            });
+                        }}
+                    >
+                    <img src={filterIcon} alt="" />
+                    </button>
                     <input type="text" placeholder='Поиск' onChange={(e) => handleFilterChange('name', e.target.value)}/>
                     <button><img src={searchIcon} alt="" /></button>
                 </div>
