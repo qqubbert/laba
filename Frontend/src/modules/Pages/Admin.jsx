@@ -9,7 +9,7 @@ import WindowBG from '../Windows/WindowBackground.jsx';
 
 import plusIcon from '../../assets/PlusIcon.svg';
 import searchIcon from '../../assets/SearchIcon.svg';
-import filterIcon from '../../assets/FilterIcon.svg';
+import filterIcon from '../../assets/FiltersIcon.svg';
 import tableIcon from '../../assets/TableIcon.svg';
 
 function Admin({ permission }) {
@@ -494,10 +494,24 @@ function Admin({ permission }) {
             <div id="usersListPane">
                 <div id="adminInputAndAdd">
                     <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
+                    <button><img src={tableIcon} alt="" /></button>
+                    <button><img src={filterIcon} alt="" /></button>
                     <input type="text" placeholder='Поиск' />
                     <button><img src={searchIcon} alt="" /></button>
-                    <button><img src={filterIcon} alt="" /></button>
-                    <button><img src={tableIcon} alt="" /></button>
+                </div>
+                <div id="filters">
+                    <select name="" id="depFilter"></select>
+                    <select name="" id="genderFilter">
+                        <option value="М">Мужской</option>
+                        <option value="Ж">Женский</option>
+                    </select>
+                    <select name="" id="familyStatusFilter">
+                        <option value="М">Холост</option>
+                        <option value="М">Женат/Замужем</option>
+                        <option value="М">Вдова/Вдовец</option>
+                    </select>
+                    <input type="number" placeholder='Количество детей'/>
+                    <input type="number" placeholder='Опыт работы'/>
                 </div>
                 <div id="usersList">
                     {users && users.map((user, i)=>{

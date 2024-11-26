@@ -32,7 +32,7 @@
 
     top: 10px;
 
-    width: 90%;
+    width: 95%;
     align-self: center;
 
     border-radius: 15px;
@@ -58,12 +58,13 @@
     /* color: black; */
     min-width: 30px;
     min-height: 100%;
-    padding: 5px 20px;
+    padding: 5px 10px;
     background-color: transparent;
     border: none;
     outline: none;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #usersListPane #adminInputAndAdd button:last-of-type {
