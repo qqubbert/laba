@@ -15,6 +15,10 @@ type CreateArticleRequest struct {
 	Title     string                `form:"title" binding:"required"`
 	Completed bool                  `json:"completed"`
 	File      *multipart.FileHeader `form:"file" binding:"required"`
+	Biology   bool                  `json:"biology"`
+	Chemistry bool                  `json:"chemistry"`
+	It        bool                  `json:"it"`
+	Physics   bool                  `json:"physics"`
 }
 
 func CreateArticle(c *gin.Context, db *sql.DB) {
@@ -78,7 +82,7 @@ func CreateArticle(c *gin.Context, db *sql.DB) {
 	fileURL := fmt.Sprintf("http://localhost:3002/uploads/articles/%s", uniqueFilename)
 
 	// Вставляем данные в базу данных
-	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed) VALUES (?, ?, ?, TRUE)", req.Title, fileURL, userID)
+	_, err = db.Exec("INSERT INTO article (title, HtmlLink, author_id, completed, biology, chemistry, it, physics) VALUES (?, ?, ?, TRUE, ?, ?, ?, ?)", req.Title, fileURL, userID, req.Biology, req.Chemistry, req.It, req.Physics)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

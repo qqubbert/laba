@@ -57,7 +57,7 @@ sanyaApp.get("/chatmsgs/:chatid", (req, res) => {
                 cm.id,
                 cm.sender_id,
                 cm.msg,
-                cm.msg_date,
+                DATE_FORMAT(cm.msg_date, '%Y-%m-%d %H:%i:%s') AS msg_date,
                 cm.pinned,
                 u.FirstName,
                 u.LastName,
