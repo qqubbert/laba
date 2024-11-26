@@ -73,7 +73,7 @@ function SelectedArticle({ articleData, onClose }) {
                         <h1>{articleData.title}</h1>
                     </div>
                     <div id="selectedArticleBtns">
-                        <button><img src={bookmark} alt="" /></button>
+                        {/* <button><img src={bookmark} alt="" /></button> */}
                         <button onClick={onClose}><img src={closeIcon} alt="" /></button>
                     </div>
                 </div>

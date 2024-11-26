@@ -407,7 +407,7 @@ function NewArticle({ hideArticleEditor }) {
                   <button onClick={()=>{addElement('img')}}><img src={imageIcon} alt="" />Img</button>
                   <button onClick={()=>{addElement('video')}}><img src={videoIcon} alt="" />Video</button>
                   <button onClick={()=>{addElement('audio')}}><img src={audioIcon} alt="" />Audio</button>
-                  <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button>
+                  {/* <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button> */}
                 </div>
                 <button id="CloseArticleBtn" onClick={() => { navigate('/', { replace: true }); }}> 
                   <img src={closeIcon} alt="" /> 
