@@ -1,6 +1,8 @@
 package requests
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type CreateComment struct {
 	Comm string `json:"comm"`
