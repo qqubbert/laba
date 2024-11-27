@@ -181,7 +181,7 @@ function Articles() {
                     </div>
                 </div>
                 {selectedArticle && 
-                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} />
+                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} articleReload={LoadArticles}/>
                 }
             </div>
         </>
