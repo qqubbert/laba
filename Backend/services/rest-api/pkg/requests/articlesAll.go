@@ -13,23 +13,27 @@ type ArticleAll struct {
 	AuthorId     int    `json:"author_id"`
 	AuthorName   string `json:"author_name"`
 	CreatingDate string `json:"creating_date"`
-	Biology      *bool   `json:"biology"`
-	Chemistry    *bool   `json:"chemistry"`
-	It           *bool   `json:"it"`
-	Physics      *bool   `json:"physics"`
+	Biology      bool   `json:"biology"`
+	Chemistry    bool   `json:"chemistry"`
+	It           bool   `json:"it"`
+	Physics      bool   `json:"physics"`
+	IsFavorite   bool   `json:"is_favorite"`
 }
 
-func GetAllArticles(db *sql.DB) ([]ArticleAll, error) {
+func GetAllArticles(db *sql.DB, userId int) ([]ArticleAll, error) {
 	query := `
 		SELECT a.id, a.title, a.HtmlLink, a.completed, a.author_id, 
 		       CONCAT(u.FirstName, ' ', u.LastName) AS author_name, 
-		       a.creating_date, a.biology, a.chemistry, a.it, a.physics
+		       a.creating_date, a.biology, a.chemistry, a.it, a.physics,
+		       EXISTS (
+		       	SELECT 1 FROM favorites f WHERE f.user_id = ? AND f.article_id = a.id
+		       ) AS is_favorite
 		FROM article a
 		LEFT JOIN Users u ON a.author_id = u.ID
-		WHERE a.completed = true
+		WHERE a.completed = true OR a.author_id = ?
 	`
 
-	rows, err := db.Query(query)
+	rows, err := db.Query(query, userId, userId)
 	if err != nil {
 		return nil, fmt.Errorf("query execution failed: %w", err)
 	}
@@ -52,6 +56,7 @@ func GetAllArticles(db *sql.DB) ([]ArticleAll, error) {
 			&article.Chemistry,
 			&article.It,
 			&article.Physics,
+			&article.IsFavorite,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
