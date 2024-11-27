@@ -22,7 +22,7 @@ function Articles() {
         physics: false,
         chemistry: false,
         title: "",
-        // my: false
+        favorite: false
     });
 
     const handleFilterChange = (key, value) => {
@@ -40,8 +40,8 @@ function Articles() {
                 (filters.biology ? article.biology === filters.biology : true) &&
                 (filters.it ? article.it === filters.it : true) &&
                 (filters.chemistry ? article.chemistry === filters.chemistry : true) &&
+                (filters.favorite ? article.is_favorite === filters.favorite : true) &&
                 (filters.physics ? article.physics === filters.physics : true) // &&
-                // (filters.my ? article.author_id === localStorage.userid : true) 
             );
         });
         setFilteredArticles(filtered);
@@ -134,7 +134,7 @@ function Articles() {
                                 <label><input type="checkbox" onChange={(e) => handleFilterChange('it', !filters.it)}/>IT</label>
                             </div>
                             <div id="articleTagsRight">
-                                {/* <label><input type="checkbox" />Избранные</label> */}
+                                <label><input type="checkbox" onChange={(e) => handleFilterChange('favorite', !filters.favorite)}/>Избранные</label>
                                 {/* <label><input type="checkbox" />Мои статьи</label> */}
                             </div>
                         </div>
