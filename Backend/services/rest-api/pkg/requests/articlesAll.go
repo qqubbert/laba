@@ -17,7 +17,7 @@ type ArticleAll struct {
 	Chemistry    bool   `json:"chemistry"`
 	It           bool   `json:"it"`
 	Physics      bool   `json:"physics"`
-	IsFavorite   bool   `json:"is_favorite"`
+	IsFavorite   bool   `json:"is_favorite"` // Указывает, находится ли статья в избранном
 }
 
 func GetAllArticles(db *sql.DB, userId int) ([]ArticleAll, error) {
@@ -26,14 +26,13 @@ func GetAllArticles(db *sql.DB, userId int) ([]ArticleAll, error) {
 		       CONCAT(u.FirstName, ' ', u.LastName) AS author_name, 
 		       a.creating_date, a.biology, a.chemistry, a.it, a.physics,
 		       EXISTS (
-		       	SELECT 1 FROM favorites f WHERE f.user_id = ? AND f.article_id = a.id
+		       	SELECT 1 FROM fav_articles fa WHERE fa.user_id = ? AND fa.art_id = a.id
 		       ) AS is_favorite
 		FROM article a
 		LEFT JOIN Users u ON a.author_id = u.ID
-		WHERE a.completed = true OR a.author_id = ?
 	`
 
-	rows, err := db.Query(query, userId, userId)
+	rows, err := db.Query(query, userId)
 	if err != nil {
 		return nil, fmt.Errorf("query execution failed: %w", err)
 	}
