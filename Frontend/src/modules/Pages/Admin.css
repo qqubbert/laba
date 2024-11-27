@@ -19,7 +19,7 @@
     width: 600px;
     max-height: 100%;
 
-    overflow-y: hidden;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
@@ -30,9 +30,10 @@
 #usersListPane #adminInputAndAdd {
     position: relative;
 
-    top: 10px;
+    /* top: 10px; */
+    margin: 10px;
 
-    width: 90%;
+    width: 95%;
     align-self: center;
 
     border-radius: 15px;
@@ -58,12 +59,13 @@
     /* color: black; */
     min-width: 30px;
     min-height: 100%;
-    padding: 5px 20px;
+    padding: 5px 10px;
     background-color: transparent;
     border: none;
     outline: none;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #usersListPane #adminInputAndAdd button:last-of-type {
@@ -227,4 +229,31 @@
     height: 100%;
     border-radius: 0 15px 15px 0;
     margin: 0;
+}
+
+#filters {
+    display: flex;
+    flex-direction: column;
+}
+
+#filters div, #filters input, #filters select {
+    background-color: var(--input-color);
+    border-radius: 15px;
+    border: none;
+    padding: 5px 10px;
+    margin: 5px;
+    display: flex;
+}
+
+#filters div input {
+    background-color: transparent;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+}
+
+#filters div select {
+    background-color: transparent;
+    padding: 0;
+    margin: 0 10px;
 }

@@ -21,40 +21,36 @@
     const navigate = useNavigate();
 
     const AuthTry = async () => {
-      try {  
+      try {
         const response = await fetch("http://localhost:3000/js-service/auth/protected", {
           method: 'POST',
           credentials: 'include',
-          withCredentials: true,
         });
     
         const responseData = await response.json();
-
+    
         console.log(responseData);
-        console.log(responseData.access)
     
-        setLogged(responseData.access);
-        if (responseData.access == false) {
-          navigate('/');
+        if (response.status === 401 || !responseData.access) {
+          setLogged(false);
+          navigate('/login'); // Перенаправление на страницу логина
+          return;
         }
-
-        try {
-          const response = await fetch("http://localhost:3000/js-service/auth/cookiecheck", {
-            method: 'GET',
-            credentials: 'include',
-            withCredentials: true,
-          });
     
-          const responseData = await response.json();
-          setUsrId(responseData.userid);
-          setPermission(responseData.permission);
-        } catch (error) {
-          console.error("Ошибка:", error);
-        }
+        setLogged(true);
+    
+        const userResponse = await fetch("http://localhost:3000/js-service/auth/cookiecheck", {
+          method: 'GET',
+          credentials: 'include',
+        });
+    
+        const userData = await userResponse.json();
+        setUsrId(userData.userid);
+        setPermission(userData.permission);
       } catch (error) {
         console.error("Ошибка:", error);
       }
-    }
+    };    
 
     const cookieClear = async () => {
       const response = await fetch("http://localhost:3000/js-service/auth/cookieclear", {
@@ -92,33 +88,48 @@
     }, []);
 
     useEffect(() => {
-      console.log(usrId);
-      loadUsrInfo(usrId);
+      if (logged === undefined) {
+        AuthTry();
+      }
+    }, [logged]);    
+
+    useEffect(() => {
+      if (logged) {
+        console.log(usrId);
+        loadUsrInfo(usrId);
+      }
     }, [usrId]);
 
     return (
       // <Router>
         <>
-          {(logged == false) && 
-          <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}/>}
+          {/* {(logged == false) && 
+          <Auth permission={(permission)=>{setPermission(permission); console.log(permission)}} userId={(userId)=>{setUsrId(userId)}} logged={()=>{{setLogged(true); }}}
+          />} */}
 
           {(logged == true) &&
           <Header permission={permission} userInfo={usrInf} 
           showArticleEditor={(hide) => { !hide? setShowArticleEditor(!showArticleEditor) : setShowArticleEditor(false) }} 
-          logout={ async () => { navigate("/", { replace: true }); await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
+          logout={ async () => { navigate("/login", { replace: true }); await cookieClear(); setLogged(false); setShowArticleEditor(false); setSelectedPage('none'); }} 
           selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}
           />}
 
           <Routes>
-              <Route path="/employee" element={<Admin permission={permission}/>}>
-                <Route path=":userid" element={<SelectedArticle />} />
-              </Route>
-              <Route path="/newarticle" element={<NewArticle />} />
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/articles" element={<Articles />}>
-                <Route path=":articleId" element={<SelectedArticle />} />
-              </Route>
+            <Route path="/login" element={!logged && 
+            <Auth 
+              permission={(permission) => { setPermission(permission); console.log(permission); }} 
+              userId={(userId) => { setUsrId(userId); }} 
+              logged={() => { setLogged(true); }} 
+            />} />
+            <Route path="/employee" element={<Admin permission={permission}/>}>
+              <Route path=":userid" element={<SelectedArticle />} />
+            </Route>
+            <Route path="/newarticle" element={<NewArticle />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/articles" element={<Articles />}>
+              <Route path=":articleId" element={<SelectedArticle />} />
+            </Route>
           </Routes>
 
         </>

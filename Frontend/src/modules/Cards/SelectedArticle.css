@@ -35,6 +35,8 @@
 #articleInfo #selectedArticleBtns {
     margin: 25px;
     min-width: 100px;
+    display: flex;
+    justify-content: right;
 }
 
 #selectedArticleBtns button {

@@ -71,7 +71,7 @@ function EditArticleElWin({ hide, save }) {
       <div id="form">
         <h3 id='AddArticleErr' className='AddErr'>Введите заголовок</h3>
         <input id="newArticleTtl" type="text" placeholder='Название статьи' onChange={(e)=>{toggleTtl(e.target.value)}}/>
-        <select name="" id="">
+        {/* <select name="" id="">
           <option value="">Без задачи</option>
           {tasksLoaded && tasks.length >= 1 &&
             tasks.map((task, i) => {
@@ -80,7 +80,7 @@ function EditArticleElWin({ hide, save }) {
               );
             })
           }
-        </select>
+        </select> */}
         <div id="saveTags">
           <label id="BiologyCheck" htmlFor="" onClick={toggleBio}>
             <input type="checkbox" checked={newArticleData.bio} onChange={toggleBio}/>
@@ -100,10 +100,10 @@ function EditArticleElWin({ hide, save }) {
           </label>
         </div>
         <div id="EditArticleElWinBtns">
-          <label id="publishCheck" htmlFor="" onClick={togglePublish}>
+          {/* <label id="publishCheck" htmlFor="" onClick={togglePublish}>
             <input type="checkbox" checked={newArticleData.publish} onChange={togglePublish}/>
             Опубликовать статью?
-          </label>
+          </label> */}
           <button onClick={()=>checkSave()}>
             <img src={saveIcon} alt="" /> 
             Сохранить
