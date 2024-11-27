@@ -26,13 +26,18 @@ function Messages({ }) {
     const [user, setUser] = useState(0);
     const [chatUsersList, setChatUsersList] = useState([]);
     const [sendingMsgFiles, setSendingMsgFiles] = useState([]);
+    const [users, setUsers] = useState([]);
     const [chatUsersLoaded, setChatUsersLoaded] = useState(false);
+    const [isUsersLoaded, setIsUsersLoaded] = useState(false);
     const [chatUsersAddErr, setChatUsersArrErr] = useState(false);
+    const [filteredChats, setFilteredChats] = useState([]);
+    const [isFilters, setIsFilters] = useState(false);
+    const [searchTitle, setSearchTitle] = useState("");
     const [addChatData, setAddChatData] = useState({
         added: false,
         chatTitle: ''
     });
-    const noImage = 'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg'
+    const noImage = 'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
 
     const msgSend = async () => {
         try {  
@@ -59,6 +64,25 @@ function Messages({ }) {
                 LoadChatMessages(selectedChat);
                 setSendingMsgFiles([]);
             }
+        } catch (error) {
+            // console.error("Ошибка:", error);
+        }
+    }
+
+    const LoadUsers = async () => {
+        try {  
+            const response = await fetch("http://localhost:3000/rest-api-service/users", {
+            method: 'GET',
+            credentials: 'include',
+            withCredentials: true,
+            });
+        
+            const responseData = await response.json();
+
+            setUsers(responseData);
+            setIsUsersLoaded(true);
+
+            // console.log(responseData);
         } catch (error) {
             // console.error("Ошибка:", error);
         }
@@ -179,7 +203,7 @@ function Messages({ }) {
     }
 
     const addChatUser = async () => {
-        const addUserInput = document.getElementById('addUserInput');
+        const addUserInput = document.getElementById('addChatUserSelect');
         if (addUserInput.value.length >= 1) {
             try {  
                 const response = await fetch("http://localhost:3000/js-service/sanya/chatadduser", {
@@ -198,6 +222,9 @@ function Messages({ }) {
                     loadChatUsers();
                     console.log('Участник добавлен создан');
                     addUserInput.value = '';
+                    const AddUserSuccessMsg = document.getElementById('AddUserSuccessMsg');
+                    // AddUserSuccessMsg.style.visibility = "visible";
+                    // AddUserSuccessMsg.style.color = "white";
                 } else {
                     const AddUserErrMsg = document.getElementById('AddUserErrMsg');
                     AddUserErrMsg.style.visibility = "visible";
@@ -261,6 +288,17 @@ function Messages({ }) {
         }
     }
 
+    useEffect(() => {
+        const filtered = chats.filter(chat => {
+            return (
+                (searchTitle ? (chat.title.toLocaleLowerCase()).includes(searchTitle.toLocaleLowerCase()) : true)
+            );
+        });
+        setFilteredChats(filtered);
+        setIsFilters(true);
+        console.log(filteredChats);
+    }, [searchTitle, chats]); 
+
   return (
     <>
         {showWindowBG && <WindowBG hide={showBG}/>}
@@ -315,8 +353,17 @@ function Messages({ }) {
                         })
                     }
                     <h3 id="AddUserErrMsg" className='AddErr'>Пользователь уже в чате</h3>
+                    {/* <h3 id="AddUserSuccessMsg" className='AddErr'>Пользователь добавлен!</h3> */}
                     <div id="addChatUserPane">
-                        <input id="addUserInput" type="text" placeholder='Введите id сотрудника'/>
+                        {/* <input id="addUserInput" type="text" placeholder='Введите id сотрудника'/> */}
+                        <select name="" id="addChatUserSelect" onChange={(e)=>setAddChatData(e.target.value)}>
+                            {isUsersLoaded && users &&
+                            users.map((user, i)=> {
+                                return (
+                                    <option value={user.id}>{user.last_name} {user.first_name}</option>
+                                )
+                            })}
+                        </select>
                         <button onClick={addChatUser}><img src={plusIcon} alt="" /></button>
                     </div>
                 </div>
@@ -327,12 +374,21 @@ function Messages({ }) {
             <div id="chatListPane">
                 <div id="inputDiv">
                     <button onClick={showChatWinFunc}><img src={plusIcon} alt="" /></button>
-                    <input type="text" placeholder='Поиск' />
+                    <input type="text" placeholder='Поиск' onChange={(e)=>setSearchTitle(prev => e.target.value)}/>
                     <button><img src={searchIcon} alt="" /></button>
                 </div>
                 <div id="chatList">
-                    {chats && 
+                    {chats && !isFilters &&
                     chats.map((chat, i)=>{
+                        // console.log(user);
+                        return (
+                            <div key={chat.chat_id} className='chatCard' id={'chatCard' + i} onClick={()=>{LoadChatMessages(chat.chat_id); selectChatFunc(i); setSelectedChat(chat.chat_id)}}>
+                                <h1>{chat.title}</h1>
+                            </div>
+                        )
+                    })}
+                    {filteredChats && isFilters &&
+                    filteredChats.map((chat, i)=>{
                         // console.log(user);
                         return (
                             <div key={chat.chat_id} className='chatCard' id={'chatCard' + i} onClick={()=>{LoadChatMessages(chat.chat_id); selectChatFunc(i); setSelectedChat(chat.chat_id)}}>
@@ -347,7 +403,7 @@ function Messages({ }) {
                     <h1>{selectedChat !== 0 && chats.find(chat => chat.chat_id === selectedChat)?.title || 'Выберите чат'}</h1>
                     {chatLoaded && 
                     <div id="chatInfoBtns">
-                        <button onClick={showChatSettingsWinFunc}><img src={settingsIcon} alt="" /> </button>
+                        <button onClick={()=>{LoadUsers(); showChatSettingsWinFunc();}}><img src={settingsIcon} alt="" /> </button>
                     </div>}
                 </div>
                 {chatLoaded && 

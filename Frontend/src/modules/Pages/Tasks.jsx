@@ -131,7 +131,7 @@ function Tasks({  }) {
                     return (
                         <div className='task' id={`${i}taskInfo`} key={task.id}>
                         <div className="selfTaskBtns">
-                            <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button>
+                            {/* <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button> */}
                             <button className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc();}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
                         </div>
                         <h2 title={task.task}>{task.task}</h2>

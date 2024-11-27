@@ -317,6 +317,7 @@
     top: 0px;
     grid-area: time;
     opacity: .3;
+    text-align: right;
 }
 
 .message.self {
@@ -492,6 +493,14 @@
     border: none;
     outline: none;
     padding: 10px 15px;
+}
+
+#addChatUserPane select {
+    background-color: var(--input-color);
+    border: none;
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 15px 0 0 15px;
 }
 
 #addChatUserPane button {

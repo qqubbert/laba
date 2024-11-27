@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
+import * as XLSX from "xlsx";
 
 import './Admin.css';
 
@@ -9,6 +10,8 @@ import WindowBG from '../Windows/WindowBackground.jsx';
 
 import plusIcon from '../../assets/PlusIcon.svg';
 import searchIcon from '../../assets/SearchIcon.svg';
+import filterIcon from '../../assets/FiltersIcon.svg';
+import tableIcon from '../../assets/TableIcon.svg';
 
 function Admin({ permission }) {
     const [users, setUsers] = useState([]);
@@ -17,6 +20,7 @@ function Admin({ permission }) {
     const [usrCard, setUsrCard] = useState(false);
     const [isDepsLoaded, setIsDepsLoaded] = useState(false);
     const [showWindowBG, setShowWindowBG] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
     const [isChanges, setIsChanges] = useState(false);
     const [showTaskWin, setShowTaskWin] = useState(false);
     const [showEditWin, setShowEditWin] = useState(false);
@@ -24,8 +28,21 @@ function Admin({ permission }) {
     const { userid } = useParams();
     const navigate = useNavigate();
     const [isUsersLoaded, setIsUsersLoaded] = useState(false);
+    const [isFilters, setIsFilters] = useState(false);
     const [editingDataType, setEditingDataType] = useState("");
     const [newDepTtl, setNewDepTtl] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [filters, setFilters] = useState({
+        name: "",
+        department: "",
+        gender: "",
+        familyStatus: "",
+        children: null,
+        experience: null,
+        salary: null,
+        degree: "",
+        jobTitle: "",
+    });
     const [addTaskData, setAddTaskData] = useState({
         added: false,
         taskTitle: ''
@@ -49,6 +66,39 @@ function Admin({ permission }) {
         familstat: '',
         dep_id: '',
     });
+
+    const exportToExcel = () => {
+        // Преобразование данных в формат, подходящий для Excel
+        let usersArray = [];
+        if (isFilters) {
+            usersArray = filteredUsers
+        } else {
+            usersArray = users;
+        }
+        const worksheetData = usersArray.map(user => ({
+            "Имя": user.first_name,
+            "Фамилия": user.last_name,
+            "Отдел": user.department,
+            "Должность": user.job_title,
+            "Пол": user.gender === "М" ? "Мужской" : "Женский",
+            "Дата рождения": user.birthday,
+            "Семейное положение": user.family_status,
+            "Количество детей": user.having_children,
+            "Учёная степень": user.academic_degree,
+            "Опыт работы (лет)": user.work_experience,
+            "Зарплата (руб.)": user.salary,
+            "Телефон": user.phone_number,
+            "Email": user.email,
+        }));
+
+        // Создаем новую книгу (workbook) и добавляем в нее лист (worksheet)
+        const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Сотрудники");
+
+        // Генерация файла и сохранение его пользователю
+        XLSX.writeFile(workbook, "filtered_users.xlsx");
+    };
 
     const LoadUsers = async () => {
         try {  
@@ -261,6 +311,38 @@ function Admin({ permission }) {
           
     }
 
+    const handleFilterChange = (key, value) => {
+        console.log(key, ': ', value);
+        setFilters(prev => ({
+            ...prev,
+            [key]: value,
+        }));
+    };
+    
+    useEffect(() => {
+        const filtered = users.filter(user => {
+            const searchParts = filters.name ? filters.name.trim().split(' ').filter(Boolean) : [];
+            const matchesName = searchParts.every(part => 
+                (user.first_name.toLocaleLowerCase()).includes(part.toLocaleLowerCase()) || (user.last_name.toLocaleLowerCase()).includes(part.toLocaleLowerCase())
+            );
+    
+            return (
+                (filters.name ? matchesName : true) &&
+                (filters.department ? user.department === filters.department : true) &&
+                (filters.gender ? user.gender === filters.gender : true) &&
+                (filters.familyStatus ? user.family_status === filters.familyStatus : true) &&
+                (filters.children != null ? user.having_children === Number(filters.children) : true) &&
+                (filters.experience !== null ? user.work_experience >= Number(filters.experience) : true) &&
+                (filters.salary !== null ? user.salary >= Number(filters.salary) : true) &&
+                (filters.degree ? user.academic_degree.includes(filters.degree) : true) &&
+                (filters.jobTitle ? user.job_title.includes(filters.jobTitle) : true)
+            );
+        });
+        setFilteredUsers(filtered);
+        setIsFilters(true);
+        console.log(filteredUsers);
+    }, [filters, users]); 
+
   return (
     <>
         {showWindowBG && <WindowBG hide={showBG}/>}
@@ -394,10 +476,10 @@ function Admin({ permission }) {
             </div>
             <div id="addUserPaneForm" action="">
                 <h3 id='AddUserErr' className='AddErr'>Заполните все данные</h3>
-                <input id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
-                <input id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userEmail" className='addUserInput' type="text" placeholder='Введите почту для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
                 <input id="userPhone" className='addUserInput' type="text" placeholder='Введите номер телефона для пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
-                <input id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
                 <input id="userFirstName" className='addUserInput' type="text" placeholder='Введите имя для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
                 <input id="userLastName" className='addUserInput' type="text" placeholder='Введите фамилию для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, lastname: e.target.value}); console.log(addUserData)}}/>
                 <input id="userSurName" className='addUserInput' type="text" placeholder='Введите отчество для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, surname: e.target.value}); console.log(addUserData)}}/>
@@ -406,7 +488,7 @@ function Admin({ permission }) {
                 <input id="userChildrenCount" className='addUserInput' type="number" placeholder='Введите количество детей для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, childrencount: e.target.value}); console.log(addUserData)}}/>
                 <input id="userSalary" className='addUserInput' type="number" placeholder='Введите зарплату для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, salary: e.target.value}); console.log(addUserData)}}/>
                 <input id="userWorkExp" className='addUserInput' type="number" placeholder='Введите опыт работы для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, workexp: e.target.value}); console.log(addUserData)}}/>
-                <input id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userBirthday" className='addUserInput' type="date" placeholder='Введите дату рождения для нового пользователя' onChange={(e)=>{setAddUserData({ ...addUserData, birthday: e.target.value}); console.log(addUserData)}}/>
                 <select
                     name="permission"
                     value={addUserData.permission}
@@ -429,9 +511,11 @@ function Admin({ permission }) {
                     onChange={(e) => {setAddUserData({ ...addUserData, familstat: e.target.value }); console.log(addUserData)}}
                 >
                     <option value="Холост">Холост</option>
+                    <option value="Не замужем">Не замужем</option>
                     <option value="Женат">Женат</option>
-                    <option value="Вдова(ец)">Вдова(ец)</option>
-                    <option value="Разведён">Разведён</option>
+                    <option value="Замужем">Замужем</option>
+                    <option value="Вдовец">Вдовец</option>
+                    <option value="Вдова">Вдова</option>
                 </select>
                 <select
                     name="dep"
@@ -457,30 +541,115 @@ function Admin({ permission }) {
                     <button onClick={addDepFunc}>+</button>
                 </div>
                 <button onClick={()=>{
-                    if (addUserData.login.length > 0 && addUserData.password.length > 0) {
+                    let err = false;
+                    if (addUserData.login.length <= 0) {
+                        const userLoginInput = document.getElementById('userLoginInput');
+                        userLoginInput.classList.add('err');
+                        setTimeout(() => {
+                            userLoginInput.classList.remove('err');
+                        }, 1000);
+                        err = true;
+                    }
+                    if (addUserData.password.length <= 0) {
+                        const userPasswordInput = document.getElementById('userPasswordInput');
+                        userPasswordInput.classList.add('err');
+                        setTimeout(() => {
+                            userPasswordInput.classList.remove('err');
+                        }, 1000);
+                        err = true;
+                    } 
+                    if (!addUserData.email || addUserData.email.length <= 0) {
+                        console.log('email is not filled')
+                        const userEmailInput = document.getElementById('userEmail');
+                        userEmailInput.classList.add('err');
+                        setTimeout(() => {
+                            userEmailInput.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.birthday || addUserData.birthday.length <= 0) {
+                        const userBirthdayInput = document.getElementById('userBirthday');
+                        userBirthdayInput.classList.add('err');
+                        setTimeout(() => {
+                            userBirthdayInput.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.firstname || addUserData.firstname.length <= 0) {
+                        const userFirstName = document.getElementById('userFirstName');
+                        userFirstName.classList.add('err');
+                        setTimeout(() => {
+                            userFirstName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.surname || addUserData.surname.length <= 0) {
+                        const userLastName = document.getElementById('userLastName');
+                        userLastName.classList.add('err');
+                        setTimeout(() => {
+                            userLastName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.surname || addUserData.surname.length <= 0) {
+                        const userSurName = document.getElementById('userSurName');
+                        userSurName.classList.add('err');
+                        setTimeout(() => {
+                            userSurName.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.academdeg || addUserData.academdeg.length <= 0) {
+                        const userAcadem = document.getElementById('userAcadem');
+                        userAcadem.classList.add('err');
+                        setTimeout(() => {
+                            userAcadem.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.jobttl || addUserData.jobttl.length <= 0) {
+                        const userJobTitle = document.getElementById('userJobTitle');
+                        userJobTitle.classList.add('err');
+                        setTimeout(() => {
+                            userJobTitle.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.salary || addUserData.salary.length <= 0) {
+                        const userSalary = document.getElementById('userSalary');
+                        userSalary.classList.add('err');
+                        setTimeout(() => {
+                            userSalary.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.workexp || addUserData.workexp.length <= 0) {
+                        const userWorkExp = document.getElementById('userWorkExp');
+                        userWorkExp.classList.add('err');
+                        setTimeout(() => {
+                            userWorkExp.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.childrencount || addUserData.childrencount.length <= 0) {
+                        const userChildrenCount = document.getElementById('userChildrenCount');
+                        userChildrenCount.classList.add('err');
+                        setTimeout(() => {
+                            userChildrenCount.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!addUserData.phone || addUserData.phone.length <= 0) {
+                        const userPhone = document.getElementById('userPhone');
+                        userPhone.classList.add('err');
+                        setTimeout(() => {
+                            userPhone.classList.remove('err');
+                        }, 1000);   
+                        err = true;
+                    }
+                    if (!err) {
                         addUserHttpFunc();
                         showUserWinFunc();
-                    } else if (addUserData.login.length <= 0 && addUserData.password.length <= 0) {
-                        const userLoginInput = document.getElementById('userLoginInput');
-                        userLoginInput.classList.add('err');
-                        const userPasswordInput = document.getElementById('userPasswordInput');
-                        userPasswordInput.classList.add('err');
-                        setTimeout(() => {
-                            userLoginInput.classList.remove('err');
-                            userPasswordInput.classList.remove('err');
-                        }, 1000);
-                    } else if (addUserData.password.length <= 0 && addUserData.login.length > 0) {
-                        const userPasswordInput = document.getElementById('userPasswordInput');
-                        userPasswordInput.classList.add('err');
-                        setTimeout(() => {
-                            userPasswordInput.classList.remove('err');
-                        }, 1000);
-                    } else if (addUserData.login.length <= 0 && addUserData.password.length > 0) {
-                        const userLoginInput = document.getElementById('userLoginInput');
-                        userLoginInput.classList.add('err');
-                        setTimeout(() => {
-                            userLoginInput.classList.remove('err');
-                        }, 1000);   
                     }
                 }}>
                     Добавить сотрудника
@@ -492,16 +661,115 @@ function Admin({ permission }) {
             <div id="usersListPane">
                 <div id="adminInputAndAdd">
                     <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
-                    <input type="text" placeholder='Поиск' />
+                    <button onClick={exportToExcel}><img src={tableIcon} alt="" /></button>
+                    <button 
+                        onClick={()=>{
+                            setShowFilters(!showFilters); 
+                            setFilters({
+                                name: "",
+                                department: "",
+                                gender: "",
+                                familyStatus: "",
+                                children: null,
+                                experience: null,
+                                salary: null,
+                                degree: "",
+                                jobTitle: "",
+                            });
+                        }}
+                    >
+                    <img src={filterIcon} alt="" />
+                    </button>
+                    <input type="text" placeholder='Поиск' onChange={(e) => handleFilterChange('name', e.target.value)}/>
                     <button><img src={searchIcon} alt="" /></button>
                 </div>
+                {showFilters && 
+                <div id="filters">
+                    <select name="" id="depFilter" onChange={(e) => handleFilterChange('department', e.target.value)}>
+                        <option value="">Все</option>
+                        {deps.map((dep, i)=>{
+                            return (
+                                <option value={dep.dep_ttl} key={dep.dep_id}>{dep.dep_ttl}</option>
+                            )
+                        })}
+                    </select>
+                    <select name="" id="genderFilter" onChange={(e) => handleFilterChange('gender', e.target.value)}>
+                        <option value="">Все</option>
+                        <option value="М">Мужской</option>
+                        <option value="Ж">Женский</option>
+                    </select>
+                    <select name="" id="familyStatusFilter" onChange={(e) => handleFilterChange('familyStatus', e.target.value)}>
+                        <option value="">Все</option>   
+                        <option value="Холост">Холост</option>
+                        <option value="Не замужем">Не замужем</option>
+                        <option value="Женат">Женат</option>
+                        <option value="Замужем">Замужем</option>
+                        <option value="Вдовец">Вдовец</option>
+                        <option value="Вдова">Вдова</option>
+                    </select>
+                    <div id="childrenDiv">
+                    <input 
+                        type="text" 
+                        placeholder="Количество детей" 
+                        onChange={(e) => handleFilterChange('children', e.target.value === "" ? null : e.target.value)} 
+                    />
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    <div id="workExpDiv">
+                        <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value === "" ? null : e.target.value)}/>
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    <div id="salaryDiv">
+                        <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value === "" ? null : e.target.value)}/>
+                        {/* <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select> */}
+                    </div>
+                    {/* <div id="birthcdayDiv">
+                        <input type="date" placeholder=''/>
+                        <select name="" id="">
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select>
+                    </div> */}
+                    <input type="text" placeholder='Учёная степень' onChange={(e) => handleFilterChange('degree', e.target.value)}/>
+                    <input type="text" placeholder='Должность' onChange={(e) => handleFilterChange('jobTitle', e.target.value)}/>
+                </div>}
                 <div id="usersList">
-                    {users && users.map((user, i)=>{
+                    {users && !isFilters && users.map((user, i)=>{
                         // console.log(user);
                         const userLink = `/employee/${user.id}`;
                         return (
                             <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + user.id}>
                                 <UserCard userData={users[i]} />
+                            </NavLink>
+                        )
+                    })}
+                    {isFilters && filteredUsers.map((user, i)=>{
+                        // console.log(user);
+                        const userLink = `/employee/${user.id}`;
+                        return (
+                            <NavLink to={userLink} key={user.id} className='UserCard' id={'userCard' + user.id}>
+                                <UserCard userData={filteredUsers[i]} />
                             </NavLink>
                         )
                     })}

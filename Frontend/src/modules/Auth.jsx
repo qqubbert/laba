@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
 import './Auth.css';
-
+import { BrowserRouter as Router, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom';
 function Auth({ logged, userId, permission }) {
   // const [regWin, setRegWin] = useState(false);
   const [logWin, setLogWin] = useState(true);
   const [showErr, setShowErr] = useState(true);
   const [errText, setErrText] = useState(' ');
   const [showPass, setShowPass] = useState(' ');
+  const [isLogged, setIsLogged] = useState(false);
   const [loginData, setLoginData] = useState({
     login: '',
     password: '',
-  })
+  });
+  const navigate = useNavigate('');
 
   const AuthConfirm = async () => {
     const loginErr = document.getElementById("LoginErrorMsg");
@@ -32,6 +34,7 @@ function Auth({ logged, userId, permission }) {
       loginErr.style.visibility = "visible";
       setErrText(responseData.message);
       logged();
+      setIsLogged(true);
       userId(responseData.userid);
       console.log(responseData.permission);
       permission(responseData.permission);
@@ -40,6 +43,10 @@ function Auth({ logged, userId, permission }) {
       setErrText(responseData.message);
     }
   }
+
+  useEffect(()=>{
+    setIsLogged(false);
+  }, [])
 
   return (
     <>

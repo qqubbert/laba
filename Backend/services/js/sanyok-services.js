@@ -57,7 +57,7 @@ sanyaApp.get("/chatmsgs/:chatid", (req, res) => {
                 cm.id,
                 cm.sender_id,
                 cm.msg,
-                cm.msg_date,
+                DATE_FORMAT(cm.msg_date, '%Y-%m-%d %H:%i:%s') AS msg_date,
                 cm.pinned,
                 u.FirstName,
                 u.LastName,
@@ -236,6 +236,7 @@ sanyaApp.post("/chatadduser", (req, res) => {
                 console.log(rs);
                 if (err) {
                     console.log(err);
+                    // res.status(200).json({rs, message: "Новый участник добавлен"});
                 } else {
                     console.log("New user added to chat!");
                     res.status(200).json(rs)

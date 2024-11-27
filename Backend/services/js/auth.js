@@ -179,6 +179,12 @@ authApp.post('/login', (req, res) => {
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Неправильный пароль" });
         }
+
+        console.log(user);
+
+        if (user.Isblocked) {
+            return res.status(400).json({message: "Вы уволены"});
+        }
         
         const token = jwt.sign({ id: user.ID, permission: user.Permission }, JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, {
@@ -214,30 +220,46 @@ authApp.get('/cookiecheck', (req, res)=>{
 
 authApp.post('/protected', (req, res) => {
     const token = req.cookies.token;
-    const userid = req.cookies.userid;
+    const user_id = req.cookies.userid;
+    let haveAccess = true;
+    let accessMsg = "";
 
     if (!token) {
-        return res.status(401).json({ message: "Доступ запрещён" }).redirect('/');
+        return res.status(401).json({ message: "Доступ запрещён" });
     }
 
-    // const isBlocked = `
-    // SELECT * FROM Users WHERE ID = ? AND Isblocked = true 
-    // `
+    const query = `
+    SELECT * FROM Users WHERE ID = ?
+    `;
 
-    // db.query(isBlocked, [userid], (req, res)=>{
-    //     if (res.length >= 1) {
-    //         return res.status(401).json({ message: "Вы заблокированы" }).redirect('/');
-    //     } else {
-            
-    //     }
-    // })
-
-    jwt.verify(token, JWT_SECRET, (err, user) => {
+    db.query(query, [user_id], async (err, result) => {
         if (err) {
-            return res.status(403).json({ message: "Неправильный токен", access: false  });
+            console.log(err)
+        } else {
+            const user = result[0];
+            console.log(user.Isblocked);
+
+            if (user.Isblocked) {
+                haveAccess = false;
+                accessMsg = 'Вы уволены';
+            }
+
+            console.log(haveAccess);
+
+            if (haveAccess) {
+                jwt.verify(token, JWT_SECRET, (err, user) => {
+                    if (err) {
+                        return res.status(403).json({ message: "Неправильный токен", access: false });
+                    }
+                    res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true });
+                });
+            } else {
+                res.json({ message: accessMsg, access: false });
+            }
         }
-        res.json({ message: `Привет пользователь с ID: ${user.id}`, access: true, userid: userid });
-    });
+
+    })
 });
+
 
 module.exports = authApp;
