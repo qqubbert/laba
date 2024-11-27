@@ -17,13 +17,15 @@ type Article struct {
 	Chemistry    bool   `json:"chemistry"`
 	It           bool   `json:"it"`
 	Physics      bool   `json:"physics"`
+	IsFavorite   bool   `json:"is_favorite"`
 }
 
-func GetArticleById(db *sql.DB, id int) (*Article, error) {
+func GetArticleById(db *sql.DB, articleID int, userID int) (*Article, error) {
 	query := `
 		SELECT a.id, a.title, a.HtmlLink, a.completed, a.author_id, a.creating_date,
 		       CONCAT(u.FirstName, ' ', u.LastName) AS author_name,
-		       a.biology, a.chemistry, a.it, a.physics
+		       a.biology, a.chemistry, a.it, a.physics,
+		       EXISTS(SELECT 1 FROM fav_articles f WHERE f.art_id = a.id AND f.user_id = ?) AS is_favorite
 		FROM article a
 		LEFT JOIN Users u ON a.author_id = u.ID
 		WHERE a.id = ?
@@ -32,10 +34,11 @@ func GetArticleById(db *sql.DB, id int) (*Article, error) {
 	var article Article
 
 	// Сканируем данные из строки результата
-	err := db.QueryRow(query, id).Scan(
+	err := db.QueryRow(query, userID, articleID).Scan(
 		&article.ID, &article.Title, &article.HtmlLink, &article.Completed,
 		&article.AuthorId, &article.CreatingDate, &article.AuthorName,
 		&article.Biology, &article.Chemistry, &article.It, &article.Physics,
+		&article.IsFavorite,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

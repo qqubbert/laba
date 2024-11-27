@@ -75,22 +75,38 @@ func GetAllArticlesHandler(db *sql.DB) gin.HandlerFunc {
 
 func GetArticlesByIdHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Получаем ID статьи из параметров
 		idStr := c.Param("id")
-		id, err := strconv.Atoi(idStr)
+		articleID, err := strconv.Atoi(idStr)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "Invalid article ID"})
 			return
 		}
 
-		article, err := requests.GetArticleById(db, id)
+		// Получаем ID пользователя из куки
+		cookie, err := c.Cookie("userid")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized: missing userid in cookie"})
+			return
+		}
+
+		userID, err := strconv.Atoi(cookie)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid userid in cookie"})
+			return
+		}
+
+		// Получаем статью
+		article, err := requests.GetArticleById(db, articleID, userID)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
 		if article == nil {
-			c.JSON(404, gin.H{"error": "article not found"})
+			c.JSON(404, gin.H{"error": "Article not found"})
 			return
 		}
+
 		c.JSON(200, article)
 	}
 }
