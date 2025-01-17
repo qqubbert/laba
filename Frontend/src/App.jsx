@@ -17,6 +17,7 @@
     const [showArticleEditor, setShowArticleEditor] = useState(false);
     const [usrInf, setUsrInf] = useState({});
     const [usrId, setUsrId] = useState();
+    const [showHint, setShowHint] = useState(false);
     const [permission, setPermission] = useState('user');
     const navigate = useNavigate();
 
@@ -114,11 +115,13 @@
           selectedFunc={(selectedId)=>{setSelectedPage(selectedId)}}
           />}
 
+          {}
+
           <Routes>
             <Route path="/login" element={!logged && 
             <Auth 
               permission={(permission) => { setPermission(permission); console.log(permission); }} 
-              userId={(userId) => { setUsrId(userId); }} 
+              userId={(userId) => { setUsrId(userId);}} 
               logged={() => { setLogged(true); }} 
             />} />
             <Route path="/employee" element={<Admin permission={permission}/>}>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 import './Messages.css';
 
@@ -62,7 +64,7 @@ function Messages({ }) {
             });
             if (response.ok) {
                 LoadChatMessages(selectedChat);
-                setSendingMsgFiles([]);
+                setSendingMsgFiles([]); 
             }
         } catch (error) {
             // console.error("Ошибка:", error);
@@ -299,6 +301,24 @@ function Messages({ }) {
         console.log(filteredChats);
     }, [searchTitle, chats]); 
 
+    // const convertTextToLinks = (text) => {
+    //     const urlRegex = /(https?:\/\/[^\s]+)/g;
+    //     return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    // };
+
+    const processTextToLinks = (text) => {
+        // Регулярное выражение для поиска URL
+        const urlRegex = /(\b(?:https?:\/\/)?(?:www\.)?[\w-]+\.[\w./?=#&%-]+)/gi;
+    
+        return text.replace(urlRegex, (url) => {
+            // Проверяем, есть ли протокол; если нет, добавляем "https://"
+            const href = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+            // Очищаем URL от потенциально вредоносных данных
+            const safeHref = DOMPurify.sanitize(href);
+            return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer">${safeHref}</a>`;
+        });
+    }
+
   return (
     <>
         {showWindowBG && <WindowBG hide={showBG}/>}
@@ -345,10 +365,12 @@ function Messages({ }) {
                     {chatUsersLoaded && chatUsersList.length >= 1 &&
                         chatUsersList.map((user, i)=>{
                             return (
-                                <div className="chatUser">
-                                    <img src={user.ProfilePicLink || noImage} alt="" />
-                                    <h3>{user.FirstName} {user.LastName}</h3>
-                                </div>
+                                <>
+                                    <NavLink to={`/employee/${user.user_id}`} className="chatUser">
+                                        <img src={user.ProfilePicLink || noImage} alt="" />
+                                        <h3>{user.FirstName} {user.LastName}</h3>
+                                    </NavLink>
+                                </>
                             )
                         })
                     }
@@ -418,14 +440,22 @@ function Messages({ }) {
                                 >
                                     {user != message.sender_id &&
                                     <>
-                                        <img src={message.ProfilePicLink || noImage} alt="" />
-                                        <h4 className="messageAuthor">{message.FirstName} {message.LastName}</h4>
+                                        <NavLink to={`/employee/${message.sender_id}`} className="messageAuthorPic">
+                                            <img src={message.ProfilePicLink || noImage} alt="" />
+                                        </NavLink>
+                                        
+                                        <h4>
+                                            <NavLink to={`/employee/${message.sender_id}`} className="messageAuthor">
+                                                {message.FirstName} {message.LastName}
+                                            </NavLink>
+                                        </h4>
                                     </>
                                     }
                                     {/* {console.log('message:' + message)}
                                     {console.log('user:' + user)}
                                     {console.log('-------')} */}
-                                    <span>{message.msg}</span>
+                                    {/* <span>{message.msg}</span> */}
+                                    <span dangerouslySetInnerHTML={{ __html: processTextToLinks(message.msg) }} />
                                     <h6>{message.msg_date}</h6>
                                     {message.files && typeof message.files === 'string' && messageFilesLoaded && (
                                     <div className="msgFiles">
@@ -456,7 +486,7 @@ function Messages({ }) {
                         {/* </div> */}
                         <div id="sendingBtns">
                             <button onClick={uploadFile}><img src={fileIcon} alt="" /> </button>
-                            <button onClick={()=>{msgSend();}} disabled={!sendingMsg}><img src={sendIcon} alt="" /> </button>
+                            <button onClick={()=>{msgSend();}} disabled={!sendingMsg && !(sendingMsgFiles.length >= 1)}><img src={sendIcon} alt="" /> </button>
                         </div>
                     </div>
                 </>}

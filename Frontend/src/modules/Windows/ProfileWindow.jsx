@@ -1,19 +1,48 @@
-import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+/*
+Программа: Модуль меню пользователя
+Лабораторная работа №9 по профессиональному модулю МДК 02.01 Технология разработки 
+программного обеспечения
+Тема «Инспекция программного кода на предмет соответствия стандартам 
+кодирования»
+Язык программирования: JavaScript (React)
+Разработал: Демидов Данила Александрович
+Дата: Октябрь 2024
+____________________________________________________________________________
+Задача: Создать компонент для отображения меню профиля с функциями управления темой, 
+просмотра профиля и выхода из учетной записи.
+____________________________________________________________________________
+Переменные, используемые в программе:
+- showProfileWin: логическая переменная, управляющая отображением окна профиля.
+- profile: функция, вызываемая для открытия страницы профиля.
+- logout: функция, вызываемая при выходе из системы.
+- hideWindow: функция, скрывающая окно профиля.
+Процедуры:
+- themeSwitch: процедура для переключения темы интерфейса приложения.
+____________________________________________________________________________
+*/
+
+import { NavLink } from 'react-router-dom';
 
 import profileIcon from '../../assets/ProfileIcon.svg';
-import settingsIcon from '../../assets/SettingsIcon.svg';
 import themeIcon from '../../assets/ThemeIcon.svg';
 import logoutIcon from '../../assets/LogoutIcon.svg';
-import editIcon from '../../assets/EditIcon.svg';
-import taskIcon from '../../assets/TaskIcon.svg';
-import msgIcon from '../../assets/MessageIcon.svg';
 
 import './ProfileWindow.css';
-import WindowBG from './WindowBackground.jsx'
-function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
-//   const [showProfileWin, setShowProfileWin] = useState(false);
+import WindowBG from './WindowBackground.jsx';
 
+/*
+Компонент ProfileWindow
+Параметры:
+- showProfileWin: логическая переменная, управляющая отображением окна профиля.
+- logout: функция, вызываемая для выхода из системы.
+- hideWindow: функция, скрывающая окно профиля.
+- profile: функция, открывающая страницу профиля.
+*/
+function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
+  /*
+  Функция themeSwitch
+  Описание: Меняет тему интерфейса приложения, переключая классы root-элемента и сохраняя выбранную тему в localStorage.
+  */
   const themeSwitch = () => {
     const root = document.getElementById('root');
     if (root.classList.contains('ocean')) {
@@ -43,26 +72,33 @@ function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
       root.classList.add('ocean');
       localStorage.setItem('theme', 'ocean');
     }
-  }
+  };
 
+  /*
+  Возвращает JSX для отображения меню профиля и фона.
+  */
   return (
     <>
-        {showProfileWin &&
+      {showProfileWin &&
         <>
           <ul id="profileWinList">
-              <li onClick={()=>profile()}><img src={profileIcon} alt="" />Профиль</li>
-              <li onClick={()=>themeSwitch()}><img src={themeIcon} alt="" />Смена темы</li>
-              {/* <li><img src={editIcon} alt="" />Мои статьи</li> */}
-              <li onClick={()=>{logout();}}>
-                <NavLink to="/login">
-                    <img src={logoutIcon} alt="" /> Выйти
-                </NavLink>
-              </li>
+            <li onClick={() => profile()}>
+              <img src={profileIcon} alt="Иконка профиля" />Профиль
+            </li>
+            <li onClick={() => themeSwitch()}>
+              <img src={themeIcon} alt="Иконка смены темы" />Смена темы
+            </li>
+            <li onClick={() => { logout(); }}>
+              <NavLink to="/login">
+                <img src={logoutIcon} alt="Иконка выхода" /> Выйти
+              </NavLink>
+            </li>
           </ul>
-          <WindowBG hide={()=>hideWindow()}/>
-        </>}
+          <WindowBG hide={() => hideWindow()} />
+        </>
+      }
     </>
-  )
+  );
 }
 
-export default ProfileWindow
+export default ProfileWindow;

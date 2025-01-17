@@ -5,7 +5,7 @@
 
     overflow: hidden;
 
-    margin: 30px;
+    margin: 10px;
     padding: 0px;
 
     border-radius: 15px;
@@ -18,15 +18,30 @@
 }
 
 #userAdminPane h1 {
-    margin: 0 20px 20px 20px;
+    margin: 0 20px 2px 20px;
 
-    font-size: 40px;
+    font-size: 32px;
 }
 
 #userAdminPane h3 {
-    margin: 10px 20px;
+    margin: 2px 20px;
 
-    font-size: 25px;
+    font-size: 22px;
+
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+}
+
+#userAdminPane h3 span {
+    font-weight: normal;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+#idDiv {
+    opacity: 0.1;
 }
 
 #divInfo {
@@ -46,7 +61,7 @@
     max-width: 220px;
     max-height: 220px;
     min-height: 220px;
-    border-radius: 25px;
+    border-radius: 10px;
     object-fit: cover;
 }
 
@@ -125,7 +140,7 @@
     height: 80px;
 
     padding: 15px;
-    margin: 15px;
+    margin: 5px 5px 0px 0px;
 
     background-color: var(--card-brighter-color);
 
@@ -144,6 +159,33 @@
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
+}
+
+.task #titleAndBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task button {
+    min-width: 30px;
+    height: 30px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    background-color: var(--buttons-brighter-color);
+
+    transition: all .15s ease-in-out;
+
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+        cursor: pointer;
+    }
+}
+
+.task.completed {
+    filter: saturate(0.5) brightness(0.5);
 }
 
 ul.progressbar {
@@ -217,11 +259,32 @@ ul.progressbar li {
     background-color: var(--buttons-brighter-another-color);
 }
 
+hr {
+    width: 700px;
+    opacity: 0.1;
+}
+
+h5 {
+    margin: 0 50px;
+    opacity: 0.1;
+    user-select: none;
+}
+
 .textdiv {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
+}
+
+.textdiv img, .taskTtlDiv img {
+    margin: 0 10px 0 0;
+    opacity: 0.2;
+}
+
+.textdiv button img {
+    opacity: 1;
+    margin: 0;
 }
 
 .textdiv button {
@@ -236,6 +299,9 @@ ul.progressbar li {
     transition: all .15s ease-in-out;
 
     opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .textdiv:hover button {

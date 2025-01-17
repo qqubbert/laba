@@ -5,7 +5,7 @@
     /* height: 100%; */
     /* min-height: 100%; */
 
-    margin: 20px;
+    margin: 8px;
 
     background-color: var(--windows-color);
 
@@ -30,6 +30,7 @@
 
 #articleInfo h1 {
     margin: 25px;
+    font-size: 22px;
 }
 
 #articleInfo #selectedArticleBtns {
@@ -95,13 +96,42 @@
     background-color: var(--card-brighter-color);
 
     margin: 15px;
-    padding: 15px;
+    padding: 5px;
 
     max-width: 100%;
 
     border-radius: 15px;
 
     word-wrap: break-word;
+    
+    display: flex;
+
+    align-items: center;
+
+
+}
+
+.Comment img {
+    grid-area: img;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0px 8px 0px 2px;
+}
+
+.Comment h4 {
+    grid-area: txt;
+    font-weight: normal;
+}
+
+.Comment h2 {
+    grid-area: name;
+    font-size: large;
+}
+
+.Comment h2 a {
+    text-decoration: none;
 }
 
 .Comment:last-of-type {

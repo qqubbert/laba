@@ -47,6 +47,7 @@ function Tasks({  }) {
             setTasks(responseData);
             setTasksLoaded(true);
             console.log("responseData.length: " + responseData.length)
+            console.log(responseData)
 
             console.log(responseData);
         } catch (error) {
@@ -114,7 +115,7 @@ function Tasks({  }) {
             </div>
             <div id="editTaskPaneForm" action="">
                 <h3 id="changeProgressErr" className='AddErr'>Введите допустимое значение</h3>
-                <input id="taskProgressInput" type="number" placeholder='Введите прогресс задачи' onChange={(e)=>setTaskProgress(e.target.value)}/>
+                <input defaultValue={taskProgress} id="taskProgressInput" type="number" placeholder='Введите прогресс задачи' onChange={(e)=>setTaskProgress(e.target.value)}/>
                 <button onClick={()=>{changeTaskProgress();}}>
                     Сохранить
                 </button>
@@ -129,12 +130,12 @@ function Tasks({  }) {
                 tasks.map((task, i)=>{
                     // console.log(user);
                     return (
-                        <div className='task' id={`${i}taskInfo`} key={task.id}>
+                        <div className={'task ' + (task.completed ? 'completed' : '')} id={`${i}taskInfo`} key={task.id}>
                         <div className="selfTaskBtns">
                             {/* <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button> */}
-                            <button className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc();}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
+                            <button disabled={task.completed} className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc(); setTaskProgress(task.progress)}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
                         </div>
-                        <h2 title={task.task}>{task.task}</h2>
+                        <h2 title={task.task + ' ' + (task.completed ? '[Выполнено]' : '')}>{task.task} {(task.completed ? '[Выполнено]' : '')}</h2>
                         <h4>Прогресс: {task.progress}%</h4>
                         <ul className="progressbar">
                           <li id="progress001" className={`${i}progress`}></li>

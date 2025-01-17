@@ -203,3 +203,7 @@
     color: var(--error-color);
     /* transition: all .15s ease-in-out; */
 }
+
+.task.completed button {
+    cursor: not-allowed !important;
+}

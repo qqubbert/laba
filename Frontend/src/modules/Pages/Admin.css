@@ -31,7 +31,7 @@
     position: relative;
 
     /* top: 10px; */
-    margin: 10px;
+    margin: 5px 10px;
 
     width: 95%;
     align-self: center;
@@ -94,7 +94,7 @@
     max-height: 100%;
     overflow-y: scroll;
 
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 #addTaskPane, #addUserPane, #editUserDataPane {
@@ -120,7 +120,15 @@
 
     animation: .3s ease-in-out forwards saveWinOpen;
 
-    padding-top: 15px;
+    padding: 15px;
+}
+
+#addUserPane ul {
+    padding: 0;
+}
+
+#addUserPane li {
+    list-style: none;
 }
 
 #addTaskPane.saveWinClosing, #addUserPane.saveWinClosing, #editUserDataPane.saveWinClosing {
@@ -256,4 +264,21 @@
     background-color: transparent;
     padding: 0;
     margin: 0 10px;
+}
+
+#regKeyList {
+    max-height: 200px;
+    width: 200px;
+    overflow: scroll;
+}
+
+.noUserSelect {
+    user-select: none;
+}
+
+.regKeyLi {
+    cursor: pointer;
+    &:hover {
+        font-weight: bold;
+    }
 }

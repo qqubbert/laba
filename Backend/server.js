@@ -74,8 +74,3 @@ app.listen(PORT, () => {
 clientApp.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Возвращает index.html для всех маршрутов
 });
-
-// const CLIENT_PORT = 5500;
-// clientApp.listen(CLIENT_PORT, () => {
-//     console.log(`API Gateway запущен на порту ${CLIENT_PORT}`);
-// });

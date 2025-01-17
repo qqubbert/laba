@@ -152,7 +152,7 @@
 
     overflow: hidden;
 
-    margin: 30px;
+    margin: 8px;
     padding: 0px;
 
     border-radius: 15px;
@@ -240,8 +240,12 @@
     align-items: center;
     max-width: 100%;
 
-    padding: 20px;
+    padding: 8px;
     /* background-color: var(--window   s-brighter-color); */
+}
+
+#chatInfo h1 {
+    font-size: 26px;
 }
 
 #chatInfo #chatInfoBtns {
@@ -275,10 +279,13 @@
 }
 
 .message {
+    position: relative;
     width: fit-content;
+    min-width: 145px;
     max-width: 70%;
+    height: fit-content;
     background-color: var(--card-brighter-color);
-    padding: 15px 20px;
+    padding-bottom: 23px;
     margin: 5px 15px;
     border-radius: 15px;
     border-bottom-left-radius: 0;
@@ -289,35 +296,57 @@
     align-items: center;
 }
 
-.message img {
+.message .messageAuthorPic {
     grid-area: img;
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
     margin-right: 10px;
     position: relative;
-    left: -60px;
+    left: -45px;
+    top: 50%;
+}
+
+.message .messageAuthorPic img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
 }
 
 .message h4 {
+    padding: 8px 10px 0px 10px;
     position: relative;
     left: -40px;
     grid-area: name;
+}
+
+.message h4 a {
+    text-decoration: none;
 }
 
 .message span {
     position: relative;
     left: -40px;
     grid-area: text;
+    padding: 2px 10px;
+}
+
+.message.self span {
+    padding: 7px 20px 2px 20px;
+}
+
+.message.self h6 {
+    padding: 0px 20px 5px 20px;
 }
 
 .message h6 {
-    position: relative;
-    top: 0px;
+    position: absolute;
+    right: 0;
+    top: 3px;
     grid-area: time;
     opacity: .3;
     text-align: right;
+    padding: 5px 20px;
 }
 
 .message.self {
@@ -333,17 +362,53 @@
 }
 
 .msgFiles {
-    width: 100%;
+    position: relative;
+    left: -50px;
+    width: calc(100% + 50px);
+    /* padding: 0 3px; */
     grid-area: files;
-    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    justify-content: center;
+    /* margin: 10px; */
+}
+
+.self .msgFiles {
+    left: 0;
+    width: calc(100%);
 }
 
 .msgFiles img {
     width: auto;
-    height: 200px;
+    min-height: 200px;
+    /* min-width: 70%; */
+    height: auto;
+    max-height: 300px;
+    max-width: calc(100% - 4px);
+    /* max-height: 600px; */
     object-fit: cover;
     position: relative;
-    left: 0px;
+    grid-area: none;
+    border-radius: 10px;
+    left: 0px;  
+    margin: 2px 2px;
+}
+
+.msgFiles img:only-child {
+    max-width: 100%;
+    height: auto;
+}
+
+.msgFiles img:nth-of-type(2) {
+    max-width: calc(50% - 10px);
+    height: auto;
+}
+
+/* Если больше двух изображений */
+.msgFiles img:nth-of-type(n + 3) {
+    max-width: calc(33.333% - 10px); /* Каждое изображение занимает треть ширины контейнера */
+    height: auto; /* Высота будет автоматически пропорциональна ширине */
 }
 
 #addChatPane, #ChatSettingsPane {
@@ -464,13 +529,19 @@
     padding: 5px;
 }
 
-#UserList div.chatUser {
+#UserList .chatUser {
     display: flex;
     margin: 5px;
     align-items: center;
+    text-decoration: none;
+    padding: 0 5px;
+    border-radius: 10px;
+    &:hover {
+        background-color: var(--buttons-color);
+    }
 }
 
-#UserList div.chatUser img {
+#UserList .chatUser img {
     width: 50px;
     height: 50px;
     margin: 5px;

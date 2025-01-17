@@ -110,7 +110,9 @@
     align-items: center;
     user-select: none;
 
-    margin: 0px 0px 0px 10px;
+    margin: 0px 0px 0px 5px;
+
+    font-size: small;
 }
 
 #searchArticle #articleTags label:hover {
@@ -194,11 +196,19 @@
     display: -webkit-box;
     display: -moz-box;
 
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+
+    line-height: 1.2em;
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
+
+    font-size: larger;
+}
+
+.ArticleCard h4 {
+    font-weight: normal
 }
 
 .ArticleCard:hover {

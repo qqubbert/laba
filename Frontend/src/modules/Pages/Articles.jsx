@@ -140,7 +140,7 @@ function Articles() {
                         </div>
                     </div>
                     <div id="articlesList" className={singleColumn ? "singleColumn" : ''}>
-                        {articles && !isFilters && articles.map((article, i) => {
+                        {articles.length >= 1 && articles && !isFilters && articles.map((article, i) => {
                             const ArticleLink = `/articles/${article.id}`;
                             return (
                                 <NavLink 
@@ -181,7 +181,7 @@ function Articles() {
                     </div>
                 </div>
                 {selectedArticle && 
-                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} articleReload={LoadArticles}/>
+                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} articleReload={()=>{LoadArticles(); LoadSelectedArticle(selectedArticle); setSelectedArticle(selectedArticle)}}/>
                 }
             </div>
         </>

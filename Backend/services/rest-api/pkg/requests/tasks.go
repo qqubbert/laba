@@ -10,10 +10,11 @@ type Task struct {
 	IdEmployee int    `json:"id_employee,omitempty"`
 	Task       string `json:"task,omitempty"`
 	Progress   int    `json:"progress,omitempty"`
+	Completed  bool   `json:"completed,omitempty"`
 }
 
 func GetTaskByID(db *sql.DB, userID int) ([]Task, error) {
-	query := `SELECT ID, Task, Progress 
+	query := `SELECT ID, Task, Progress, Completed 
 			  FROM tasks 
 			  WHERE Id_Employee = ?
 `
@@ -26,7 +27,7 @@ func GetTaskByID(db *sql.DB, userID int) ([]Task, error) {
 	var tasks []Task
 	for rows.Next() {
 		var task Task
-		if err := rows.Scan(&task.ID, &task.Task, &task.Progress); err != nil {
+		if err := rows.Scan(&task.ID, &task.Task, &task.Progress, &task.Completed); err != nil {
 			return nil, err
 		}
 		tasks = append(tasks, task)
