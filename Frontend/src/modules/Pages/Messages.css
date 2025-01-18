@@ -17,7 +17,8 @@
 
 #chatListPane {
     position: relative;
-    width: 450px;
+    min-width: 300px;
+    max-width: 300px;
     max-height: 100%;
 
     overflow-y: hidden;
@@ -33,10 +34,10 @@
 
     top: 10px;
 
-    width: 90%;
+    width: 100%;
     align-self: center;
 
-    border-radius: 20px;
+    border-radius: 10px;
 
     /* padding: 10px 25px; */
 
@@ -63,12 +64,12 @@
 
 #inputDiv button:first-of-type {
     padding: 5px 10px 5px 15px;
-    border-radius: 15px 0px 0px 15px;
+    border-radius: 10px 0px 0px 10px;
 }
 
 #inputDiv button:last-of-type {
     padding: 5px 15px 5px 10px;
-    border-radius: 0px 15px 15px 0px;
+    border-radius: 0px 10px 10px 0px;
 }
 
 #inputDiv button:hover {
@@ -94,9 +95,9 @@
 
     background-color: var(--card-color);
     
-    border-radius: 15px;
+    border-radius: 10px;
     
-    margin: 7px 20px;
+    margin: 7px 10px;
     
     padding: 15px;
 
@@ -109,6 +110,8 @@
     outline: 2px solid transparent;
 
     transition: all .15s ease-in-out;
+
+    align-items: center;
 }
 
 .chatCard.selectedChat {
@@ -142,7 +145,26 @@
 }
 
 .chatCard h1 {
-    font-size: 20px;
+    font-size: 18px;
+    /* line-height: 30px; */
+
+    /* margin: 0px 0px 5px 0px; */
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    display: -moz-box;
+
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+
+    line-height: 1.2em;
+
+    font-weight: normal;
+
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
 }
 
 #chatPane {
@@ -155,7 +177,7 @@
     margin: 8px;
     padding: 0px;
 
-    border-radius: 15px;
+    border-radius: 10px;
 
     background-color: var(--windows-color);
 

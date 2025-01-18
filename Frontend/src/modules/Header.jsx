@@ -67,7 +67,12 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
     <>
         <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}} profile={()=>{navigate(`/employee/${userInfo.id}`); showProfWin()}} hideWindow={()=>{showProfWin()}}/>
         <header>
-            <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}><img src={plusIcon} alt="" />Новая статья</button>
+            {/* <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}>
+                <img src={plusIcon} alt="" />
+                <span id="newArticleBtnTxt">
+                    Новая статья
+                </span>
+            </button> */}
             <ul>
                 {/* <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
@@ -95,7 +100,7 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                 </li>
             </ul>
             <div id="userHeadInfo">
-                <h1 title={userInfo.department}>{userInfo.department}</h1>
+                {/* <h1 title={userInfo.department}>{userInfo.department}</h1> */}
                 <div id="usrProfile">
                     <h2 id="Name" onClick={()=>navigate(`/employee/${userInfo.id}`)}>{userInfo.last_name} {userInfo.first_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>

@@ -59,11 +59,11 @@ function ProfileWindow({ showProfileWin, logout, hideWindow, profile }) {
       localStorage.setItem('theme', 'forest');
     } else if (root.classList.contains('forest')) {
       root.classList.remove('forest');
-      root.classList.add('evening');
-      localStorage.setItem('theme', 'evening');
-    } else if (root.classList.contains('evening')) {
+      root.classList.add('darkpurple');
+      localStorage.setItem('theme', 'darkpurple');
+    } else if (root.classList.contains('darkpurple')) {
       root.classList.add('berry');
-      root.classList.remove('evening');
+      root.classList.remove('darkpurple');
       localStorage.setItem('theme', 'berry');
     } else if (root.classList.contains('berry')) {
       root.classList.remove('berry');

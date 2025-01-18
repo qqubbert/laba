@@ -33,6 +33,28 @@
     font-size: 22px;
 }
 
+#articleIntoText {
+    display: flex;
+    align-items: center;
+}
+
+#articleIntoText a {
+    margin: 0 5px;
+    text-decoration: none;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#articleIntoText h5 {
+    margin: 0 5px;
+    text-decoration: none;
+    &:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+}
+
 #articleInfo #selectedArticleBtns {
     margin: 25px;
     min-width: 100px;

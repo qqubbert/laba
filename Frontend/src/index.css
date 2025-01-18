@@ -2,6 +2,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 
 #root.dark {
+  --buttons-color: rgb(35, 35, 60);
+  --buttons-brighter-color: rgb(50, 50, 85);
+  --buttons-brighter-another-color: rgb(60, 60, 100);
+  --buttons-another-color: rgb(30, 30, 55);
+  --buttons-another-brighter-color: rgb(45, 45, 75);
+
+  --windows-color: #181920;
+  --windows-brighter-color: #20212e;
+  --windows-brighter-another-color: rgb(38, 39, 65);
+  --windows-darker-color: #121317;
+  --windows-little-darker-color: #1a1b27;
+
+  --card-color: rgb(28, 29, 50);
+  --card-brighter-color: rgb(40, 41, 70);
+
+  --input-color: rgb(45, 45, 70);
+  --input-select-color: rgb(65, 65, 95);
+
+  --text-color: rgb(215, 215, 230);
+  --text-hidden-color: rgba(215, 215, 230, 0.13);
+  --border-color: rgb(160, 160, 200);
+
+  --error-color: rgb(180, 60, 60);
+  --error-another-color: rgb(100, 35, 35);
+
+  --background-color: rgb(18, 18, 30);
+  --bright-color: rgb(250, 250, 250);
+
+  --task-progress-color: #3ab68b;
+  --task-progress-dark-color: #10271e;
+}
+
+#root.darkpurple {
   --buttons-color: rgb(45, 45, 78); 
   --buttons-brighter-color: rgb(70, 70, 120); 
   --buttons-brighter-another-color: rgb(80, 80, 135);

@@ -1,9 +1,9 @@
 #newArticleWin {
-    margin: 50px auto;
+    margin: 10px auto;
 
     min-width: 90%;
     max-width: 1800px;
-    height: 750px;
+    height: calc(100% - 90px);
 
     background-color: var(--windows-color);
 

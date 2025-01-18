@@ -83,9 +83,12 @@ function SelectedArticle({ articleData, onClose, articleReload }) {
                 <div id="articleInfo">
                     <div id="articleIntoText">
                         <h1>{articleData.title}</h1>
+                        <NavLink to={`/employee/${articleData.author_id}`}>
+                            <h5>{articleData.author_name}</h5>
+                        </NavLink>
                     </div>
                     <div id="selectedArticleBtns">
-                        <button onClick={addToFav}><img src={articleData.is_favorite ? bookmarkFilled : bookmark} alt="" /></button>
+                        <button onClick={()=>{addToFav()}}><img src={articleData.is_favorite ? bookmarkFilled : bookmark} alt="" /></button>
                         <button onClick={onClose}><img src={closeIcon} alt="" /></button>
                     </div>
                 </div>

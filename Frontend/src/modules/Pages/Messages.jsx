@@ -308,7 +308,7 @@ function Messages({ }) {
 
     const processTextToLinks = (text) => {
         // Регулярное выражение для поиска URL
-        const urlRegex = /(\b(?:https?:\/\/)?(?:www\.)?[\w-]+\.[\w./?=#&%-]+)/gi;
+        const urlRegex = /(\b(?:http?:\/\/)?(?:https?:\/\/)?(?:www\.)?[\w-]+\.[\w./?=#&%-]+)/gi; // доделать для локалхоста и др.
     
         return text.replace(urlRegex, (url) => {
             // Проверяем, есть ли протокол; если нет, добавляем "https://"
@@ -405,7 +405,7 @@ function Messages({ }) {
                         // console.log(user);
                         return (
                             <div key={chat.chat_id} className='chatCard' id={'chatCard' + i} onClick={()=>{LoadChatMessages(chat.chat_id); selectChatFunc(i); setSelectedChat(chat.chat_id)}}>
-                                <h1>{chat.title}</h1>
+                                <h1 title={chat.title}>{chat.title}</h1>
                             </div>
                         )
                     })}

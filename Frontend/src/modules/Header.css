@@ -11,9 +11,11 @@ header {
 
     display: grid;
 
-    grid-template-columns: 200px 800px auto;
+    /* grid-template-columns: 200px 800px auto; */
+    grid-template-columns: repeat(2, auto);
 
     /* display: flex; */
+    background-color: var(--windows-brighter-color);
 
     z-index: 101;
 }
@@ -24,9 +26,10 @@ header ul {
 
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    /* justify-content: space   -evenly; */
+    align-items: center;
 
-    margin: 15px;
+    /* margin: 15px; */
     padding: 0;
     /* padding: 10px; */
 
@@ -36,14 +39,15 @@ header ul {
 header #userHeadInfo {
     /* margin: 15px; */
 
-    background-color: var(--windows-brighter-color);
+    /* background-color: var(--windows-brighter-color); */
 
     border-radius: 0px 0px 0px 90px;
 
     display: flex;
     flex-direction: row;
 
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: right;
     align-items: center;
 
     text-align: right;
@@ -61,7 +65,7 @@ header #userHeadInfo h1 {
     font-size: 20px;
     font-weight: 500;
 
-    width: 400px;
+    /* width: 400px; */
     /* max-height: 30px; */
 
     /* overflow: hidden;
@@ -89,7 +93,7 @@ header #userHeadInfo #usrProfile {
 
     margin: 0px 5px;
 
-    width: 420px;
+    /* width: 420px; */
 
     justify-content: right;
 }
@@ -201,8 +205,8 @@ header button:hover {
 header ul li a{
     transition: all ease-in-out .15s;
 
-    padding: 3px 10px 3px 5px;
-    margin: 0px 10px;
+    padding: 5px 15px 5px 15px;
+    /* margin: 0px 5px; */
 
     display: flex;
     flex-direction: row;
@@ -212,11 +216,17 @@ header ul li a{
 
     border-radius: 30px;
 
-    text-decoration: none;
+    text-decoration: none;  
+
+    outline: solid 2px transparent;
 }
 
-header ul li .selected {
+/* header ul li .selected {
     transform: scale(1.2);
+} */
+
+header ul li {
+    margin: 0 20px;
 }
 
 header ul li img {
@@ -228,9 +238,10 @@ header ul li img {
 header ul li a:hover {
     cursor: pointer;
 
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 
     filter: brightness(1.1);
+    background-color: var(--buttons-color);
     
     /* outline: solid 1px rgba(211, 159, 248, 0.25); */
 }
@@ -241,4 +252,30 @@ header ul li a:hover {
 
 #newArticleBtn:hover {
     background-color: var(--buttons-brighter-another-color);
+}
+
+@media screen and (max-width: 1600px) {
+    #newArticleBtn {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #newArticleBtn img {
+        left: 0;
+    }
+    header #userHeadInfo {
+        justify-content: right;
+    }
+    #newArticleBtnTxt,
+    header #userHeadInfo h1 {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    header #userHeadInfo #JobTitle,
+    header #userHeadInfo #Name {
+        display: none;
+    }
 }

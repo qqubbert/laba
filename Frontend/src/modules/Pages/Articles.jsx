@@ -59,6 +59,8 @@ function Articles() {
             const responseData = await response.json();
             setArticles(responseData);
             setIsArticlesLoaded(true);
+            console.log('Статьи загружены');
+            console.log(responseData);
         } catch (error) {
             console.error("Ошибка:", error);
         }
@@ -97,7 +99,7 @@ function Articles() {
         navigate('/articles'); 
     };
 
-    const selectArticleFunc = (e, i) => {
+    const selectArticleFunc = (i) => {
         const userCards = Array.from(document.getElementsByClassName('ArticleCard'));
         userCards.forEach((el)=>{
             el.classList.remove('SelectedArticleCard');
@@ -116,13 +118,33 @@ function Articles() {
         }
     }, [isArticlesLoaded, articleId]);
 
+    const articleReload = async () => {
+        try {
+            // Перезагрузить список статей
+            await LoadArticles();
+            console.log('Обновлены данные о статьях');
+            
+            // Убедиться, что статья существует и перезагрузить её
+            if (selectedArticle?.id) {
+                await LoadSelectedArticle(selectedArticle.id);
+                selectArticleFunc(selectedArticle.id); // Применить выделение
+            }
+        } catch (error) {
+            console.error("Ошибка при обновлении статьи:", error);
+        }
+    };
+    
+
     return (
         <>
             <div id="articles">
                 <div id="allArticles" className={singleColumn ? "singleColumn" : ''}>
                     <div id="searchArticle">
                         <div id="inputAndBtns">
-                            {/* <button><img src={plusIcon} alt="" /></button> */}
+                            <button onClick={()=>navigate('/newarticle')}>
+                                <img src={plusIcon} alt="" />
+                                <span>Новая статья</span>
+                            </button>
                             <input type="text" placeholder='Поиск' onChange={(e) => handleFilterChange('title', e.target.value)}/>
                             <button><img src={searchIcon} alt="" /></button>
                         </div>
@@ -146,13 +168,13 @@ function Articles() {
                                 <NavLink 
                                     to={ArticleLink} 
                                     key={article.id} 
-                                    id={`articleCard${i}`}
+                                    id={`articleCard${article.id}`}
                                     className='ArticleCard' 
                                     title={article.title}
                                     onClick={(e) => { 
                                         LoadSelectedArticle(article.id); 
                                         setSingleColumn(true);
-                                        selectArticleFunc(e, i);
+                                        selectArticleFunc(article.id);
                                     }}
                                 >
                                     <ArticleCard articleData={article} />
@@ -165,13 +187,13 @@ function Articles() {
                                 <NavLink 
                                     to={ArticleLink} 
                                     key={article.id} 
-                                    id={`articleCard${i}`}
+                                    id={`articleCard${article.id}`}
                                     className='ArticleCard' 
                                     title={article.title}
                                     onClick={(e) => { 
                                         LoadSelectedArticle(article.id); 
                                         setSingleColumn(true);
-                                        selectArticleFunc(e, i);
+                                        selectArticleFunc(article.id);
                                     }}
                                 >
                                     <ArticleCard articleData={article} />
@@ -181,7 +203,7 @@ function Articles() {
                     </div>
                 </div>
                 {selectedArticle && 
-                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} articleReload={()=>{LoadArticles(); LoadSelectedArticle(selectedArticle); setSelectedArticle(selectedArticle)}}/>
+                    <SelectedArticle articleData={selectedArticle} onClose={clearSelectedArticle} articleReload={()=>{articleReload()}}/>
                 }
             </div>
         </>

@@ -42,11 +42,10 @@
 
 #searchArticle #inputAndBtns {
     margin: 5px 0;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: var(--input-color);
     width: 100%;
     display: flex;
-    border-radius: 15px;
 }
 
 #searchArticle #inputAndBtns button {
@@ -57,14 +56,29 @@
     height: 100%;
     border: none;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #searchArticle #inputAndBtns button:first-of-type {
-    border-radius: 15px 0px 0px 15px;
+    border-radius: 10px 0px 0px 10px;
+    width: 150px;
+    background-color: var(--buttons-brighter-color);
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+    }
+}
+
+#allArticles.singleColumn #inputAndBtns button:first-of-type {
+    width: 54px;
+}
+
+#allArticles.singleColumn #inputAndBtns button:first-of-type span {
+    display: none;
 }
 
 #searchArticle #inputAndBtns button:last-of-type {
-    border-radius: 0px 15px 15px 0px;
+    border-radius: 0px 10px 10px 0px;
 }
 
 #searchArticle #inputAndBtns button:hover {
@@ -157,6 +171,10 @@
     justify-content: center; */
 }
 
+#allArticles.singleColumn button {
+    width: 54px;
+}
+
 .ArticleCard {
     justify-self: center;
     display: flex;
@@ -170,7 +188,7 @@
     padding: 15px;
     margin: 5px 5px;
 
-    border-radius: 15px;
+    border-radius: 10px;
 
     background-color: var(--card-color);
 

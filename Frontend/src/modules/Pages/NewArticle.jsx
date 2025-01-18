@@ -409,7 +409,7 @@ function NewArticle({ hideArticleEditor }) {
                   <button onClick={()=>{addElement('audio')}}><img src={audioIcon} alt="" />Audio</button>
                   {/* <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button> */}
                 </div>
-                <button id="CloseArticleBtn" onClick={() => { navigate('/', { replace: true }); }}> 
+                <button id="CloseArticleBtn" onClick={() => { navigate('/articles', { replace: true }); }}> 
                   <img src={closeIcon} alt="" /> 
                 </button>
             </div>

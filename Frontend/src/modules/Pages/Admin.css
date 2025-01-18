@@ -3,7 +3,7 @@
     /* top: 70px; */
 
     width: 100vw;
-    max-height: calc(100% - 70px);
+    max-height: calc(100% - 90px);
 
     position: relative;
 
@@ -12,6 +12,8 @@
     /* margin-top: 70px; */
 
     flex: 1;
+    margin: 10px;
+    padding: 0px;
 }
 
 #usersListPane {
@@ -36,7 +38,7 @@
     width: 95%;
     align-self: center;
 
-    border-radius: 15px;
+    border-radius: 10px;
 
     /* padding: 10px 25px; */
 
@@ -69,11 +71,11 @@
 }
 
 #usersListPane #adminInputAndAdd button:last-of-type {
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 10px 10px 0;
 }
 
 #usersListPane #adminInputAndAdd button:first-of-type {
-    border-radius: 15px 0 0 15px;
+    border-radius: 10px 0 0 10px;
 }
 
 #usersListPane #adminInputAndAdd button:hover {
