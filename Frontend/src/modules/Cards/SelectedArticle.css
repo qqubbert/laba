@@ -31,6 +31,19 @@
 #articleInfo h1 {
     margin: 25px;
     font-size: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    display: -moz-box;
+
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+
+    line-height: 1em;
+
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
 }
 
 #articleIntoText {
@@ -95,7 +108,8 @@
 
 #articleAndComms iframe {
     min-width: 70%;
-    min-height: 100%;
+    /* min-height: 100%; */
+    flex-grow: 1;
 
     background-color: var(--windows-darker-color);
 }
@@ -220,4 +234,22 @@
 
 #addCommentDiv textarea::selection {
     background-color: var(--input-select-color);
+}
+
+@media screen and (max-width: 800px) {
+    #articleAndComms {
+        display: flex;
+        flex-direction: column;
+    }
+    #selectedArticle {
+        margin: 0;
+        border-radius: 0;
+    }
+    #articleAndComms #articleComms {
+        max-height: 300px;
+        padding: 0;
+    }
+    #articleIntoText a {
+        display: none;
+    }
 }

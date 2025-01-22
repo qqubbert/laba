@@ -78,7 +78,7 @@ func AddToVadoriteArticles(db *sql.DB, userID, articleID int) error {
 }
 
 func GetArticlesByAuthorID(db *sql.DB, authorID int) ([]Article, error) {
-	query := `SELECT id, title, HtmlLink, completed, creating_date 
+	query := `SELECT id, title, HtmlLink, completed, creating_date, biology, chemistry, it, physics
 			  FROM article
 			  WHERE author_id = ?`
 	rows, err := db.Query(query, authorID)
@@ -91,7 +91,7 @@ func GetArticlesByAuthorID(db *sql.DB, authorID int) ([]Article, error) {
 
 	for rows.Next() {
 		var article Article
-		if err := rows.Scan(&article.ID, &article.Title, &article.HtmlLink, &article.Completed, &article.CreatingDate); err != nil {
+		if err := rows.Scan(&article.ID, &article.Title, &article.HtmlLink, &article.Completed, &article.CreatingDate, &article.Biology, &article.Chemistry, &article.It, &article.Physics); err != nil {
 			return nil, err
 		}
 		articles = append(articles, article)

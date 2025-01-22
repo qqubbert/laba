@@ -1,5 +1,7 @@
 #userAdminPane {
-    width: 100%;
+    /* width: calc(100% - 620px); */
+    flex-grow: 1;
+    margin-right: 20px;
     /* min-height: calc(100% - 30px); */
     /* max-height: calc(100% - 30px); */
 
@@ -15,6 +17,23 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#userAdminPane #articlesList {
+    min-height: 200px;
+    max-width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    padding: 0px 15px;
+}
+
+#userAdminPane .ArticleCard {
+    min-width: 300px;
+}
+
+#userAdminPane .ArticleCard h1 {
+    font-size: 18px;
+    margin: 0;
 }
 
 #userAdminPane h1 {
@@ -69,10 +88,17 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: start;
+    /* justify-content: center; */
+    margin-left: min(10px);
     margin: 55px 55px 55px auto;
 }
 
 #userPhotoDiv button {
+    min-width: 200px;
+    max-width: 200px;
+    /* max-height: 200px; */
+    /* min-height: 200px; */
     margin: 10px;
     border-radius: 15px;
     border: none;
@@ -260,7 +286,7 @@ ul.progressbar li {
 }
 
 hr {
-    width: 700px;
+    width: 70%;
     opacity: 0.1;
 }
 
@@ -277,7 +303,7 @@ h5 {
     justify-content: space-between;
 }
 
-.textdiv img, .taskTtlDiv img {
+.textdiv img, .taskTtlDiv img, #articlesTtlDiv img {
     margin: 0 10px 0 0;
     opacity: 0.2;
 }
@@ -311,4 +337,66 @@ h5 {
 .textdiv button:hover {
     background-color: var(--buttons-brighter-another-color);
     cursor: pointer;
+}
+
+h3.pc {
+    display: flex !important;
+}
+
+h3.mobile {
+    display: none !important;
+}
+
+#closeUserBtn {
+    /* position: fixed; */
+    /* top: 0; */
+    display: none;
+    background-color: var(--buttons-brighter-color);
+    border: none;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding: 10px 0;
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 1460px) {
+    #divInfoAll {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    #userPhotoDiv {
+        margin: 10px;
+    }
+    #divInfo {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h3.pc {
+        display: none !important;
+    }
+    h3.mobile {
+        display: flex !important;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    #closeUserBtn {
+        display: flex;
+    }
+}
+
+#userPermissionSelect {
+    background-color: var(--input-color);
+    outline: none;
+    border: none;
+    padding: 5px;
+    margin: 0 10px;
+    border-radius: 10px;
 }

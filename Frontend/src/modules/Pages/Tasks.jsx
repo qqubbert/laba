@@ -133,11 +133,13 @@ function Tasks({  }) {
                     if (!task.completed ) {
                       return (
                         <div className={'task'} id={`${i}taskInfo`} key={task.id}>
-                        <div className="selfTaskBtns">
-                            {/* <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button> */}
-                            <button disabled={task.completed} className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc(); setTaskProgress(task.progress)}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
-                        </div>
-                        <h2 title={task.task + ' ' + (task.completed ? '[Выполнено]' : '')}>{task.task} {(task.completed ? '[Выполнено]' : '')}</h2>
+                        <h2 title={task.task}>
+                          {task.task}
+                          <div className="selfTaskBtns">
+                              {/* <button className='taskBtn'><img src={articleIcon} alt="" /> Написать статью</button> */}
+                              <button className='taskBtn' onClick={()=>{console.log(task.id); setTaskId(task.id); showTaskWinFunc(); setTaskProgress(task.progress)}}><img src={progressIcon} alt="" /> Изменить прогресс</button>
+                          </div>
+                        </h2>
                         <h4>Прогресс: {task.progress}%</h4>
                         <ul className="progressbar">
                             {Array.from({ length: 100 }).map((_, idx) => (
@@ -153,16 +155,24 @@ function Tasks({  }) {
                 })}
                 {(tasksLoaded && tasks.length >= 1 && tasks.some((el) => el.completed)) && <h3 id="noTasksHeader">Выполненные задачи:</h3>}
                 {tasksLoaded && tasks.length >= 1 && 
-                tasks.map((task, i)=>{
-                    // console.log(user);
-                    if (task.completed ) {
-                      return (
-                        <div className="completed" id={`${i}taskInfo`} key={task.id}>
-                        <h2 title={task.task}> <span className='noUserSelect'> - </span>{task.task}</h2>
-                      </div>
-                    )
-                    }
-                })}
+                <div id="completedTaskList">
+                  {
+                    tasks.map((task, i)=>{
+                      // console.log(user);
+                      if (task.completed ) {
+                        return (
+                          <>
+                            <div className="completed" id={`${i}taskInfo`} key={task.id}>
+                              <h2 title={task.task}> <span className='noUserSelect'> - </span>{task.task}</h2>
+                            </div>
+                            <hr />
+                          </>
+                      )
+                      }
+                  })
+                  }
+                </div>
+                }
             </div>
         </div>
     </>

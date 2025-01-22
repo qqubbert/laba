@@ -23,7 +23,21 @@ sanyaApp.get("/chats", (req, res) => {
     const user_id = req.cookies.userid;
     console.log(user_id);
     const getChats = `
-    SELECT * FROM chats c LEFT JOIN chat_users cu ON c.id = cu.chat_id WHERE cu.user_id = ?;
+    SELECT 
+        c.id AS chat_id,
+        c.title,
+        c.author_id,
+        c.private,
+        GROUP_CONCAT(DISTINCT CONCAT(u2.FirstName) SEPARATOR ', ') AS participants
+    FROM 
+        chats c
+    LEFT JOIN chat_users cu1 ON c.id = cu1.chat_id
+    LEFT JOIN chat_users cu2 ON c.id = cu2.chat_id
+    LEFT JOIN users u2 ON cu2.user_id = u2.id
+    WHERE 
+        cu1.user_id = ?
+    GROUP BY 
+        c.id, c.title;
     `
     db.query(getChats, [user_id], (err, rs) => {
         console.log(rs);
@@ -125,9 +139,9 @@ sanyaApp.post("/chatcreate", (req, res) => {
     console.log(title + " " + ID);
     // const token = req.cookies.token;
     const ChatCreate = `
-    INSERT INTO chats (title)
+    INSERT INTO chats (title, author_id)
     VALUES
-        (?);
+        (?, ?);
     `;
     db.query(ChatCreate, [title, ID], (err, rsChat) => {
         console.log(rsChat);
@@ -136,9 +150,9 @@ sanyaApp.post("/chatcreate", (req, res) => {
         } else {
             const chatID = rsChat.insertId;
             const UserChat = `
-            INSERT INTO chat_users (user_id, chat_id)
+            INSERT INTO chat_users (user_id, chat_id, private)
             VALUES
-                (?, ?);
+                (?, ?, false);
             `;
             db.query(UserChat, [ID, chatID], (err, rsUserChat) => {
                 console.log(rsUserChat);
@@ -173,12 +187,12 @@ sanyaApp.post("/privatechat", (req, res) => {
         console.log(rsChat);
         if (err) {
             console.log(err);
-        } else if (rsChat >= 1) {
+        } else if (rsChat.length >= 1) {
             console.log(rsChat);
             res.status(200).json(rsChat);
         } else {
             const createChat = `
-            INSERT INTO chats (private) VAUES (true);
+            INSERT INTO chats (private) VALUES (true);
             `
             db.query(createChat, [], (err, rsCreate) => {
                 console.log(rsCreate);
@@ -195,7 +209,7 @@ sanyaApp.post("/privatechat", (req, res) => {
                             console.log(err);
                         } else {
                             console.log("New private chat created!");
-                            res.status(200).json(rsAdd);
+                            res.status(200).json({rsAdd, rsCreate});
                         }
                     });
                 }
@@ -235,6 +249,67 @@ sanyaApp.post("/chatadduser", (req, res) => {
                     // res.status(200).json({rs, message: "Новый участник добавлен"});
                 } else {
                     console.log("New user added to chat!");
+                    res.status(200).json(rs)
+                }
+            });
+        }
+    });
+});
+
+sanyaApp.delete("/chatdeluser", (req, res) => {
+    const{chat_id, user_id} = req.body;
+    console.log(user_id + " " + chat_id);
+    const inChat = `
+    SELECT * FROM chat_users WHERE user_id = ? AND chat_id = ?;
+    `
+    db.query(inChat, [user_id, chat_id], (err, rsIn) => {
+        console.log(rsIn);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.length <= 0) {
+            res.status(409).json({messege: "User not in chat!"});
+        } else {
+            const delUser = `
+            DELETE FROM chat_users WHERE user_id = ? AND chat_id = ?;
+            `
+            db.query(delUser, [user_id, chat_id], (err, rs) => {
+                console.log(rs);
+                if (err) {
+                    console.log(err);
+                    // res.status(200).json({rs, message: "Новый участник добавлен"});
+                } else {
+                    console.log("User deleted from chat!");
+                    res.status(200).json(rs)
+                }
+            });
+        }
+    });
+});
+
+sanyaApp.delete("/chatdelete", (req, res) => {
+    const{chat_id} = req.body;
+    const user_id = req.cookies.userid;
+    console.log(user_id + " " + chat_id);
+    const inChat = `
+    SELECT * FROM chat_users WHERE user_id = ? AND chat_id = ?;
+    `
+    db.query(inChat, [user_id, chat_id], (err, rsIn) => {
+        console.log(rsIn);
+        if (err) {
+            console.log(err);
+        } else if (rsIn.length <= 0) {
+            res.status(409).json({messege: "User not in chat!"});
+        } else {
+            const delChat = `
+            DELETE FROM chats WHERE id = ?;
+            `
+            db.query(delChat, [chat_id], (err, rs) => {
+                console.log(rs);
+                if (err) {
+                    console.log(err);
+                    // res.status(200).json({rs, message: "Новый участник добавлен"});
+                } else {
+                    console.log("Chat deleted");
                     res.status(200).json(rs)
                 }
             });
@@ -309,6 +384,23 @@ sanyaApp.patch("/taskupdate", (req, res) => {
             console.log(err);
         } else {
             console.log("Task updated!");
+            res.status(200).json(rs);
+        };
+    });
+});
+
+sanyaApp.patch("/chatupdate", (req, res) => {
+    const{chat_id, title} = req.body;
+    console.log(chat_id + " " + title);
+    const chatUpdate = `
+    UPDATE chats SET title = ? WHERE id = ?;
+    `;
+    db.query(chatUpdate, [title, chat_id], (err, rs) => {
+        console.log(rs);
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Chat updated!");
             res.status(200).json(rs);
         };
     });

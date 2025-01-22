@@ -6,6 +6,11 @@ import SelectedArticle from '../Cards/SelectedArticle.jsx';
 
 import plusIcon from '../../assets/PlusIcon.svg';
 import searchIcon from '../../assets/SearchIcon.svg';
+import ChemistryIcon from '../../assets/ChemistryIcon.svg';
+import LeafIcon from '../../assets/LeafIcon.svg';
+import RocketIcon from '../../assets/RocketIcon.svg';
+import TerminalIcon from '../../assets/TerminalIcon.svg';
+import BookmarkIcon from '../../assets/BookmarkIcon.svg';
 
 function Articles() {
     const [articles, setArticles] = useState([]);
@@ -150,13 +155,31 @@ function Articles() {
                         </div>
                         <div id="articleTags">
                             <div id="articleTagsLeft">
-                                <label><input type="checkbox" onChange={(e) => handleFilterChange('biology', !filters.biology)}/>Биология</label>
-                                <label><input type="checkbox" onChange={(e) => handleFilterChange('chemistry', !filters.chemistry)}/>Химия</label>
-                                <label><input type="checkbox" onChange={(e) => handleFilterChange('physics', !filters.physics)}/>Физика</label>
-                                <label><input type="checkbox" onChange={(e) => handleFilterChange('it', !filters.it)}/>IT</label>
+                                <label><input type="checkbox" onChange={(e) => handleFilterChange('biology', !filters.biology)}/>
+                                <img src={LeafIcon} alt="" />
+                                Биология
+                                </label>
+                                <label><input type="checkbox" onChange={(e) => handleFilterChange('chemistry', !filters.chemistry)}/>
+                                <img src={ChemistryIcon} alt="" />
+                                Химия
+                                </label>
+                                <label><input type="checkbox" onChange={(e) => handleFilterChange('physics', !filters.physics)}/>
+                                <img src={RocketIcon} alt="" />
+                                Физика
+                                </label>
+                                <label><input type="checkbox" onChange={(e) => handleFilterChange('it', !filters.it)}/>
+                                <img src={TerminalIcon} alt="" />
+                                IT
+                                </label>
                             </div>
                             <div id="articleTagsRight">
-                                <label><input type="checkbox" onChange={(e) => handleFilterChange('favorite', !filters.favorite)}/>Избранные</label>
+                                <label>
+                                    <input type="checkbox" 
+                                        onChange={(e) => handleFilterChange('favorite', !filters.favorite)}
+                                    />
+                                        <img src={BookmarkIcon} alt="" />
+                                        Избранные
+                                    </label>
                                 {/* <label><input type="checkbox" />Мои статьи</label> */}
                             </div>
                         </div>
@@ -196,7 +219,7 @@ function Articles() {
                                         selectArticleFunc(article.id);
                                     }}
                                 >
-                                    <ArticleCard articleData={article} />
+                                    <ArticleCard articleData={article} author={true}/>
                                 </NavLink>
                             );
                         })}

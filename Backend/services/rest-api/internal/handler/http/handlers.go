@@ -3,12 +3,13 @@ package http
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
 	"rest-api/pkg/requests"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllUsersHandler(db *sql.DB) gin.HandlerFunc {
@@ -342,7 +343,7 @@ func AddToVadoritesHandler(db *sql.DB) gin.HandlerFunc {
 	}
 }
 
-func getArticleByAuthorIdHandler(db *sql.DB) gin.HandlerFunc {
+func GetArticleByAuthorIdHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
 		authorId, err := strconv.Atoi(idStr)

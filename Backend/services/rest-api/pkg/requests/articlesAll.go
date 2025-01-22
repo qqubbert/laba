@@ -30,6 +30,7 @@ func GetAllArticles(db *sql.DB, userId int) ([]ArticleAll, error) {
 		       ) AS is_favorite
 		FROM article a
 		LEFT JOIN Users u ON a.author_id = u.ID
+		ORDER BY creating_date DESC;
 	`
 
 	rows, err := db.Query(query, userId)

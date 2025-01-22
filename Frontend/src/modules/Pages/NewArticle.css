@@ -205,6 +205,11 @@
     right: 0;
 }
 
+#ArticleEditor h1, #ArticleEditor p {
+    word-break: normal;
+    text-align: justify;
+}
+
 #ArticleEditor .editBtnsDiv button {
     margin: 2px 3px;
 
@@ -302,4 +307,27 @@
 
 .edError {
     border: 1px solid var(--error-color) !important;
+}
+
+@media screen and (max-width: 760px) {
+    #newArticleWin button span {
+        display: none;
+    }
+    #newArticleWin button {
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #newArticleWin button img {
+        left: 0 !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #newArticleEditorBtns {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }

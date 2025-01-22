@@ -15,7 +15,8 @@ function Comment({ commentData }) {
         <h4>{(articleData.creating_date)}</h4>
         <h4>{commentData.text}</h4> */}
         <NavLink to={`/employee/${commentData.author_id}`}>
-          <img src={commentData.pfp} alt="" />
+          <img src={commentData.pfp || 
+            "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"} alt="" />
         </NavLink>
         <div className="commentTxtInfo">
           <h2>

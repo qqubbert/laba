@@ -80,22 +80,26 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                 <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li> */}
                 <li>
                     <NavLink to="/articles" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={articleIcon} alt="" /> Статьи
+                        <img src={articleIcon} alt="" /> 
+                        <span>Статьи</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/messages" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={msgIcon} alt="" /> Сообщения
+                        <img src={msgIcon} alt="" /> 
+                        <span>Сообщения</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/tasks" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={tasksIcon} alt="" /> Задачи
+                        <img src={tasksIcon} alt="" /> 
+                        <span>Задачи</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/employee" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={adminIcon} alt="" /> Сотрудники
+                        <img src={adminIcon} alt="" /> 
+                        <span>Сотрудники</span>
                     </NavLink>
                 </li>
             </ul>

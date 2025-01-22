@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 
+import ArticleCard from './ArticleCard.jsx'
+
 import msgIcon from '../../assets/MessageIcon.svg';
 import closeIcon from '../../assets/CloseIcon.svg';
 import plusIcon from '../../assets/PlusIcon.svg';
@@ -19,11 +21,14 @@ import moneyIcon from '../../assets/MoneyIcon.svg';
 import phoneIcon from '../../assets/PhoneIcon.svg';
 import depIcon from '../../assets/DepIcon.svg';
 import progressIcon from '../../assets/ProgressIcon.svg';
+import articleIcon from '../../assets/ArticleIcon.svg';
+import adminAnotherIcon from '../../assets/AdminAnotherIcon.svg';
 
 import './UserAdminPane.css';
 
-function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddTaskWin, addTaskInfo, editUserDataFunc, updUser, editUserImgFunc }) {
+function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, fireUserFunc, showAddTaskWin, addTaskInfo, editUserDataFunc, updUser, editUserImgFunc, editUserPermissionFunc }) {
   const [userTasks, setUserTasks] = useState([]);
+  const [userArticles, setUserArticles] = useState([]);
   const navigate = useNavigate();
 
   function progressUpd(userTasks) {
@@ -41,6 +46,24 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
         }
       }
     });
+  }
+
+  const LoadUserArticles = async () => {
+    setUserArticles([]);
+    const response = await fetch(`http://localhost:3000/rest-api-service/articles/author/${userData.id}`, {
+      method: 'GET',
+      credentials: 'include',
+      withCredentials: true,
+    })
+
+    const responseData = await response.json();
+    console.log(responseData);
+    
+    if (response.ok) {
+      setUserArticles(responseData);
+    } else {
+      console.log('Ошибка');
+    }
   }
   
   const fireUser = async () => {
@@ -76,7 +99,8 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
         phone_number: userData.phone_number,
         email: userData.email,
         is_blocked: false,
-        profile_pic_link: userData.profile_pic_link
+        profile_pic_link: userData.profile_pic_link,
+        permission: userData.permission
       })
     });
     if (response.ok) {
@@ -151,9 +175,15 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
   useEffect(() => {
     if (userData) {
       taskLoad();
+      console.log(userData);
+      const userPermissionSelect = document.getElementById('userPermissionSelect');
+      if (userPermissionSelect) {
+        userPermissionSelect.value = userData.permission;
+      }
+      LoadUserArticles();
     }
   }, [userData]);  
-
+  
   useEffect(() => {
     if (userTasks.length > 0) {
       progressUpd(userTasks);
@@ -166,10 +196,46 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
     }
   }, [addTaskInfo])
 
+  const userMsgTry = async () => {
+    try {  
+      const response = await fetch("http://localhost:3000/js-service/sanya/privatechat", {
+          method: 'POST',
+          credentials: 'include',
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userData.id,
+          })
+      });
+      const responseData = await response.json()
+      if (response.ok) {
+        console.log(responseData);
+        if (responseData[0].id) {
+          navigate(`/messages/${responseData[0].id}`)
+        } else {
+          navigate(`/messages/${responseData.rsCreate.insertId}`)
+        }
+      }
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
+  }
+
   return (
     <>
         {userData && 
         <>
+            <button
+              id='closeUserBtn'
+              onClick={()=>{
+                closeUser()
+              }}
+            >
+              <img src={closeIcon} alt="" />
+              Назад
+            </button>
             <div id="divInfo">
               <div id="divInfoAll">
                 <div id="userInfoTxt">
@@ -193,6 +259,18 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   </div>
                   <hr />
                   <h5>Информация о работе:</h5>
+                  {permission == 'admin' && userInfo.id != userData.id &&
+                  <div className="textdiv">
+                    <h3>
+                      <img src={adminAnotherIcon} alt="" />
+                      Права доступа: 
+                      <select name="" id="userPermissionSelect" defaultValue={userData.permission} onChange={(e)=>editUserPermissionFunc(e.target.value)}>
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                      </select>
+                    </h3>
+                  </div>
+                  }
                   <div className="textdiv">
                     <h3>
                       <img src={jobTitleIcon} alt="" />
@@ -208,7 +286,11 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('academDegree')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv">
-                    <h3>
+                    <h3 className='mobile'>
+                      <img src={clockIcon} alt="" />
+                      Опыт работы (лет): <span>{userData.work_experience}</span>
+                    </h3>
+                    <h3 className='pc'>
                       <img src={clockIcon} alt="" />
                       Опыт работы (в годах): <span>{userData.work_experience}</span>
                     </h3>
@@ -238,7 +320,11 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('familyStatus')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv">
-                    <h3>
+                    <h3 className='mobile'>
+                      <img src={childrenIcon} alt="" />
+                      Кол-во детей: <span> {userData.having_children} </span>
+                    </h3>
+                    <h3 className='pc'>
                       <img src={childrenIcon} alt="" />
                       Количество детей: <span> {userData.having_children} </span>
                     </h3>
@@ -247,16 +333,24 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   <hr />
                   <h5>Контактная информация:</h5>
                   <div className="textdiv">
-                    <h3>
+                    <h3 className='mobile'>
+                      <img src={phoneIcon} alt="" />
+                      Номер тел. : <span>{userData.phone_number}</span>
+                    </h3>
+                    <h3 className='pc'>
                       <img src={phoneIcon} alt="" />
                       Номер телефона: <span>{userData.phone_number}</span>
                     </h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('phone')}><img src={editIcon} alt="" /></button>}
                   </div>
                   <div className="textdiv">
-                    <h3>
+                    <h3 className='pc'>
                       <img src={mailIcon} alt="" />
                       Электронная почта: <span>{userData.email}</span>
+                    </h3>
+                    <h3 className='mobile'>
+                      <img src={mailIcon} alt="" />
+                      email: <span>{userData.email}</span>
                     </h3>
                     {permission == 'admin' && <button onClick={()=>editUserDataFunc('email')}><img src={editIcon} alt="" /></button>}
                   </div>
@@ -267,6 +361,7 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                   } alt="" />
                   {permission == 'admin' && <button onClick={()=>editUserImgFunc()}><img src={editIcon} alt="" />Изменить фото</button>}
                 </div>
+                
               </div>
               <hr />
               <h5>Задачи:</h5>
@@ -330,11 +425,47 @@ function UserAdminPane({ isChanges, userData, permission, fireUserFunc, showAddT
                       ))}
                   </>
                 )}
+                <h3 id="articlesTtlDiv">
+                  <img src={articleIcon} alt="" />
+                  Написанные статьи: {userArticles.length >= 1 ? userArticles.length : ''}
+                </h3>
+                <div id="articlesList">
+                {userArticles.length < 1 &&
+                <h3>Нет написанных статей</h3>
+                }
+                {userArticles && userArticles.length >= 1 &&
+                  userArticles.map((article, i)=>{
+                    const articleLink = `/articles/${article.id}`;
+                    return (
+                      <NavLink 
+                          to={articleLink} 
+                          key={article.id} 
+                          id={`articleCard${article.id}`}
+                          className='ArticleCard' 
+                          title={article.title}
+                          // onClick={(e) => { 
+                          //     LoadSelectedArticle(article.id); 
+                          //     setSingleColumn(true);
+                          //     selectArticleFunc(article.id);
+                          // }}
+                      >
+                          <ArticleCard articleData={article} author={false}/>
+                      </NavLink>
+                    )
+                  })
+                }
+                </div>
             </div>
             <div id="adminBtns">
                 <div id="adminBtnsLeft">
-                  {/* <button><img src={msgIcon} alt="" />Сообщение</button> */}
-                  {permission == 'admin' && <button onClick={()=>{
+                  {userInfo.id != userData.id &&
+                    <button onClick={()=>{userMsgTry()}}>
+                      <img src={msgIcon} alt="" />
+                      Сообщение
+                    </button>
+                  }
+                  {permission == 'admin' && 
+                  <button onClick={()=>{
                     if (confirm("Вы точно хотите уволить сотрудника?")) {
                       fireUser();
                     }

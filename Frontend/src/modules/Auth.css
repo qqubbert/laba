@@ -79,7 +79,7 @@ form span:hover {
     opacity: 1;
 }
 
-#LoginErrorMsg {
+#LoginErrorMsg, #RegErrorMsg {
     visibility: hidden;
 
     width: 300px;
@@ -98,4 +98,18 @@ form span:hover {
 
 .regForm input, .regForm h1, .regForm select {
     margin: 5px;
+}
+
+input.err {
+    outline: 2px solid var(--error-color);
+}
+
+@media screen and (max-width: 550px) {
+    #AuthForm {
+        background-color: transparent;
+        max-width: calc(100vw - 30px);
+    }
+    #AuthForm input, #AuthForm button {
+        max-width: 100%;
+    }
 }

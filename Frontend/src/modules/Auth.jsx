@@ -87,17 +87,17 @@ function Auth({ logged, userId, permission }) {
       }),
     });
     const responseData = await response.json();
+    
 
     if (response.ok) {
       // Если авторизация успешна
-      loginErr.style.visibility = "visible";
-      setErrText(responseData.message); // Устанавливаем сообщение
       logged(); // Вызываем функцию logged
-      setIsLogged(true); // Устанавливаем флаг успешной авторизации
       userId(responseData.userid); // Сохраняем ID пользователя
+      setIsLogged(true); // Устанавливаем флаг успешной авторизации
       permission(responseData.permission); // Сохраняем права доступа
     } else {
       // Если авторизация не удалась
+      setErrText(responseData.message); // Устанавливаем сообщение
       loginErr.style.visibility = "visible";
       setErrText(responseData.message); // Устанавливаем сообщение об ошибке
     }
@@ -130,20 +130,20 @@ function Auth({ logged, userId, permission }) {
                 dep_id: addUserData.dep_id || 1
             })
         })
-        console.log(response);
+        const responseData = await response.json();
+        console.log(responseData.message);
         if (response.ok) {
             console.log('Registered');
-            if (response.ok) {
-              // Если авторизация успешна
-              logged(); // Вызываем функцию logged
-              setIsLogged(true); // Устанавливаем флаг успешной авторизации
-              userId(response.userid); // Сохраняем ID пользователя
-              permission(response.permission); // Сохраняем права доступа
-            } else {
-              // Если авторизация не удалась
-              // loginErr.style.visibility = "visible";
-              setErrText(response.message); // Устанавливаем сообщение об ошибке
-            }
+            logged(); // Вызываем функцию logged
+            setIsLogged(true); // Устанавливаем флаг успешной авторизации
+            userId(response.userid); // Сохраняем ID пользователя
+            permission(response.permission); // Сохраняем права доступа
+        } else {
+          // Если авторизация не удалась
+          const RegErrorMsg = document.getElementById('RegErrorMsg');
+          RegErrorMsg.style.visibility = "visible";
+          setShowErr(true);
+          setErrText(responseData.message); // Устанавливаем сообщение об ошибке
         }
     } catch (err) {
         console.log(err);
@@ -170,7 +170,9 @@ function Auth({ logged, userId, permission }) {
       setCanRegister(true); 
     } else {  
       // Если авторизация не удалась
-      loginErr.style.visibility = "visible";
+      // loginErr.style.visibility = "visible";
+      setShowErr(true);
+      RegErrorMsg.style.visibility = 'visible';
       setErrText(responseData.message); // Устанавливаем сообщение об ошибке
     }
   };
@@ -182,6 +184,38 @@ function Auth({ logged, userId, permission }) {
   useEffect(() => {
     setIsLogged(false);
   }, []);
+
+  function validateString(str) {
+    // Проверка на отсутствие символов * & { } | +
+    const RegErrorMsg = document.getElementById('RegErrorMsg');
+    const forbiddenChars = /[*&{}|+]/;
+    if (forbiddenChars.test(str)) {
+      setShowErr(true);
+      RegErrorMsg.style.visibility = 'visible';
+      setErrText('В пароле не должно быть символов * & { } | +');
+      return false;
+    }
+
+    // Проверка на наличие хотя бы одной заглавной буквы
+    const hasUpperCase = /[A-Z]/;
+    if (!hasUpperCase.test(str)) {
+      setShowErr(true);
+      setErrText('В пароле должны быть заглавные буквы');
+      RegErrorMsg.style.visibility = 'visible';
+      return false;
+    }
+
+    // Проверка на наличие хотя бы одной цифры
+    const hasNumber = /\d/;
+    if (!hasNumber.test(str)) {
+      setShowErr(true);
+      RegErrorMsg.style.visibility = 'visible';
+      setErrText('В пароле должны быть цифры');
+      return false;
+    }
+
+    return true;
+  }
 
   /*
   Возвращает JSX для отображения формы авторизации.
@@ -202,7 +236,7 @@ function Auth({ logged, userId, permission }) {
               onChange={(e) => { setLoginData({ ...loginData, password: e.target.value }) }} 
             />
             <button id="AuthSubmit" type="button" onClick={AuthConfirm}>Войти</button>
-            <span onClick={()=>setIsRegister(true)} className='noUsrSelect'>Нет аккаунта</span>  
+            <span onClick={()=>{setIsRegister(true); setErrText(''); setShowErr(false)}} className='noUsrSelect'>Нет аккаунта</span>  
             <h4 id="LoginErrorMsg">{errText}</h4>
           </form>
 }
@@ -211,13 +245,14 @@ function Auth({ logged, userId, permission }) {
             <h1 className='noUsrSelect'>Введите код регистрации</h1>
             <input id="regKeyInput" type="text" placeholder='Код регистрации'/>
             <button onClick={()=>KeyConfirm()} type='button'>Подтвердить</button>
-            <span onClick={()=>{setIsRegister(false); setCanRegister(false); setRegKey('')}} className='noUsrSelect'>Есть аккаунт</span>  
+            <span onClick={()=>{setIsRegister(false); setCanRegister(false); setRegKey(''); setErrText(''); setShowErr(false)}} className='noUsrSelect'>Есть аккаунт</span>  
             <h4 id="LoginErrorMsg">{errText}</h4>
           </form>
           }
           {logWin && isRegister && canRegister &&
           <form action="" id="AuthForm" className='regForm'>
             <h1 className='noUsrSelect'>Регистрация</h1>
+            <div id="RegErrorMsg">{errText}</div>
             {/* <input 
               type="text" 
               placeholder='Логин' 
@@ -229,7 +264,7 @@ function Auth({ logged, userId, permission }) {
               onChange={(e) => { setLoginData({ ...loginData, password: e.target.value }) }} 
             /> */}
                 <input required id="userLoginInput" className='addUserInput' type="text" placeholder='Введите логин' onChange={(e)=>{setAddUserData({ ...addUserData, login: e.target.value}); console.log(addUserData)}}/>
-                <input required id="userEmail" className='addUserInput' type="text" placeholder='Введите почту' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
+                <input required id="userEmail" className='addUserInput' type="email" placeholder='Введите почту' onChange={(e)=>{setAddUserData({ ...addUserData, email: e.target.value}); console.log(addUserData)}}/>
                 <input id="userPhone" className='addUserInput' type="text" placeholder='Введите номер телефона' onChange={(e)=>{setAddUserData({ ...addUserData, phone: e.target.value}); console.log(addUserData)}}/>
                 <input required id="userPasswordInput" className='addUserInput' type="text" placeholder='Введите пароль' onChange={(e)=>{setAddUserData({ ...addUserData, password: e.target.value}); console.log(addUserData)}}/>
                 <input id="userFirstName" className='addUserInput' type="text" placeholder='Введите имя' onChange={(e)=>{setAddUserData({ ...addUserData, firstname: e.target.value}); console.log(addUserData)}}/>
@@ -277,24 +312,44 @@ function Auth({ logged, userId, permission }) {
                 </select>
                 <button id="regSubmit" type='button' onClick={()=>{
                     let err = false;
+                    const RegErrorMsg = document.getElementById('RegErrorMsg');
                     if (addUserData.login.length <= 0) {
                         const userLoginInput = document.getElementById('userLoginInput');
                         userLoginInput.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userLoginInput.classList.remove('err');
                         }, 1000);
                         err = true;
                     }
-                    if (addUserData.password.length <= 0) {
+                    if (addUserData.password.length >= 4 || 
+                        addUserData.password.length <= 16) {
+                        if (!validateString(addUserData.password)) {
+                          const userPasswordInput = document.getElementById('userPasswordInput');
+                          userPasswordInput.classList.add('err');
+                          setTimeout(() => {
+                            userPasswordInput.classList.remove('err');
+                          }, 1000);
+                          err = true;
+                        }
+                      } else {
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
+                        RegErrorMsg.style.visibility = 'visible';
                         const userPasswordInput = document.getElementById('userPasswordInput');
                         userPasswordInput.classList.add('err');
                         setTimeout(() => {
-                            userPasswordInput.classList.remove('err');
+                          userPasswordInput.classList.remove('err');
                         }, 1000);
-                        err = true;
-                    } 
+                    }
                     if (!addUserData.email || addUserData.email.length <= 0) {
-                        console.log('email is not filled')
+                        console.log('email is not filled');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         const userEmailInput = document.getElementById('userEmail');
                         userEmailInput.classList.add('err');
                         setTimeout(() => {
@@ -305,6 +360,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.birthday || addUserData.birthday.length <= 0) {
                         const userBirthdayInput = document.getElementById('userBirthday');
                         userBirthdayInput.classList.add('err');
+                        setShowErr(true);
+                        setErrText('Заполните все данные');
+                        RegErrorMsg.style.visibility = 'visible';
                         setTimeout(() => {
                             userBirthdayInput.classList.remove('err');
                         }, 1000);   
@@ -313,6 +371,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.firstname || addUserData.firstname.length <= 0) {
                         const userFirstName = document.getElementById('userFirstName');
                         userFirstName.classList.add('err');
+                        setShowErr(true);
+                        setErrText('Заполните все данные');
+                        RegErrorMsg.style.visibility = 'visible';
                         setTimeout(() => {
                             userFirstName.classList.remove('err');
                         }, 1000);   
@@ -321,6 +382,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.surname || addUserData.surname.length <= 0) {
                         const userLastName = document.getElementById('userLastName');
                         userLastName.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userLastName.classList.remove('err');
                         }, 1000);   
@@ -329,6 +393,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.surname || addUserData.surname.length <= 0) {
                         const userSurName = document.getElementById('userSurName');
                         userSurName.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userSurName.classList.remove('err');
                         }, 1000);   
@@ -337,6 +404,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.academdeg || addUserData.academdeg.length <= 0) {
                         const userAcadem = document.getElementById('userAcadem');
                         userAcadem.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userAcadem.classList.remove('err');
                         }, 1000);   
@@ -345,6 +415,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.workexp || addUserData.workexp.length <= 0) {
                         const userWorkExp = document.getElementById('userWorkExp');
                         userWorkExp.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userWorkExp.classList.remove('err');
                         }, 1000);   
@@ -353,6 +426,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.childrencount || addUserData.childrencount.length <= 0) {
                         const userChildrenCount = document.getElementById('userChildrenCount');
                         userChildrenCount.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userChildrenCount.classList.remove('err');
                         }, 1000);   
@@ -361,6 +437,9 @@ function Auth({ logged, userId, permission }) {
                     if (!addUserData.phone || addUserData.phone.length <= 0) {
                         const userPhone = document.getElementById('userPhone');
                         userPhone.classList.add('err');
+                        setShowErr(true);
+                        RegErrorMsg.style.visibility = 'visible';
+                        setErrText('Заполните все данные');
                         setTimeout(() => {
                             userPhone.classList.remove('err');
                         }, 1000);   

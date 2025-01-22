@@ -93,7 +93,7 @@ authApp.post('/register', async (req, res) => {
                             return res.status(500).json({ message: "Ошибка сервера" })
                         } else if (result.length >= 1) {
                             console.log('Пользователь уже существует');
-                            return res.status(200).json({ message: "Пользователь уже зарегистрирован" });
+                            return res.status(409).json({ message: "Пользователь уже зарегистрирован" });
                         } else {
                             const queryReg = `
                             INSERT INTO Users 

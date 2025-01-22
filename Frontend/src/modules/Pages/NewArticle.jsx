@@ -402,11 +402,26 @@ function NewArticle({ hideArticleEditor }) {
             }
             <div id="newArticleTop">
                 <div id="newArticleEditorBtns">
-                  <button onClick={()=>{addElement('h1')}}><img src={headerIcon} alt="" />Title</button>
-                  <button onClick={()=>{addElement('p')}}><img src={paragraphIcon} alt="" />Paragraph</button>
-                  <button onClick={()=>{addElement('img')}}><img src={imageIcon} alt="" />Img</button>
-                  <button onClick={()=>{addElement('video')}}><img src={videoIcon} alt="" />Video</button>
-                  <button onClick={()=>{addElement('audio')}}><img src={audioIcon} alt="" />Audio</button>
+                  <button onClick={()=>{addElement('h1')}}>
+                    <img src={headerIcon} alt="" />
+                    <span>Title</span>
+                  </button>
+                  <button onClick={()=>{addElement('p')}}>
+                    <img src={paragraphIcon} alt="" />
+                    <span>Paragraph</span>
+                  </button>
+                  <button onClick={()=>{addElement('img')}}>
+                    <img src={imageIcon} alt="" />
+                    <span>Img</span>
+                  </button>
+                  <button onClick={()=>{addElement('video')}}>
+                    <img src={videoIcon} alt="" />
+                    <span>Video</span>
+                  </button>
+                  <button onClick={()=>{addElement('audio')}}>
+                    <img src={audioIcon} alt="" />
+                    <span>Audio</span>
+                  </button>
                   {/* <button disabled onClick={()=>{addElement('file')}}><img src={fileIcon} alt="" />File</button> */}
                 </div>
                 <button id="CloseArticleBtn" onClick={() => { navigate('/articles', { replace: true }); }}> 
@@ -422,7 +437,7 @@ function NewArticle({ hideArticleEditor }) {
                 </div>
             </div>
             <div id="newArticleBottom">
-                <button id="SaveArticleBtn" onClick={()=>{showSaveWinFunc();}}><img src={saveIcon} alt="" />Сохранить</button>
+                <button id="SaveArticleBtn" onClick={()=>{showSaveWinFunc();}}><img src={saveIcon} alt="" /><span>Сохранить</span></button>
             </div>
         </div>
     </>

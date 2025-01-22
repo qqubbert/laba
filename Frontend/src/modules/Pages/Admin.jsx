@@ -12,8 +12,16 @@ import plusIcon from '../../assets/PlusIcon.svg';
 import searchIcon from '../../assets/SearchIcon.svg';
 import filterIcon from '../../assets/FiltersIcon.svg';
 import tableIcon from '../../assets/TableIcon.svg';
+import sortAlphaIcon from '../../assets/SortAlphaIcon.svg';
+import sortNumberIcon from '../../assets/SortNumberIcon.svg';
+import arrowUpIcon from '../../assets/ArrowUp.svg';
+import arrowDownIcon from '../../assets/ArrowDown.svg';
+import closeIcon from '../../assets/CloseIcon.svg';
+import adminIcon from '../../assets/AdminIcon.svg';
 
-function Admin({ permission }) {
+function Admin({ permission, userInfo }) {
+    const [sortNumber, setSortNumber] = useState(true);
+    const [sortReverse, setSortReverse] = useState(false);
     const [users, setUsers] = useState([]);
     const [deps, setDeps] = useState([]);
     const [userPane, setUserPane] = useState();
@@ -373,10 +381,23 @@ function Admin({ permission }) {
                 (filters.jobTitle ? user.job_title.includes(filters.jobTitle) : true)
             );
         });
-        setFilteredUsers(filtered);
+
+        const sorted = [...filtered].sort((a, b) => {
+            if (sortNumber) {
+                return sortReverse ? b.id - a.id : a.id - b.id;
+            } else {
+                const nameA = a.last_name.toLowerCase();
+                const nameB = b.last_name.toLowerCase();
+                if (nameA < nameB) return sortReverse ? 1 : -1;
+                if (nameA > nameB) return sortReverse ? -1 : 1;
+                return 0;
+            }
+        });
+    
+        setFilteredUsers(sorted);
         setIsFilters(true);
         console.log(filteredUsers);
-    }, [filters, users]); 
+    }, [filters, users, sortNumber, sortReverse]); 
 
     const LoadRegCodes = async () => {
         try {  
@@ -392,6 +413,40 @@ function Admin({ permission }) {
             console.error("Ошибка:", error);
         }
     };
+
+    const sortAlphaFunc = () => {
+        setSortNumber(false);
+        if (!sortNumber) {
+            setSortReverse(!sortReverse)
+        } else {
+            setSortReverse(false)
+        }
+        setFilteredUsers(prevUsers => {
+            const sortedUsers = [...prevUsers].sort((a, b) => {
+                const nameA = a.last_name.toLowerCase();
+                const nameB = b.last_name.toLowerCase();
+                if (nameA < nameB) return sortReverse ? 1 : -1;
+                if (nameA > nameB) return sortReverse ? -1 : 1;
+                return 0;
+            });
+            return sortedUsers;
+        });
+    }
+
+    const sortNumberFunc = () => {
+        setSortNumber(true);
+        if (sortNumber) {
+            setSortReverse(!sortReverse)
+        } else {
+            setSortReverse(false)
+        }
+        setFilteredUsers(prevUsers => {
+            const sortedUsers = [...prevUsers].sort((a, b) => {
+                return sortReverse ? b.id - a.id : a.id - b.id;
+            });
+            return sortedUsers;
+        });
+    }
 
   return (
     <>
@@ -582,8 +637,8 @@ function Admin({ permission }) {
             </div>
         </div>
         }
-        <div id="adminPane">
-            <div id="usersListPane">
+        <div id="adminPane" className={usrCard ? 'user' : 'list'}>
+            <div id="usersListPane" className={usrCard ? 'hidden' : 'visible'}>
                 <div id="adminInputAndAdd">
                     {permission == 'admin' &&
                         <button onClick={showUserWinFunc}><img src={plusIcon} alt="" /></button>
@@ -640,47 +695,38 @@ function Admin({ permission }) {
                         placeholder="Количество детей" 
                         onChange={(e) => handleFilterChange('children', e.target.value === "" ? null : e.target.value)} 
                     />
-                        {/* <select name="" id="">
-                            <option value=">">&gt;</option>
-                            <option value="<">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="<=">&lt;=</option>
-                            <option value=">=">&gt;=</option>
-                        </select> */}
                     </div>
                     <div id="workExpDiv">
                         <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value === "" ? null : e.target.value)}/>
-                        {/* <select name="" id="">
-                            <option value=">">&gt;</option>
-                            <option value="<">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="<=">&lt;=</option>
-                            <option value=">=">&gt;=</option>
-                        </select> */}
                     </div>
                     <div id="salaryDiv">
                         <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value === "" ? null : e.target.value)}/>
-                        {/* <select name="" id="">
-                            <option value=">">&gt;</option>
-                            <option value="<">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="<=">&lt;=</option>
-                            <option value=">=">&gt;=</option>
-                        </select> */}
                     </div>
-                    {/* <div id="birthcdayDiv">
-                        <input type="date" placeholder=''/>
-                        <select name="" id="">
-                            <option value=">">&gt;</option>
-                            <option value="<">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="<=">&lt;=</option>
-                            <option value=">=">&gt;=</option>
-                        </select>
-                    </div> */}
                     <input type="text" placeholder='Учёная степень' onChange={(e) => handleFilterChange('degree', e.target.value)}/>
                     <input type="text" placeholder='Должность' onChange={(e) => handleFilterChange('jobTitle', e.target.value)}/>
                 </div>}
+                <div id="sortDiv">
+                    <button id="idSort" onClick={sortNumberFunc}>
+                        <img src={sortNumber ? sortReverse ? arrowDownIcon : arrowUpIcon : closeIcon} alt="" />
+                        <img src={sortNumberIcon} alt="" />
+                        <span>По номеру</span>
+                    </button>
+                    <button id="nameSort" onClick={sortAlphaFunc}>
+                        <img src={!sortNumber ? sortReverse ? arrowDownIcon : arrowUpIcon : closeIcon} alt="" />
+                        <img src={sortAlphaIcon} alt="" />
+                        <span>По фамилии</span>
+                    </button>
+                </div>
+                <div id="employeeCount">
+                    <span>
+                        <img src={adminIcon} alt="" />
+                        <span>Число сотрудников: </span>{users.length} 
+                    </span>
+                    <span>
+                        <img src={filterIcon} alt="" />
+                        <span>Выбрано сотрудников: </span>{filteredUsers.length} 
+                    </span>
+                </div>
                 <div id="usersList">
                     {users && !isFilters && users.map((user, i)=>{
                         // console.log(user);
@@ -702,7 +748,7 @@ function Admin({ permission }) {
                     })}
                 </div>
             </div>
-            <div id="userAdminPane">
+            <div id="userAdminPane" className={usrCard ? 'visible' : 'hidden'}>
                 {usrCard && 
                 <UserAdminPane 
                 editUserDataFunc={(type)=>{
@@ -716,6 +762,12 @@ function Admin({ permission }) {
                 addTaskInfo={addTaskData} 
                 userData={userPane || undefined} 
                 permission={permission} 
+                userInfo={userInfo}
+                closeUser={()=>{
+                    setUserPane({});
+                    setUsrCard(null)
+                }}
+                editUserPermissionFunc={(permission)=>{setIsChanges(true); setUserPane({...userPane, permission: permission})}}
                 fireUserFunc={()=>{setUsrCard(false); navigate('/employee'); LoadUsers(); LoadUserPane(-1);}}
                 />}
             </div>
