@@ -48,7 +48,7 @@
 }
 
 #tasksPane #taskList .task {
-    width: 50%;
+    /* width: auto; */
     /* min-width: 600px; */
     position: relative;
     margin: 5px;
@@ -89,11 +89,28 @@
     align-items: center;
 }
 
-.task {
+#tasksPane .task {
     height: auto;
+    /* max-height: 135px; */
+    /* justify-content: space-between; */
 }
 
 .task h2 {
+    /* max-height: 50px; */
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    
+    line-height: 1em;
+    
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
     display: flex;
     justify-content: space-between;
 }
@@ -246,7 +263,7 @@
         min-width: 100%;
         max-width: 100%;
     }
-    .task {
+    #tasksPane .task {
         min-width: calc(100% - 20px);
         max-width: calc(100% - 20px);
         margin: 0 !important;

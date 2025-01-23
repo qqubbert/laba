@@ -461,7 +461,7 @@ function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, f
                   {userInfo.id != userData.id &&
                     <button onClick={()=>{userMsgTry()}}>
                       <img src={msgIcon} alt="" />
-                      Сообщение
+                      <span>Сообщение</span>
                     </button>
                   }
                   {permission == 'admin' && 
@@ -469,10 +469,17 @@ function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, f
                     if (confirm("Вы точно хотите уволить сотрудника?")) {
                       fireUser();
                     }
-                  }}><img src={closeIcon} alt="" />Уволить</button>}
+                  }}>
+                    <img src={closeIcon} alt="" />
+                    <span>Уволить</span>
+                  </button>}
                 </div>
                 <div id="adminBtnsRight">
-                  {permission == 'admin' && isChanges && <button onClick={()=>{ changePersonDataFunc(); console.log('button save pressed')}}><img src={saveIcon} alt="" />Сохранить изменения</button>}
+                  {permission == 'admin' && isChanges && 
+                  <button onClick={()=>{ changePersonDataFunc(); console.log('button save pressed')}}>
+                    <img src={saveIcon} alt="" />
+                    <span>Сохранить изменения</span>
+                  </button>}
                 </div>
             </div>
         </>}

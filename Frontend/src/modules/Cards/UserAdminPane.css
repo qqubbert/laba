@@ -163,7 +163,7 @@
 
 .task {
     min-width: 35%;
-    height: 80px;
+    height: auto;
 
     padding: 15px;
     margin: 5px 5px 0px 0px;
@@ -174,6 +174,7 @@
 }
 
 .task h2 {
+    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -383,6 +384,18 @@ h3.mobile {
     }
     h3.mobile {
         display: flex !important;
+    }
+    #adminBtns button span {
+        display: none;
+    }
+    #adminBtns button img {
+        margin: 0;
+    }
+    #adminBtns button {
+        min-width: 54px !important;
+        max-width: 54px !important;
+        max-height: 54px !important;
+        min-height: 54px !important;
     }
 }
 

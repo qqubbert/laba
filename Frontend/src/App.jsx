@@ -135,6 +135,7 @@
             <Route path="/articles" element={<Articles />}>
               <Route path=":articleId" element={<SelectedArticle />} />
             </Route>
+            <Route path="*" element={<Navigate to="/articles" replace />} />
           </Routes>
 
         </>
