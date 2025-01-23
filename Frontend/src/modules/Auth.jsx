@@ -74,32 +74,43 @@ function Auth({ logged, userId, permission }) {
   - loginErr: элемент DOM для отображения сообщения об ошибке.
   */
   const AuthConfirm = async () => {
+    console.log(loginData);
     const loginErr = document.getElementById("LoginErrorMsg");
-    const response = await fetch("http://localhost:3000/js-service/auth/login", {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        login: loginData.login,
-        password: loginData.password,
-      }),
-    });
-    const responseData = await response.json();
+    if (loginData.login.length >= 1) {
+      if (loginData.password.length >= 1) {
+        const response = await fetch("http://localhost:3000/js-service/auth/login", {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            login: loginData.login,
+            password: loginData.password,
+          }),
+        });
+        const responseData = await response.json();
+        
     
-
-    if (response.ok) {
-      // Если авторизация успешна
-      logged(); // Вызываем функцию logged
-      userId(responseData.userid); // Сохраняем ID пользователя
-      setIsLogged(true); // Устанавливаем флаг успешной авторизации
-      permission(responseData.permission); // Сохраняем права доступа
+        if (response.ok) {
+          // Если авторизация успешна
+          logged(); // Вызываем функцию logged
+          userId(responseData.userid); // Сохраняем ID пользователя
+          setIsLogged(true); // Устанавливаем флаг успешной авторизации
+          permission(responseData.permission); // Сохраняем права доступа
+        } else {
+          // Если авторизация не удалась
+          loginErr.style.visibility = "visible";
+          setErrText(responseData.message); // Устанавливаем сообщение об ошибке
+        }
+        
+      } else {
+        setErrText('Введите пароль');
+        loginErr.style.visibility = "visible";
+      }
     } else {
-      // Если авторизация не удалась
-      setErrText(responseData.message); // Устанавливаем сообщение
       loginErr.style.visibility = "visible";
-      setErrText(responseData.message); // Устанавливаем сообщение об ошибке
+      setErrText('Введите логин');
     }
   };
 
@@ -227,11 +238,13 @@ function Auth({ logged, userId, permission }) {
             <h1 className='noUsrSelect'>Войти в аккаунт</h1>
             <input 
               type="text" 
+              id="login_input"
               placeholder='Логин' 
               onChange={(e) => { setLoginData({ ...loginData, login: e.target.value }) }} 
             />
             <input 
               type="password" 
+              id="pass_input"
               placeholder='Пароль' 
               onChange={(e) => { setLoginData({ ...loginData, password: e.target.value }) }} 
             />
