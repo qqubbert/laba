@@ -337,7 +337,7 @@ function Auth({ logged, userId, permission }) {
                         }, 1000);
                         err = true;
                     }
-                    if (addUserData.password.length >= 4 || 
+                    if (addUserData.password.length >= 4 && 
                         addUserData.password.length <= 16) {
                         if (!validateString(addUserData.password)) {
                           const userPasswordInput = document.getElementById('userPasswordInput');
@@ -350,13 +350,14 @@ function Auth({ logged, userId, permission }) {
                       } else {
                         setShowErr(true);
                         RegErrorMsg.style.visibility = 'visible';
-                        setErrText('Заполните все данные');
+                        setErrText('Пароль должен быть от 4 до 16 символов');
                         RegErrorMsg.style.visibility = 'visible';
                         const userPasswordInput = document.getElementById('userPasswordInput');
                         userPasswordInput.classList.add('err');
                         setTimeout(() => {
                           userPasswordInput.classList.remove('err');
                         }, 1000);
+                        err = true;
                     }
                     if (!addUserData.email || addUserData.email.length <= 0) {
                         console.log('email is not filled');

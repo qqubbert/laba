@@ -33,10 +33,6 @@ const db = mysql.createConnection({
     database: "lab",
 });
 
-authApp.get('/', (req, res) => {
-    res.send("Hello, world!");
-});
-
 authApp.get('/cookieclear', async (req, res) => {
     res.cookie('token', null, {
         httpOnly: true,       
