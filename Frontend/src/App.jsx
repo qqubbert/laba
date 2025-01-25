@@ -17,6 +17,7 @@
     const [showArticleEditor, setShowArticleEditor] = useState(false);
     const [usrInf, setUsrInf] = useState({});
     const [usrId, setUsrId] = useState();
+    const [showHint, setShowHint] = useState(false);
     const [permission, setPermission] = useState('user');
     const navigate = useNavigate();
 
@@ -38,6 +39,7 @@
         }
     
         setLogged(true);
+        // navigate('/articles');
     
         const userResponse = await fetch("http://localhost:3000/js-service/auth/cookiecheck", {
           method: 'GET',
@@ -60,8 +62,8 @@
       });
     }
 
-    const loadUsrInfo = async (usrId) => {
-      console.log(usrId);
+    const loadUsrInfo = async () => {
+      // console.log(usrId);
       try {  
           const response = await fetch(`http://localhost:3000/rest-api-service/self`, {
           method: 'GET',
@@ -118,18 +120,22 @@
             <Route path="/login" element={!logged && 
             <Auth 
               permission={(permission) => { setPermission(permission); console.log(permission); }} 
-              userId={(userId) => { setUsrId(userId); }} 
-              logged={() => { setLogged(true); }} 
+              userId={(userId) => { setUsrId(userId);}} 
+              logged={() => { loadUsrInfo(); setLogged(true); navigate('/articles')}} 
             />} />
-            <Route path="/employee" element={<Admin permission={permission}/>}>
+            <Route path="/" element={<Navigate to="/articles" replace />} />
+            <Route path="/employee" element={<Admin permission={permission} userInfo={usrInf}/>}>
               <Route path=":userid" element={<SelectedArticle />} />
             </Route>
             <Route path="/newarticle" element={<NewArticle />} />
-            <Route path="/messages" element={<Messages />} />
+            <Route path="/messages" element={<Messages userInfo={usrInf}/>} >
+              <Route path=":chatid" element={<></>} />
+            </Route>
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/articles" element={<Articles />}>
               <Route path=":articleId" element={<SelectedArticle />} />
             </Route>
+            <Route path="*" element={<Navigate to="/articles" replace />} />
           </Routes>
 
         </>

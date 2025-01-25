@@ -9,7 +9,7 @@ import './SelectedArticle.css';
 
 import Comment from './Comment.jsx';
 
-function SelectedArticle({ articleData, onClose }) {
+function SelectedArticle({ articleData, onClose, articleReload }) {
     const [articleComms, setArticleComms] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
 
@@ -58,10 +58,22 @@ function SelectedArticle({ articleData, onClose }) {
     } 
 
     useEffect(()=>{
+        console.log(articleData);
         if (articleData) {
             LoadArticleComms();
         }
     }, [articleData]);
+
+    const addToFav = async () => {
+        const response = await fetch(`http://localhost:3000/rest-api-service/articles/${articleData.id}/favorites`,{
+            method: 'POST',
+            credentials: 'include',
+            withCredentials: true
+        });
+        if (response.ok) {
+            articleReload();
+        }
+    }
 
   return (
     <>
@@ -71,9 +83,12 @@ function SelectedArticle({ articleData, onClose }) {
                 <div id="articleInfo">
                     <div id="articleIntoText">
                         <h1>{articleData.title}</h1>
+                        <NavLink to={`/employee/${articleData.author_id}`}>
+                            <h5>{articleData.author_name}</h5>
+                        </NavLink>
                     </div>
                     <div id="selectedArticleBtns">
-                        {/* <button><img src={bookmark} alt="" /></button> */}
+                        <button onClick={()=>{addToFav()}}><img src={articleData.is_favorite ? bookmarkFilled : bookmark} alt="" /></button>
                         <button onClick={onClose}><img src={closeIcon} alt="" /></button>
                     </div>
                 </div>

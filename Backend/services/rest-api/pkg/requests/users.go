@@ -24,11 +24,12 @@ type User struct {
 	RegDate        string `json:"reg_date"`
 	Department     string `json:"department"`
 	ProfilePicLink string `json:"profile_pic_link"`
+	Permission     string `json:"permission"`
 }
 
 func GetUser(db *sql.DB, id int) (*User, error) {
 	query := `
-		SELECT u.ID, u.FirstName, u.LastName, u.Surname, u.Gender, u.Birthday, u.FamilyStatus, 
+		SELECT u.ID, u.Permission, u.FirstName, u.LastName, u.Surname, u.Gender, u.Birthday, u.FamilyStatus, 
 		       u.HavingChildren, u.JobTitle, u.AcademicDegree, u.DepID, u.WorkExperience, 
 		       u.Salary, u.PhoneNumber, u.Email, u.ProfilePicLink, d.DepTtl
 		FROM Users u
@@ -38,7 +39,7 @@ func GetUser(db *sql.DB, id int) (*User, error) {
 
 	var user User
 	err := db.QueryRow(query, id).Scan(
-		&user.ID, &user.FirstName, &user.LastName, &user.Surname, &user.Gender, &user.Birthday,
+		&user.ID, &user.Permission, &user.FirstName, &user.LastName, &user.Surname, &user.Gender, &user.Birthday,
 		&user.FamilyStatus, &user.HavingChildren, &user.JobTitle, &user.AcademicDegree, &user.DepID,
 		&user.WorkExperience, &user.Salary, &user.PhoneNumber, &user.Email, &user.ProfilePicLink, &user.Department,
 	)

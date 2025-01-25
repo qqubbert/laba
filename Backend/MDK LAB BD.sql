@@ -8,12 +8,11 @@ use lab;
 
 CREATE TABLE Departaments (
     DepID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    DepTtl VARCHAR(100),
-    ProjID INT
+    DepTtl VARCHAR(100)
 );
 
 CREATE TABLE Users (
- ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
     Login VARCHAR(100),
     Pass VARCHAR(100),
     Permission VARCHAR(100),
@@ -37,6 +36,14 @@ CREATE TABLE Users (
         REFERENCES Departaments (DepID)
 );
 
+CREATE TABLE registerKeys (
+	id int auto_increment primary key not null,
+	regKey varchar(255),
+	keyCreatorID int,
+	FOREIGN KEY (keyCreatorID)
+		REFERENCES Users (ID) 
+);
+
 CREATE TABLE tasks (
  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Id_Employee INT,
@@ -46,17 +53,17 @@ CREATE TABLE tasks (
         REFERENCES Users (ID)
 );
 
-CREATE TABLE Projects (
- ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    ProjTtl VARCHAR(100),
-    Deadlines DATE,
-    Budget INT,
-    Requirements TEXT,
-    Dep_ID INT NOT NULL,
-    Progress INT,
-    FOREIGN KEY (Dep_ID)
-        REFERENCES Departaments (DepID)
-);
+-- CREATE TABLE Projects (
+--  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--     ProjTtl VARCHAR(100),
+--     Deadlines DATE,
+--     Budget INT,
+--     Requirements TEXT,
+--     Dep_ID INT NOT NULL,
+--     Progress INT,
+--     FOREIGN KEY (Dep_ID)
+--         REFERENCES Departaments (DepID)
+-- );
 
 create Table article (
  id int auto_increment unique not null primary key,

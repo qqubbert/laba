@@ -67,7 +67,12 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
     <>
         <ProfileWindow showProfileWin={showProfileWin} logout={()=>{logout();}} profile={()=>{navigate(`/employee/${userInfo.id}`); showProfWin()}} hideWindow={()=>{showProfWin()}}/>
         <header>
-            <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}><img src={plusIcon} alt="" />Новая статья</button>
+            {/* <button id="newArticleBtn" onClick={()=>{selectScience('none', true); navigate('/newarticle');}}>
+                <img src={plusIcon} alt="" />
+                <span id="newArticleBtnTxt">
+                    Новая статья
+                </span>
+            </button> */}
             <ul>
                 {/* <li onClick={(e)=>selectScience(e)} id="biology" className='science'><img src={leafIcon} alt="" className=''/>Биология</li>
                 <li onClick={(e)=>selectScience(e)} id="chemistry" className='selected science'><img src={chemistryIcon} alt="" />Химия</li>
@@ -75,27 +80,31 @@ function Header({ userInfo, logout, selectedFunc, permission }) {
                 <li onClick={(e)=>selectScience(e)} id="it" className='science'><img src={terminalIcon} alt="" />IT</li> */}
                 <li>
                     <NavLink to="/articles" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={articleIcon} alt="" /> Статьи
+                        <img src={articleIcon} alt="" /> 
+                        <span>Статьи</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/messages" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={msgIcon} alt="" /> Сообщения
+                        <img src={msgIcon} alt="" /> 
+                        <span>Сообщения</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/tasks" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={tasksIcon} alt="" /> Задачи
+                        <img src={tasksIcon} alt="" /> 
+                        <span>Задачи</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/employee" className={({ isActive }) => (isActive ? 'selected page' : 'page')}>
-                        <img src={adminIcon} alt="" /> Сотрудники
+                        <img src={adminIcon} alt="" /> 
+                        <span>Сотрудники</span>
                     </NavLink>
                 </li>
             </ul>
             <div id="userHeadInfo">
-                <h1 title={userInfo.department}>{userInfo.department}</h1>
+                {/* <h1 title={userInfo.department}>{userInfo.department}</h1> */}
                 <div id="usrProfile">
                     <h2 id="Name" onClick={()=>navigate(`/employee/${userInfo.id}`)}>{userInfo.last_name} {userInfo.first_name} {userInfo.surname}</h2>
                     <h2 id="JobTitle">{userInfo.job_title}</h2>

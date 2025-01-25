@@ -42,11 +42,10 @@
 
 #searchArticle #inputAndBtns {
     margin: 5px 0;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: var(--input-color);
     width: 100%;
     display: flex;
-    border-radius: 15px;
 }
 
 #searchArticle #inputAndBtns button {
@@ -57,14 +56,33 @@
     height: 100%;
     border: none;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #searchArticle #inputAndBtns button:first-of-type {
-    border-radius: 15px 0px 0px 15px;
+    border-radius: 10px 0px 0px 10px;
+    width: 150px;
+    background-color: var(--buttons-brighter-color);
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+    }
+}
+
+#allArticles.singleColumn #articleTags {
+    flex-wrap: wrap;
+}
+
+#allArticles.singleColumn #inputAndBtns button:first-of-type {
+    width: 54px;
+}
+
+#allArticles.singleColumn #inputAndBtns button:first-of-type span {
+    display: none;
 }
 
 #searchArticle #inputAndBtns button:last-of-type {
-    border-radius: 0px 15px 15px 0px;
+    border-radius: 0px 10px 10px 0px;
 }
 
 #searchArticle #inputAndBtns button:hover {
@@ -86,6 +104,7 @@
 
 #articleTagsLeft, #articleTagsRight {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #searchArticle input[type="checkbox"] {
@@ -99,6 +118,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 5px 10px;
+    flex-wrap: wrap;
 }
 
 #searchArticle #articleTags label {
@@ -110,7 +130,9 @@
     align-items: center;
     user-select: none;
 
-    margin: 0px 0px 0px 10px;
+    margin: 0px 0px 0px 5px;
+
+    font-size: small;
 }
 
 #searchArticle #articleTags label:hover {
@@ -155,7 +177,12 @@
     justify-content: center; */
 }
 
+#allArticles.singleColumn button {
+    width: 54px;
+}
+
 .ArticleCard {
+    position: relative;
     justify-self: center;
     display: flex;
     flex-direction: column;
@@ -168,7 +195,7 @@
     padding: 15px;
     margin: 5px 5px;
 
-    border-radius: 15px;
+    border-radius: 10px;
 
     background-color: var(--card-color);
 
@@ -178,6 +205,19 @@
 
     outline: 2px solid transparent;
 }
+
+.articleTagsIcons {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0px;
+} 
+
+.articleTagsIcons img {
+    opacity: 0.5;
+    margin: 0px 5px;
+}
+
 /* 
 .ArticleCard:last-of-type {
     margin-bottom: 120px;
@@ -194,11 +234,19 @@
     display: -webkit-box;
     display: -moz-box;
 
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+
+    line-height: 1.2em;
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
+
+    font-size: larger;
+}
+
+.ArticleCard h4 {
+    font-weight: normal
 }
 
 .ArticleCard:hover {
@@ -207,4 +255,10 @@
 
 .ArticleCard.active {
     outline: 2px solid var(--border-color);
+}
+
+@media screen and (max-width: 1100px) {
+    #allArticles.singleColumn {
+        display: none;
+    }
 }

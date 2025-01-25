@@ -22,7 +22,7 @@ form {
     padding: 15px;
 }
 
-form :where(input, button, a) {
+form :where(input, button, a, select) {
     margin: 10px;
     padding: 10px;
 
@@ -35,12 +35,12 @@ form :where(input, button, a) {
     transition: all .2s ease-in-out;
 }
 
-form :where(input, button) {    
+form :where(input, button, select) {    
     border: none;
     outline: none;
 }
 
-form :where(button, a):hover {
+form :where(button, a, select):hover {
     background-color: var(--buttons-brighter-another-color);
     cursor: pointer;
 }
@@ -50,8 +50,12 @@ form button {
     background-color: var(--buttons-brighter-color);
 }
 
-form input {
+form input, form select {
     background-color: var(--input-color);
+}
+
+form select {
+    width: 320px;
 }
 
 form input, form a {
@@ -65,7 +69,17 @@ form h1 {
     margin: 15px;
 }
 
-#LoginErrorMsg {
+form span {
+    opacity: 0.5;
+    transition: all .15s ease-in-out;
+}
+
+form span:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+#LoginErrorMsg, #RegErrorMsg {
     visibility: hidden;
 
     width: 300px;
@@ -76,4 +90,26 @@ form h1 {
 
     color: var(--error-color);
     background-color: var(--error-another-color);
+}
+
+.regForm {
+    top: 49%;
+}
+
+.regForm input, .regForm h1, .regForm select {
+    margin: 5px;
+}
+
+input.err {
+    outline: 2px solid var(--error-color);
+}
+
+@media screen and (max-width: 550px) {
+    #AuthForm {
+        background-color: transparent;
+        max-width: calc(100vw - 30px);
+    }
+    #AuthForm input, #AuthForm button {
+        max-width: 100%;
+    }
 }

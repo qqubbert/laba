@@ -5,7 +5,7 @@
     /* height: 100%; */
     /* min-height: 100%; */
 
-    margin: 20px;
+    margin: 8px;
 
     background-color: var(--windows-color);
 
@@ -30,6 +30,42 @@
 
 #articleInfo h1 {
     margin: 25px;
+    font-size: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    display: -moz-box;
+
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+
+    line-height: 1em;
+
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+}
+
+#articleIntoText {
+    display: flex;
+    align-items: center;
+}
+
+#articleIntoText a {
+    margin: 0 5px;
+    text-decoration: none;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#articleIntoText h5 {
+    margin: 0 5px;
+    text-decoration: none;
+    &:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
 }
 
 #articleInfo #selectedArticleBtns {
@@ -72,7 +108,8 @@
 
 #articleAndComms iframe {
     min-width: 70%;
-    min-height: 100%;
+    /* min-height: 100%; */
+    flex-grow: 1;
 
     background-color: var(--windows-darker-color);
 }
@@ -95,13 +132,42 @@
     background-color: var(--card-brighter-color);
 
     margin: 15px;
-    padding: 15px;
+    padding: 5px;
 
     max-width: 100%;
 
     border-radius: 15px;
 
     word-wrap: break-word;
+    
+    display: flex;
+
+    align-items: center;
+
+
+}
+
+.Comment img {
+    grid-area: img;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0px 8px 0px 2px;
+}
+
+.Comment h4 {
+    grid-area: txt;
+    font-weight: normal;
+}
+
+.Comment h2 {
+    grid-area: name;
+    font-size: large;
+}
+
+.Comment h2 a {
+    text-decoration: none;
 }
 
 .Comment:last-of-type {
@@ -168,4 +234,22 @@
 
 #addCommentDiv textarea::selection {
     background-color: var(--input-select-color);
+}
+
+@media screen and (max-width: 800px) {
+    #articleAndComms {
+        display: flex;
+        flex-direction: column;
+    }
+    #selectedArticle {
+        margin: 0;
+        border-radius: 0;
+    }
+    #articleAndComms #articleComms {
+        max-height: 300px;
+        padding: 0;
+    }
+    #articleIntoText a {
+        display: none;
+    }
 }

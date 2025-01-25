@@ -28,13 +28,13 @@ type UserUdpate struct {
 
 func UserUpdate(db *sql.DB, userID int, user UserUdpate) error {
 	query := `UPDATE Users
-	SET FirstName = ?, LastName = ?, Surname = ?,
+	SET FirstName = ?, LastName = ?, Surname = ?, Permission = ?,
 	FamilyStatus = ?, HavingChildren = ?, JobTitle = ?, AcademicDegree = ?,
 	DepID = ?, WorkExperience = ?, Salary = ?, PhoneNumber = ?, Email = ?, Isblocked = ?, ProfilePicLink = ?
 	WHERE ID = ?
 	`
 
-	_, err := db.Exec(query, user.FirstName, user.LastName, user.Surname,
+	_, err := db.Exec(query, user.FirstName, user.LastName, user.Surname, user.Permission,
 		user.FamilyStatus, user.HavingChildren, user.JobTitle, user.AcademicDegree,
 		user.DepID, user.WorkExperience, user.Salary, user.PhoneNumber, user.Email, user.IsBlocked, user.PhotoLink, userID)
 	if err != nil {

@@ -1,11 +1,13 @@
 #userAdminPane {
-    width: 100%;
-    min-height: auto;
-    max-height: 100%;
+    /* width: calc(100% - 620px); */
+    flex-grow: 1;
+    margin-right: 20px;
+    /* min-height: calc(100% - 30px); */
+    /* max-height: calc(100% - 30px); */
 
     overflow: hidden;
 
-    margin: 30px;
+    /* margin: 10px; */
     padding: 0px;
 
     border-radius: 15px;
@@ -17,16 +19,48 @@
     justify-content: space-between;
 }
 
-#userAdminPane h1 {
-    margin: 0 20px 20px 20px;
+#userAdminPane #articlesList {
+    min-height: 200px;
+    max-width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    padding: 0px 15px;
+}
 
-    font-size: 40px;
+#userAdminPane .ArticleCard {
+    min-width: 300px;
+}
+
+#userAdminPane .ArticleCard h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+#userAdminPane h1 {
+    margin: 0 20px 2px 20px;
+
+    font-size: 32px;
 }
 
 #userAdminPane h3 {
-    margin: 10px 20px;
+    margin: 2px 20px;
 
-    font-size: 25px;
+    font-size: 22px;
+
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+}
+
+#userAdminPane h3 span {
+    font-weight: normal;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+#idDiv {
+    opacity: 0.1;
 }
 
 #divInfo {
@@ -46,7 +80,7 @@
     max-width: 220px;
     max-height: 220px;
     min-height: 220px;
-    border-radius: 25px;
+    border-radius: 10px;
     object-fit: cover;
 }
 
@@ -54,10 +88,17 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: start;
+    /* justify-content: center; */
+    margin-left: min(10px);
     margin: 55px 55px 55px auto;
 }
 
 #userPhotoDiv button {
+    min-width: 200px;
+    max-width: 200px;
+    /* max-height: 200px; */
+    /* min-height: 200px; */
     margin: 10px;
     border-radius: 15px;
     border: none;
@@ -77,11 +118,11 @@
     position: relative;
 
     max-width: 100%;
-    height: 100px;
+    height: 65px;
 
     background-color: var(--windows-brighter-color);
 
-    padding: 10px 25px;
+    padding: 5px 25px;
 
     display: flex;
     justify-content: space-between;
@@ -94,7 +135,7 @@
 
 #adminBtns button {
     padding: 15px;
-    margin: 5px 15px 15px 15px;
+    margin: 2px 15px 2px 15px;
 
     min-width: 100px;
 
@@ -122,17 +163,18 @@
 
 .task {
     min-width: 35%;
-    height: 80px;
+    height: auto;
 
     padding: 15px;
-    margin: 15px;
+    margin: 5px 5px 0px 0px;
 
     background-color: var(--card-brighter-color);
 
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .task h2 {
+    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -144,6 +186,33 @@
 
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
+}
+
+.task #titleAndBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task button {
+    min-width: 30px;
+    height: 30px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    background-color: var(--buttons-brighter-color);
+
+    transition: all .15s ease-in-out;
+
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+        cursor: pointer;
+    }
+}
+
+.task.completed {
+    filter: saturate(0.5) brightness(0.5);
 }
 
 ul.progressbar {
@@ -217,11 +286,32 @@ ul.progressbar li {
     background-color: var(--buttons-brighter-another-color);
 }
 
+hr {
+    width: 70%;
+    opacity: 0.1;
+}
+
+h5 {
+    margin: 0 50px;
+    opacity: 0.3;
+    user-select: none;
+}
+
 .textdiv {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
+}
+
+.textdiv img, .taskTtlDiv img, #articlesTtlDiv img {
+    margin: 0 10px 0 0;
+    opacity: 0.2;
+}
+
+.textdiv button img {
+    opacity: 1;
+    margin: 0;
 }
 
 .textdiv button {
@@ -236,6 +326,9 @@ ul.progressbar li {
     transition: all .15s ease-in-out;
 
     opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .textdiv:hover button {
@@ -245,4 +338,78 @@ ul.progressbar li {
 .textdiv button:hover {
     background-color: var(--buttons-brighter-another-color);
     cursor: pointer;
+}
+
+h3.pc {
+    display: flex !important;
+}
+
+h3.mobile {
+    display: none !important;
+}
+
+#closeUserBtn {
+    /* position: fixed; */
+    /* top: 0; */
+    display: none;
+    background-color: var(--buttons-brighter-color);
+    border: none;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding: 10px 0;
+    &:hover {
+        background-color: var(--buttons-brighter-another-color);
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 1460px) {
+    #divInfoAll {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    #userPhotoDiv {
+        margin: 10px;
+    }
+    #divInfo {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    h3.pc {
+        display: none !important;
+    }
+    h3.mobile {
+        display: flex !important;
+    }
+    #adminBtns button span {
+        display: none;
+    }
+    #adminBtns button img {
+        margin: 0;
+    }
+    #adminBtns button {
+        min-width: 54px !important;
+        max-width: 54px !important;
+        max-height: 54px !important;
+        min-height: 54px !important;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    #closeUserBtn {
+        display: flex;
+    }
+}
+
+#userPermissionSelect {
+    background-color: var(--input-color);
+    outline: none;
+    border: none;
+    padding: 5px;
+    margin: 0 10px;
+    border-radius: 10px;
 }
