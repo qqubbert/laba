@@ -182,8 +182,9 @@ function Auth({ logged, userId, permission }) {
     } else {  
       // Если авторизация не удалась
       // loginErr.style.visibility = "visible";
+      const LoginErrorMsg = document.getElementById('LoginErrorMsg');
       setShowErr(true);
-      RegErrorMsg.style.visibility = 'visible';
+      LoginErrorMsg.style.visibility = 'visible';
       setErrText(responseData.message); // Устанавливаем сообщение об ошибке
     }
   };
@@ -256,10 +257,10 @@ function Auth({ logged, userId, permission }) {
           {logWin && isRegister && !canRegister &&
           <form action="" id="AuthForm" className='regForm'>
             <h1 className='noUsrSelect'>Введите код регистрации</h1>
+            <h4 id="LoginErrorMsg">{errText}</h4>
             <input id="regKeyInput" type="text" placeholder='Код регистрации'/>
             <button onClick={()=>KeyConfirm()} type='button'>Подтвердить</button>
             <span onClick={()=>{setIsRegister(false); setCanRegister(false); setRegKey(''); setErrText(''); setShowErr(false)}} className='noUsrSelect'>Есть аккаунт</span>  
-            <h4 id="LoginErrorMsg">{errText}</h4>
           </form>
           }
           {logWin && isRegister && canRegister &&

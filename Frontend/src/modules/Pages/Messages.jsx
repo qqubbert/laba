@@ -349,10 +349,11 @@ function Messages({ userInfo }) {
                     LoadChats();
                     setMessages([])
                     setChatLoaded(false);
-                    setSelectedChat(0);
+                    setSelectedChat(-1);
                     showChatSettingsWinFunc();
                     console.log('Чат удалён');
                     addUserInput.value = '';
+                    setChatTitle(prev => prev = 'Выберите чат');
                 } else {
                     console.log('Ошибка')
                 }
@@ -629,6 +630,7 @@ function Messages({ userInfo }) {
                                 id={`chatCard-${chat.chat_id}`}
                                 onClick={() => {
                                     LoadChatMessages(chat.chat_id, chat.title);
+                                    setSelectedChat(chat.chat_id);
                                 }}
                             >
                                 <h1>{chat.title || chat.participants}</h1>
@@ -650,7 +652,7 @@ function Messages({ userInfo }) {
                         <img src={closeIcon} alt="" />
                     </button>
                     <h1>
-                    {chatTitle}
+                        {chatTitle}
                     </h1>
                     {chatLoaded && 
                     <div id="chatInfoBtns">

@@ -132,9 +132,9 @@
         const ID = req.cookies.userid;
         console.log(title + " " + ID);
         const ChatCreate = `
-        INSERT INTO chats (title, author_id)
+        INSERT INTO chats (title, author_id, private)
         VALUES
-            (?, ?);
+            (?, ?, 0);
         `;
         db.query(ChatCreate, [title, ID], (err, rsChat) => {
             console.log(rsChat);
@@ -143,9 +143,9 @@
             } else {
                 const chatID = rsChat.insertId;
                 const UserChat = `
-                INSERT INTO chat_users (user_id, chat_id, private)
+                INSERT INTO chat_users (user_id, chat_id)
                 VALUES
-                    (?, ?, false);
+                    (?, ?);
                 `;
                 db.query(UserChat, [ID, chatID], (err, rsUserChat) => {
                     console.log(rsUserChat);

@@ -647,17 +647,17 @@ function Admin({ permission, userInfo }) {
                     <button 
                         onClick={()=>{
                             setShowFilters(!showFilters); 
-                            setFilters({
-                                name: "",
-                                department: "",
-                                gender: "",
-                                familyStatus: "",
-                                children: null,
-                                experience: null,
-                                salary: null,
-                                degree: "",
-                                jobTitle: "",
-                            });
+                            // setFilters({
+                            //     name: "",
+                            //     department: "",
+                            //     gender: "",
+                            //     familyStatus: "",
+                            //     children: null,
+                            //     experience: null,
+                            //     salary: null,
+                            //     degree: "",
+                            //     jobTitle: "",
+                            // });
                         }}
                     >
                     <img src={filterIcon} alt="" />
@@ -667,7 +667,7 @@ function Admin({ permission, userInfo }) {
                 </div>
                 {showFilters && 
                 <div id="filters">
-                    <select name="" id="depFilter" onChange={(e) => handleFilterChange('department', e.target.value)}>
+                    <select defaultValue={filters.department} name="" id="depFilter" onChange={(e) => handleFilterChange('department', e.target.value)}>
                         <option value="">Все</option>
                         {deps.map((dep, i)=>{
                             return (
@@ -675,12 +675,12 @@ function Admin({ permission, userInfo }) {
                             )
                         })}
                     </select>
-                    <select name="" id="genderFilter" onChange={(e) => handleFilterChange('gender', e.target.value)}>
+                    <select defaultValue={filters.gender} name="" id="genderFilter" onChange={(e) => handleFilterChange('gender', e.target.value)}>
                         <option value="">Все</option>
                         <option value="М">Мужской</option>
                         <option value="Ж">Женский</option>
                     </select>
-                    <select name="" id="familyStatusFilter" onChange={(e) => handleFilterChange('familyStatus', e.target.value)}>
+                    <select defaultValue={filters.familyStatus} name="" id="familyStatusFilter" onChange={(e) => handleFilterChange('familyStatus', e.target.value)}>
                         <option value="">Все</option>   
                         <option value="Холост">Холост</option>
                         <option value="Не замужем">Не замужем</option>
@@ -693,17 +693,18 @@ function Admin({ permission, userInfo }) {
                     <input 
                         type="text" 
                         placeholder="Количество детей" 
+                        defaultValue={filters.children}
                         onChange={(e) => handleFilterChange('children', e.target.value === "" ? null : e.target.value)} 
                     />
                     </div>
                     <div id="workExpDiv">
-                        <input type="text" placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value === "" ? null : e.target.value)}/>
+                        <input type="text" defaultValue={filters.experience} placeholder='Опыт работы' onChange={(e) => handleFilterChange('experience', e.target.value === "" ? null : e.target.value)}/>
                     </div>
                     <div id="salaryDiv">
-                        <input type="text" placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value === "" ? null : e.target.value)}/>
+                        <input type="text" defaultValue={filters.salary} placeholder='Зарплата' onChange={(e) => handleFilterChange('salary', e.target.value === "" ? null : e.target.value)}/>
                     </div>
-                    <input type="text" placeholder='Учёная степень' onChange={(e) => handleFilterChange('degree', e.target.value)}/>
-                    <input type="text" placeholder='Должность' onChange={(e) => handleFilterChange('jobTitle', e.target.value)}/>
+                    <input defaultValue={filters.degree} type="text" placeholder='Учёная степень' onChange={(e) => handleFilterChange('degree', e.target.value)}/>
+                    <input defaultValue={filters.jobTitle} type="text" placeholder='Должность' onChange={(e) => handleFilterChange('jobTitle', e.target.value)}/>
                 </div>}
                 <div id="sortDiv">
                     <button id="idSort" onClick={sortNumberFunc}>

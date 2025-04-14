@@ -188,9 +188,17 @@
 	-moz-box-orient: vertical;
 }
 
-.task #titleAndBtn {
+.task .titleAndBtn {
     display: flex;
     justify-content: space-between;
+}
+
+.task.completed .titleAndBtn h2 {
+    justify-content: left;
+}
+
+.task .titleAndBtn h2 span {
+    margin: 0 10px;
 }
 
 .task button {
@@ -315,6 +323,7 @@ h5 {
 }
 
 .textdiv button {
+    margin-right: 10px;
     height: 40px;
     width: 40px;
     border-radius: 20px;
