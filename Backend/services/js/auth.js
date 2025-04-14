@@ -189,21 +189,21 @@ authApp.post('/register', async (req, res) => {
                                                     secure: false,        
                                                     sameSite: 'Lax',    
                                                     // maxAge: 100
-                                                    maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+                                                    maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
                                                 });
                                                 res.cookie('userid', user.ID, {
                                                     httpOnly: true,       
                                                     secure: false,        
                                                     sameSite: 'Lax',    
                                                     // maxAge: 100
-                                                    maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+                                                    maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
                                                 });
                                                 res.cookie('admin', user.Permission, {
                                                     httpOnly: true,       
                                                     secure: false,        
                                                     sameSite: 'Lax',       
                                                     // maxAge: 100
-                                                    maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+                                                    maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
                                                 });
                                                 res.json({ token, message: 'Пользователь зарегистрирован и авторизован', userid: user.ID, permission: user.Permission });
                                             });
@@ -266,21 +266,21 @@ authApp.post('/login', (req, res) => {
             secure: false,        
             sameSite: 'Lax',    
             // maxAge: 100
-            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+            maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.cookie('userid', user.ID, {
             httpOnly: true,       
             secure: false,        
             sameSite: 'Lax',    
             // maxAge: 100
-            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+            maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.cookie('admin', user.Permission, {
             httpOnly: true,       
             secure: false,        
             sameSite: 'Lax',       
             // maxAge: 100
-            maxAge: 10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
+            maxAge: 100*10 * 24 * 60 * 60 * 1000, // Срок жизни 30 дней
         });
         res.json({ token, message: 'Пользователь авторизован', userid: user.ID, permission: user.Permission });
     });

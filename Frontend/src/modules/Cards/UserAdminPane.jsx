@@ -94,7 +94,7 @@ function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, f
         job_title: userData.job_title,
         academic_degree: userData.academic_degree,
         dep_id: Number(userData.dep_id),
-        work_experience: userData.work_experience,
+        work_experience: Number(userData.work_experience),
         salary: Number(userData.salary),
         phone_number: userData.phone_number,
         email: userData.email,
@@ -378,7 +378,7 @@ function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, f
                     if (!el.completed ) {
                       return (
                         <div className={'task ' + (el.completed ? 'completed' : '')} id={`${i}taskInfo${el.id_employee}`}>
-                          <div id="titleAndBtn">
+                          <div className="titleAndBtn">
                             <h2 title={el.task + ' ' + (el.completed ? '[Выполнено]' : '')}>{el.task} </h2>
                             {permission == 'admin' && !el.completed &&
                               <button onClick={()=>{taskComplete(el.id)}} title='Завершить задачу'><img src={tasksIcon} alt="" /></button>
@@ -416,7 +416,7 @@ function UserAdminPane({ closeUser, userInfo, isChanges, userData, permission, f
                           id={`${i}taskInfo${el.id_employee}`}
                           key={el.id}
                         >
-                          <div id="titleAndBtn">
+                          <div className="titleAndBtn">
                             <h2 title={el.task + " [Выполнено]"}>
                               <span className='noUserSelect'> - </span>{el.task}
                             </h2>

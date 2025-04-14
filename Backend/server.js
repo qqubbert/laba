@@ -6,7 +6,7 @@ const cors = require('cors');
 const path = require('path');
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:3000','http://localhost:3001', 'http://localhost:3002'], // Массив разрешенных источников
+    origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:3000','http://localhost:3001', 'http://localhost:3002', 'http://localhost:5174'], // Массив разрешенных источников
     credentials: true,
 };
 

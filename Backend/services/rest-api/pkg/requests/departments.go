@@ -4,13 +4,12 @@ import "database/sql"
 
 type Dep struct {
 	DepTtl string `json:"dep_ttl,omitempty"`
-	ProjID int    `json:"proj_id,omitempty"`
 	DepID  int    `json:"dep_id,omitempty"`
 }
 
 func CreateDepartment(db *sql.DB, departments Dep) (int64, error) {
-	query := `INSERT INTO Departaments (DepTtl, ProjID) VALUES (?, ?)`
-	result, err := db.Exec(query, departments.DepTtl, departments.ProjID)
+	query := `INSERT INTO Departaments (DepTtl) VALUES (?)`
+	result, err := db.Exec(query, departments.DepTtl)
 	if err != nil {
 		return 0, err
 	}
